@@ -1,0 +1,133 @@
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+class AppColors {
+  static const primary = Color(0xFF1554B8);
+  static const primaryDark = Color(0xFF0B2A55);
+  static const primaryLight = Color(0xFFEAF2FC);
+  static const accent = Color(0xFFF59E0B);
+  static const background = Color(0xFFF5F6F8);
+  static const border = Color(0xFFE2E8F0);
+  static const textDark = Color(0xFF172033);
+  static const textGrey = Color(0xFF64748B);
+  static const danger = Color(0xFFDC2626);
+  static const dangerBg = Color(0xFFFEE2E2);
+
+  static const sellerNavy = Color(0xFF0D356B);
+  static const sellerNavyDark = Color(0xFF172554);
+  static const sellerNavyLight = Color(0xFFEAF1FA);
+  static const sellerBackground = Color(0xFFF5F6FA);
+  static const sellerBackgroundLight = Color(0xFFF8FAFC);
+  static const sellerTextPrimary = Color(0xFF0F172A);
+  static const sellerTextSecondary = Color(0xFF64748B);
+  static const sellerTextLight = Color(0xFF94A3B8);
+  static const sellerBorder = Color(0xFFE2E8F0);
+  static const sellerSuccess = Color(0xFF16A34A);
+  static const sellerSuccessLight = Color(0xFFE8F5E9);
+  static const sellerWarning = Color(0xFFF59E0B);
+  static const sellerWarningLight = Color(0xFFFFF3E0);
+  static const sellerDangerLight = Color(0xFFFEE2E2);
+  static const sellerPurple = Color(0xFF7C3AED);
+  static const sellerPurpleLight = Color(0xFFF3E5F5);
+  static const sellerBlue = Color(0xFF1976D2);
+  static const sellerBlueLight = Color(0xFFE3F2FD);
+  static const sellerOrange = Color(0xFFEA580C);
+  static const sellerPink = Color(0xFFC2185B);
+}
+
+class AppRadius {
+  static const double sm = 8;
+  static const double md = 12;
+  static const double lg = 18;
+  static const double pill = 999;
+  static const double compact = 10;
+  static const double card = 14;
+  static const double large = 16;
+  static const double xl = 20;
+}
+
+class AppBreakpoints {
+  static const double tablet = 700;
+  static const double desktop = 1100;
+  static double horizontalPadding(double width) => width >= desktop
+      ? 32
+      : width >= tablet
+      ? 24
+      : 16;
+  static int gridColumns(double width) => width >= desktop
+      ? 5
+      : width >= tablet
+      ? 4
+      : 2;
+}
+
+class AppTheme {
+  static ThemeData get light {
+    final baseTheme = ThemeData(
+      colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primary),
+      scaffoldBackgroundColor: AppColors.background,
+      useMaterial3: true,
+    );
+    return baseTheme.copyWith(
+      textTheme: GoogleFonts.promptTextTheme(baseTheme.textTheme),
+      primaryTextTheme: GoogleFonts.promptTextTheme(baseTheme.primaryTextTheme),
+    );
+  }
+
+  static ThemeData get seller {
+    return light.copyWith(
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: AppColors.sellerNavy,
+        primary: AppColors.sellerNavy,
+      ),
+      scaffoldBackgroundColor: AppColors.sellerBackground,
+      appBarTheme: const AppBarTheme(
+        backgroundColor: AppColors.sellerNavy,
+        foregroundColor: Colors.white,
+        elevation: 0,
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: Colors.white,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(AppRadius.md)),
+          borderSide: BorderSide(color: AppColors.sellerBorder),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(AppRadius.md)),
+          borderSide: BorderSide(color: AppColors.sellerBorder),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(AppRadius.md)),
+          borderSide: BorderSide(color: AppColors.sellerNavy, width: 1.5),
+        ),
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppColors.sellerNavy,
+          foregroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppRadius.md),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class Validators {
+  static String? required(
+    String? value, {
+    String message = 'กรุณากรอกข้อมูล',
+  }) => value == null || value.trim().isEmpty ? message : null;
+  static String? password(String? value) => value == null || value.length < 6
+      ? 'รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร'
+      : null;
+  static String? positiveNumber(
+    String? value, {
+    String message = 'กรุณากรอกตัวเลขที่มากกว่า 0',
+  }) {
+    final number = double.tryParse(value ?? '');
+    return number == null || number <= 0 ? message : null;
+  }
+}
