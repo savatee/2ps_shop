@@ -29,12 +29,14 @@ class _ChatListPageState extends State<ChatListPage> {
   bool _failed = false;
   bool _openedInitial = false;
 
+  /// หน้าที่: เตรียมสถานะเริ่มต้นของหน้าจอและเริ่มโหลดข้อมูลที่จำเป็น (คลาส _ChatListPageState).
   @override
   void initState() {
     super.initState();
     _load();
   }
 
+  /// หน้าที่: โหลดข้อมูล load และอัปเดตสถานะการแสดงผลของหน้าจอ (คลาส _ChatListPageState).
   Future<void> _load() async {
     setState(() {
       _loading = true;
@@ -104,12 +106,14 @@ class _ChatListPageState extends State<ChatListPage> {
     }
   }
 
+  /// หน้าที่: ประมวลผลขั้นตอน แชท Time สำหรับส่วน chat list page (คลาส _ChatListPageState).
   String _chatTime(Map<String, dynamic> chat) => widget.isSeller
       ? chat['room_updated_at']?.toString() ?? ''
       : chat['last_message_at']?.toString() ??
             chat['room_created_at']?.toString() ??
             '';
 
+  /// หน้าที่: เปิดหรือแสดงหน้าต่าง/ส่วน UI สำหรับ open แชท (คลาส _ChatListPageState).
   Future<void> openChat(Map<String, dynamic> chat) async {
     if (widget.isSeller) {
       final roomId = int.tryParse('${chat['room_id']}') ?? 0;
@@ -155,6 +159,7 @@ class _ChatListPageState extends State<ChatListPage> {
     if (mounted) _load();
   }
 
+  /// หน้าที่: ตรวจสอบเงื่อนไข is Newer และคืนผลเป็น true หรือ false (คลาส _ChatListPageState).
   bool _isNewer(String newTime, String oldTime) {
     if (newTime.isEmpty) return false;
     if (oldTime.isEmpty) return true;
@@ -168,6 +173,7 @@ class _ChatListPageState extends State<ChatListPage> {
     return newDate.isAfter(oldDate);
   }
 
+  /// หน้าที่: สร้าง UI ของหน้าจอหรือวิดเจ็ตใน chat list page (คลาส _ChatListPageState).
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -326,6 +332,7 @@ class _ChatListPageState extends State<ChatListPage> {
     );
   }
 
+  /// หน้าที่: ประมวลผลขั้นตอน รูปโปรไฟล์ Fallback สำหรับส่วน chat list page (คลาส _ChatListPageState).
   Widget _avatarFallback(String initial) {
     return Container(
       width: 50,

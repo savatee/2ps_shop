@@ -29,6 +29,7 @@ class _BuyerOrderPageState extends State<BuyerOrderPage> {
     'ยกเลิก',
   ];
 
+  /// หน้าที่: เตรียมสถานะเริ่มต้นของหน้าจอและเริ่มโหลดข้อมูลที่จำเป็น (คลาส _BuyerOrderPageState).
   @override
   void initState() {
     super.initState();
@@ -86,6 +87,7 @@ class _BuyerOrderPageState extends State<BuyerOrderPage> {
         !orderStatus.contains('cancel');
   }
 
+  /// หน้าที่: อ่านหรือคำนวณค่า get สถานะ จากข้อมูลปัจจุบัน (คลาส _BuyerOrderPageState).
   String getStatus(dynamic order) {
     if (isAwaitingPayment(order)) {
       return 'รอชำระเงิน';
@@ -208,6 +210,7 @@ class _BuyerOrderPageState extends State<BuyerOrderPage> {
     loadOrders();
   }
 
+  /// หน้าที่: สร้าง UI ของหน้าจอหรือวิดเจ็ตใน buyer orders page (คลาส _BuyerOrderPageState).
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -419,6 +422,7 @@ class OrderCard extends StatefulWidget {
 }
 
 class _OrderCardState extends State<OrderCard> {
+  /// หน้าที่: อ่านหรือคำนวณค่า get สินค้า ชื่อ จากข้อมูลปัจจุบัน (คลาส _OrderCardState).
   String getProductName(dynamic item) {
     return (item['product_name'] ??
             item['name'] ??
@@ -427,6 +431,7 @@ class _OrderCardState extends State<OrderCard> {
         .toString();
   }
 
+  /// หน้าที่: อ่านหรือคำนวณค่า get รูปภาพ จากข้อมูลปัจจุบัน (คลาส _OrderCardState).
   String getImage(dynamic item) {
     return (item['product_image'] ??
             item['image_url'] ??
@@ -436,16 +441,19 @@ class _OrderCardState extends State<OrderCard> {
         .toString();
   }
 
+  /// หน้าที่: อ่านหรือคำนวณค่า get Quantity จากข้อมูลปัจจุบัน (คลาส _OrderCardState).
   int getQuantity(dynamic item) {
     final value = item['quantity'] ?? item['item_quantity'] ?? item['qty'] ?? 1;
 
     return int.tryParse(value.toString()) ?? 1;
   }
 
+  /// หน้าที่: ประมวลผลขั้นตอน สินค้า รูปภาพ สำหรับส่วน buyer orders page (คลาส _OrderCardState).
   Widget productImage(dynamic item) {
     return ProductThumb(imageUrl: getImage(item), iconSize: 24);
   }
 
+  /// หน้าที่: สร้าง UI ของหน้าจอหรือวิดเจ็ตใน buyer orders page (คลาส _OrderCardState).
   @override
   Widget build(BuildContext context) {
     final items = widget.order['items'] is List ? widget.order['items'] : [];

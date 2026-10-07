@@ -18,6 +18,7 @@ class SafeNetworkImage extends StatelessWidget {
     this.fit = BoxFit.cover,
   });
 
+  /// หน้าที่: ประมวลผลขั้นตอน box สำหรับส่วน safe network image (คลาส SafeNetworkImage).
   Widget _box(Widget child) => Container(
     width: width,
     height: height,
@@ -26,6 +27,7 @@ class SafeNetworkImage extends StatelessWidget {
     child: child,
   );
 
+  /// หน้าที่: สร้าง UI ของหน้าจอหรือวิดเจ็ตใน safe network image (คลาส SafeNetworkImage).
   @override
   Widget build(BuildContext context) {
     final url = buildImageUrl(source);

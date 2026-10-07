@@ -50,6 +50,7 @@ class _AddressFormSheetState extends State<_AddressFormSheet> {
     return int.tryParse(raw);
   }
 
+  /// หน้าที่: เตรียมสถานะเริ่มต้นของหน้าจอและเริ่มโหลดข้อมูลที่จำเป็น (คลาส _AddressFormSheetState).
   @override
   void initState() {
     super.initState();
@@ -65,6 +66,7 @@ class _AddressFormSheetState extends State<_AddressFormSheet> {
     _isDefault = a['is_default'] == 1 || a['is_default'] == '1';
   }
 
+  /// หน้าที่: คืนทรัพยากรของหน้าจอ เช่น controller และ listener ก่อนปิดหน้า (คลาส _AddressFormSheetState).
   @override
   void dispose() {
     for (final c in [
@@ -81,6 +83,7 @@ class _AddressFormSheetState extends State<_AddressFormSheet> {
     super.dispose();
   }
 
+  /// หน้าที่: บันทึกหรือสร้างข้อมูล save แล้วจัดการผลที่เซิร์ฟเวอร์ตอบกลับ (คลาส _AddressFormSheetState).
   Future<void> _save() async {
     if (!_formKey.currentState!.validate()) return;
 
@@ -131,6 +134,7 @@ class _AddressFormSheetState extends State<_AddressFormSheet> {
     }
   }
 
+  /// หน้าที่: สร้าง UI ของหน้าจอหรือวิดเจ็ตใน address form sheet (คลาส _AddressFormSheetState).
   @override
   Widget build(BuildContext context) {
     return Padding(

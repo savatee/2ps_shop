@@ -196,6 +196,7 @@ function saveUploadedImage(
 }
 
 
+// หน้าที่: บันทึกหรือสร้างข้อมูล save Uploaded สินค้า รูปภาพ แล้วจัดการผลที่เซิร์ฟเวอร์ตอบกลับ.
 function saveUploadedProductImage(
     array $file,
     int $productId,
@@ -210,11 +211,13 @@ function saveUploadedProductImage(
     );
 }
 
+// หน้าที่: บันทึกหรือสร้างข้อมูล save Uploaded ข้อความ รูปภาพ แล้วจัดการผลที่เซิร์ฟเวอร์ตอบกลับ.
 function saveUploadedMessageImage(array $file, int $messageId): ?string
 {
     return saveUploadedImage($file, 'message', 'msg_' . $messageId);
 }
 
+// หน้าที่: บันทึกหรือสร้างข้อมูล save Uploaded โปรไฟล์ รูปภาพ แล้วจัดการผลที่เซิร์ฟเวอร์ตอบกลับ.
 function saveUploadedProfileImage(array $file, int $userId): ?string
 {
     return saveUploadedImage($file, 'profile', 'user_' . $userId);
@@ -265,6 +268,7 @@ function deleteStoredFile($path): bool
     return @unlink($realFile);
 }
 
+// หน้าที่: รวบรวมไฟล์ที่ส่งมากับคำขอเพื่อให้ API ประมวลผล.
 function collectUploadedFiles(string $key): array
 {
     $files = [];

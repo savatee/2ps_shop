@@ -24,6 +24,7 @@ class _BuyerProductSearchDelegate extends SearchDelegate<void> {
 
   _BuyerProductSearchDelegate({required this.userId});
 
+  /// หน้าที่: สร้าง UI ส่วน Actions เพื่อใช้ในหน้าจอนี้ (คลาส _BuyerProductSearchDelegate).
   @override
   List<Widget> buildActions(BuildContext context) => [
     if (query.isNotEmpty)
@@ -34,6 +35,7 @@ class _BuyerProductSearchDelegate extends SearchDelegate<void> {
       ),
   ];
 
+  /// หน้าที่: สร้าง UI ส่วน Leading เพื่อใช้ในหน้าจอนี้ (คลาส _BuyerProductSearchDelegate).
   @override
   Widget buildLeading(BuildContext context) => IconButton(
     tooltip: 'กลับ',
@@ -41,12 +43,15 @@ class _BuyerProductSearchDelegate extends SearchDelegate<void> {
     icon: const Icon(Icons.arrow_back_rounded),
   );
 
+  /// หน้าที่: สร้าง UI ส่วน Results เพื่อใช้ในหน้าจอนี้ (คลาส _BuyerProductSearchDelegate).
   @override
   Widget buildResults(BuildContext context) => _buildMatches(context);
 
+  /// หน้าที่: สร้าง UI ส่วน Suggestions เพื่อใช้ในหน้าจอนี้ (คลาส _BuyerProductSearchDelegate).
   @override
   Widget buildSuggestions(BuildContext context) => _buildMatches(context);
 
+  /// หน้าที่: สร้าง UI ส่วน Matches เพื่อใช้ในหน้าจอนี้ (คลาส _BuyerProductSearchDelegate).
   Widget _buildMatches(BuildContext context) {
     final searchTerm = query.trim();
     if (searchTerm.isEmpty) {
@@ -155,6 +160,7 @@ class _BuyerProductDetailPageState extends State<BuyerProductDetailPage> {
 
   bool _isLoadingRelated = false;
 
+  /// หน้าที่: เตรียมสถานะเริ่มต้นของหน้าจอและเริ่มโหลดข้อมูลที่จำเป็น (คลาส _BuyerProductDetailPageState).
   @override
   void initState() {
     super.initState();
@@ -162,6 +168,7 @@ class _BuyerProductDetailPageState extends State<BuyerProductDetailPage> {
     _loadCartCount();
   }
 
+  /// หน้าที่: โหลดข้อมูล load สินค้า และอัปเดตสถานะการแสดงผลของหน้าจอ (คลาส _BuyerProductDetailPageState).
   Future<void> _loadProduct() async {
     if (mounted) {
       setState(() => _isLoading = true);
@@ -201,6 +208,7 @@ class _BuyerProductDetailPageState extends State<BuyerProductDetailPage> {
     }
   }
 
+  /// หน้าที่: โหลดข้อมูล load ตะกร้าสินค้า Count และอัปเดตสถานะการแสดงผลของหน้าจอ (คลาส _BuyerProductDetailPageState).
   Future<void> _loadCartCount() async {
     try {
       final cart = await ApiClient.getCart(widget.userId);
@@ -210,6 +218,7 @@ class _BuyerProductDetailPageState extends State<BuyerProductDetailPage> {
     }
   }
 
+  /// หน้าที่: โหลดข้อมูล load Related สินค้า และอัปเดตสถานะการแสดงผลของหน้าจอ (คลาส _BuyerProductDetailPageState).
   Future<void> _loadRelatedProducts() async {
     final categoryId = int.tryParse(_product?['category_id']?.toString() ?? '');
 
@@ -262,6 +271,7 @@ class _BuyerProductDetailPageState extends State<BuyerProductDetailPage> {
     }
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Related Section เพื่อใช้ในหน้าจอนี้ (คลาส _BuyerProductDetailPageState).
   Widget _buildRelatedSection(double hPad, int columns, String? categoryName) {
     if (_isLoadingRelated) {
       return const Padding(padding: EdgeInsets.all(32), child: LoadingView());
@@ -300,6 +310,7 @@ class _BuyerProductDetailPageState extends State<BuyerProductDetailPage> {
     );
   }
 
+  /// หน้าที่: ประมวลผลขั้นตอน related Grid สำหรับส่วน buyer product detail page (คลาส _BuyerProductDetailPageState).
   Widget _relatedGrid(List<dynamic> items, int columns) {
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -379,6 +390,7 @@ class _BuyerProductDetailPageState extends State<BuyerProductDetailPage> {
     return int.tryParse(_product?['product_seller_id']?.toString() ?? '');
   }
 
+  /// หน้าที่: บันทึกหรือสร้างข้อมูล add To ตะกร้าสินค้า แล้วจัดการผลที่เซิร์ฟเวอร์ตอบกลับ (คลาส _BuyerProductDetailPageState).
   Future<bool> _addToCart({int? variantId, int? quantity}) async {
     if (_product == null || _stock <= 0) {
       return false;
@@ -428,6 +440,7 @@ class _BuyerProductDetailPageState extends State<BuyerProductDetailPage> {
     }
   }
 
+  /// หน้าที่: ประมวลผลขั้นตอน buy Now สำหรับส่วน buyer product detail page (คลาส _BuyerProductDetailPageState).
   Future<void> _buyNow({
     int? variantId,
     int? quantity,
@@ -466,6 +479,7 @@ class _BuyerProductDetailPageState extends State<BuyerProductDetailPage> {
     }
   }
 
+  /// หน้าที่: จัดการเหตุการณ์ on Add To ตะกร้าสินค้า จากการกดหรือกรอกข้อมูลของผู้ใช้ (คลาส _BuyerProductDetailPageState).
   Future<void> _onAddToCart() async {
     if (!_hasVariants) {
       await _addToCart();
@@ -474,6 +488,7 @@ class _BuyerProductDetailPageState extends State<BuyerProductDetailPage> {
     await _showVariantPicker();
   }
 
+  /// หน้าที่: จัดการเหตุการณ์ on Buy Now จากการกดหรือกรอกข้อมูลของผู้ใช้ (คลาส _BuyerProductDetailPageState).
   Future<void> _onBuyNow() async {
     if (!_hasVariants) {
       await _buyNow();
@@ -482,6 +497,7 @@ class _BuyerProductDetailPageState extends State<BuyerProductDetailPage> {
     await _showVariantPicker();
   }
 
+  /// หน้าที่: เปิดหรือแสดงหน้าต่าง/ส่วน UI สำหรับ show ตัวเลือกสินค้า Picker (คลาส _BuyerProductDetailPageState).
   Future<void> _showVariantPicker() async {
     final variants = _variants;
     if (variants.isEmpty || _product == null) return;
@@ -500,6 +516,7 @@ class _BuyerProductDetailPageState extends State<BuyerProductDetailPage> {
         );
         var quantity = 1;
 
+        /// หน้าที่: ประมวลผลขั้นตอน option Value สำหรับส่วน buyer product detail page (คลาส _BuyerProductDetailPageState).
         String? optionValue(Map<String, dynamic> variant, String key) {
           final value = variant[key]?.toString().trim();
           return value == null || value.isEmpty ? null : value;
@@ -535,6 +552,7 @@ class _BuyerProductDetailPageState extends State<BuyerProductDetailPage> {
                 ) ??
                 _price;
 
+            /// หน้าที่: เลือกรับข้อมูล select ตัวเลือกสินค้า จากผู้ใช้หรืออุปกรณ์ (คลาส _BuyerProductDetailPageState).
             void selectVariant(Map<String, dynamic> variant) {
               setSheetState(() {
                 selectedVariant = variant;
@@ -546,6 +564,7 @@ class _BuyerProductDetailPageState extends State<BuyerProductDetailPage> {
               });
             }
 
+            /// หน้าที่: ประมวลผลขั้นตอน option Chip สำหรับส่วน buyer product detail page (คลาส _BuyerProductDetailPageState).
             Widget optionChip({
               required String label,
               required bool selected,
@@ -871,6 +890,7 @@ class _BuyerProductDetailPageState extends State<BuyerProductDetailPage> {
     }
   }
 
+  /// หน้าที่: ประมวลผลขั้นตอน แชท With ผู้ขาย สำหรับส่วน buyer product detail page (คลาส _BuyerProductDetailPageState).
   void _chatWithSeller() {
     final sellerId = _sellerId;
     if (sellerId == null) {
@@ -896,6 +916,7 @@ class _BuyerProductDetailPageState extends State<BuyerProductDetailPage> {
     );
   }
 
+  /// หน้าที่: เปิดหรือแสดงหน้าต่าง/ส่วน UI สำหรับ open ผู้ขาย Store (คลาส _BuyerProductDetailPageState).
   void _openSellerStore() {
     final sellerId = _sellerId;
     if (sellerId == null) {
@@ -931,6 +952,7 @@ class _BuyerProductDetailPageState extends State<BuyerProductDetailPage> {
     return fallback == null ? [] : [fallback];
   }
 
+  /// หน้าที่: ประมวลผลขั้นตอน share สินค้า สำหรับส่วน buyer product detail page (คลาส _BuyerProductDetailPageState).
   Future<void> _shareProduct() async {
     if (_product == null) return;
     final name = _product!['product_name']?.toString() ?? 'สินค้า';
@@ -943,6 +965,7 @@ class _BuyerProductDetailPageState extends State<BuyerProductDetailPage> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ของหน้าจอหรือวิดเจ็ตใน buyer product detail page (คลาส _BuyerProductDetailPageState).
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {

@@ -18,6 +18,7 @@ function requestInt(string $key, int $default = 0): int
     return is_numeric($value) ? (int)$value : $default;
 }
 
+// หน้าที่: อ่านและตรวจสอบ flag ที่ส่งมากับคำขอ API.
 function requestFlag(string $key): bool
 {
     $value = strtolower((string)($_GET[$key] ?? $_POST[$key] ?? ''));
@@ -114,6 +115,7 @@ function appendPaging(string $sql, string &$types, array &$params): string
     return $sql . ' LIMIT ? OFFSET ?';
 }
 
+// หน้าที่: โหลดข้อมูล fetch สินค้า และอัปเดตสถานะการแสดงผลของหน้าจอ.
 function fetchProducts(mysqli $conn, string $sql, string $types, array $params): array
 {
     $stmt = $conn->prepare($sql);

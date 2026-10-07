@@ -27,6 +27,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool _obscurePassword = true;
   bool _isLoading = false;
 
+  /// หน้าที่: คืนทรัพยากรของหน้าจอ เช่น controller และ listener ก่อนปิดหน้า (คลาส _RegisterScreenState).
   @override
   void dispose() {
     _nameController.dispose();
@@ -36,6 +37,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     super.dispose();
   }
 
+  /// หน้าที่: เปิดหรือแสดงหน้าต่าง/ส่วน UI สำหรับ show Notification (คลาส _RegisterScreenState).
   void _showNotification(String message, {bool isError = true}) {
     if (!mounted) return;
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
@@ -49,6 +51,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
+  /// หน้าที่: จัดการเหตุการณ์ handle สมัครสมาชิก จากการกดหรือกรอกข้อมูลของผู้ใช้ (คลาส _RegisterScreenState).
   Future<void> _handleRegister() async {
     FocusScope.of(context).unfocus();
 
@@ -85,6 +88,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
   }
 
+  /// หน้าที่: สร้าง UI ของหน้าจอหรือวิดเจ็ตใน register screen (คลาส _RegisterScreenState).
   @override
   Widget build(BuildContext context) {
     return Scaffold(

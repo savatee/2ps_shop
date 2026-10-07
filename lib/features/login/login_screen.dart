@@ -32,6 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _rememberLogin = true;
   bool _isLoading = false;
 
+  /// หน้าที่: คืนทรัพยากรของหน้าจอ เช่น controller และ listener ก่อนปิดหน้า (คลาส _LoginScreenState).
   @override
   void dispose() {
     _emailController.dispose();
@@ -39,6 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
+  /// หน้าที่: เปิดหรือแสดงหน้าต่าง/ส่วน UI สำหรับ show Notification (คลาส _LoginScreenState).
   void _showNotification(String message, {bool isError = true}) {
     if (!mounted) return;
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
@@ -75,6 +77,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  /// หน้าที่: จัดการเหตุการณ์ handle เข้าสู่ระบบ จากการกดหรือกรอกข้อมูลของผู้ใช้ (คลาส _LoginScreenState).
   Future<void> _handleLogin() async {
     FocusScope.of(context).unfocus();
 
@@ -112,6 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  /// หน้าที่: สร้าง UI ของหน้าจอหรือวิดเจ็ตใน login screen (คลาส _LoginScreenState).
   @override
   Widget build(BuildContext context) {
     final bool isAdminRole = widget.roleCode.trim().toLowerCase() == 'admin';

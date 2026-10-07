@@ -27,12 +27,14 @@ class _BuyerCartPageState extends State<BuyerCartPage> {
   final Set<int> _busyCartIds = {}; // กันกดซ้ำระหว่างรอ API ตอบ
   bool _deleting = false;
 
+  /// หน้าที่: เตรียมสถานะเริ่มต้นของหน้าจอและเริ่มโหลดข้อมูลที่จำเป็น (คลาส _BuyerCartPageState).
   @override
   void initState() {
     super.initState();
     _loadCart();
   }
 
+  /// หน้าที่: โหลดข้อมูล load ตะกร้าสินค้า และอัปเดตสถานะการแสดงผลของหน้าจอ (คลาส _BuyerCartPageState).
   Future<void> _loadCart() async {
     setState(() => _isLoading = true);
     final result = await ApiClient.getCart(widget.userId);
@@ -82,6 +84,7 @@ class _BuyerCartPageState extends State<BuyerCartPage> {
     }
   }
 
+  /// หน้าที่: ประมวลผลขั้นตอน ตะกร้าสินค้า รหัส สำหรับส่วน buyer cart page (คลาส _BuyerCartPageState).
   int _cartId(Map<String, dynamic> item) =>
       int.tryParse(item['cart_id']?.toString() ?? '') ?? -1;
 
@@ -89,20 +92,25 @@ class _BuyerCartPageState extends State<BuyerCartPage> {
     item['cart_product_id']?.toString() ?? item['product_id']?.toString() ?? '',
   );
 
+  /// หน้าที่: ประมวลผลขั้นตอน quantity สำหรับส่วน buyer cart page (คลาส _BuyerCartPageState).
   int _quantity(Map<String, dynamic> item) =>
       int.tryParse(
         (item['cart_quantity'] ?? item['quantity'])?.toString() ?? '1',
       ) ??
       1;
 
+  /// หน้าที่: ประมวลผลขั้นตอน price สำหรับส่วน buyer cart page (คลาส _BuyerCartPageState).
   double _price(Map<String, dynamic> item) =>
       double.tryParse(item['product_price']?.toString() ?? '0') ?? 0;
 
+  /// หน้าที่: ประมวลผลขั้นตอน stock สำหรับส่วน buyer cart page (คลาส _BuyerCartPageState).
   int _stock(Map<String, dynamic> item) =>
       int.tryParse(item['stock']?.toString() ?? '0') ?? 0;
 
+  /// หน้าที่: ตรวจสอบเงื่อนไข is Available และคืนผลเป็น true หรือ false (คลาส _BuyerCartPageState).
   bool _isAvailable(Map<String, dynamic> item) => _stock(item) > 0;
 
+  /// หน้าที่: ประมวลผลขั้นตอน shop ชื่อ สำหรับส่วน buyer cart page (คลาส _BuyerCartPageState).
   String _shopName(Map<String, dynamic> item) =>
       item['seller_name']?.toString().trim().isNotEmpty == true
       ? item['seller_name'].toString()
@@ -141,6 +149,7 @@ class _BuyerCartPageState extends State<BuyerCartPage> {
         selectableIds.every(_selectedCartIds.contains);
   }
 
+  /// หน้าที่: สลับค่า toggle Edit Mode และอัปเดตหน้าจอตามสถานะใหม่ (คลาส _BuyerCartPageState).
   void _toggleEditMode() {
     setState(() {
       _editMode = !_editMode;
@@ -151,6 +160,7 @@ class _BuyerCartPageState extends State<BuyerCartPage> {
     });
   }
 
+  /// หน้าที่: สลับค่า toggle Select All และอัปเดตหน้าจอตามสถานะใหม่ (คลาส _BuyerCartPageState).
   void _toggleSelectAll(bool? value) {
     setState(() {
       if (value == true) {
@@ -162,6 +172,7 @@ class _BuyerCartPageState extends State<BuyerCartPage> {
     });
   }
 
+  /// หน้าที่: สลับค่า toggle Shop และอัปเดตหน้าจอตามสถานะใหม่ (คลาส _BuyerCartPageState).
   void _toggleShop(List<Map<String, dynamic>> shopItems, bool select) {
     setState(() {
       final ids = _editMode ? shopItems : shopItems.where(_isAvailable);
@@ -173,6 +184,7 @@ class _BuyerCartPageState extends State<BuyerCartPage> {
     });
   }
 
+  /// หน้าที่: สลับค่า toggle Item และอัปเดตหน้าจอตามสถานะใหม่ (คลาส _BuyerCartPageState).
   void _toggleItem(Map<String, dynamic> item, bool? value) {
     if (!_editMode && !_isAvailable(item)) return;
     setState(() {
@@ -185,6 +197,7 @@ class _BuyerCartPageState extends State<BuyerCartPage> {
     });
   }
 
+  /// หน้าที่: ปรับปรุงข้อมูลหรือสถานะ update Quantity ผ่าน API และอัปเดตหน้าจอ (คลาส _BuyerCartPageState).
   Future<void> _updateQuantity(
     Map<String, dynamic> item,
     int newQuantity,
@@ -229,6 +242,7 @@ class _BuyerCartPageState extends State<BuyerCartPage> {
     }
   }
 
+  /// หน้าที่: ตรวจสอบและยืนยันรายการ confirm Remove ก่อนดำเนินการต่อ (คลาส _BuyerCartPageState).
   Future<void> _confirmRemove(Map<String, dynamic> item) async {
     final confirmed = await showDialog<bool>(
       context: context,
@@ -252,6 +266,7 @@ class _BuyerCartPageState extends State<BuyerCartPage> {
     if (confirmed == true) _removeItem(item);
   }
 
+  /// หน้าที่: ลบข้อมูล remove Item และจัดการผลการลบที่ API ส่งกลับ (คลาส _BuyerCartPageState).
   Future<void> _removeItem(Map<String, dynamic> item) async {
     final cartId = _cartId(item);
     if (cartId == -1) return;
@@ -273,6 +288,7 @@ class _BuyerCartPageState extends State<BuyerCartPage> {
     }
   }
 
+  /// หน้าที่: ตรวจสอบและยืนยันรายการ confirm Remove Selected ก่อนดำเนินการต่อ (คลาส _BuyerCartPageState).
   Future<void> _confirmRemoveSelected() async {
     if (_selectedCartIds.isEmpty) return;
 
@@ -333,6 +349,7 @@ class _BuyerCartPageState extends State<BuyerCartPage> {
     }
   }
 
+  /// หน้าที่: นำทางไปยังหน้า go To Checkout ตามบทบาทและข้อมูลที่เลือก (คลาส _BuyerCartPageState).
   Future<void> _goToCheckout() async {
     final cartIds = _selectedAvailableCartIds;
     if (_editMode || cartIds.isEmpty) {
@@ -360,6 +377,7 @@ class _BuyerCartPageState extends State<BuyerCartPage> {
     if (success == true) _loadCart();
   }
 
+  /// หน้าที่: สร้าง UI ของหน้าจอหรือวิดเจ็ตใน buyer cart page (คลาส _BuyerCartPageState).
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -569,6 +587,7 @@ class _ShopGroup extends StatelessWidget {
     required this.onSelectedChanged,
   });
 
+  /// หน้าที่: สร้าง UI ของหน้าจอหรือวิดเจ็ตใน buyer cart page (คลาส _ShopGroup).
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -650,6 +669,7 @@ class _CartItemCard extends StatelessWidget {
     required this.onRemove,
   });
 
+  /// หน้าที่: สร้าง UI ของหน้าจอหรือวิดเจ็ตใน buyer cart page (คลาส _CartItemCard).
   @override
   Widget build(BuildContext context) {
     final name = item['product_name']?.toString() ?? 'สินค้า';

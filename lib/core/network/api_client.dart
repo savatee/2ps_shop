@@ -7,16 +7,19 @@ import 'session.dart';
 /// HTTP adapter for the PHP endpoints shipped under backend/api.
 class ApiClient {
   static const String _root = AppConfig.apiBaseUrl;
+  /// หน้าที่: ประกอบ URL ของ API พร้อมพารามิเตอร์สำหรับคำขอ (คลาส ApiClient).
   static Uri _uri(String path, [Map<String, dynamic> query = const {}]) =>
       Uri.parse(
         '$_root/$path',
       ).replace(queryParameters: query.map((k, v) => MapEntry(k, '$v')));
+  /// หน้าที่: แปลง JSON ที่เซิร์ฟเวอร์ตอบกลับให้เป็น Map สำหรับแอป (คลาส ApiClient).
   static Map<String, dynamic> _decode(String body) {
     final value = jsonDecode(body);
     if (value is Map<String, dynamic>) return value;
     return {'success': true, 'data': value};
   }
 
+  /// หน้าที่: ส่งคำขอ GET ไปยัง API พร้อมข้อมูลยืนยันตัวตนและอ่านผลตอบกลับ (คลาส ApiClient).
   static Future<Map<String, dynamic>> _get(
     String path,
     Map<String, dynamic> query,
@@ -27,6 +30,7 @@ class ApiClient {
     return _decode(response.body);
   }
 
+  /// หน้าที่: ส่งคำขอ POST ไปยัง API พร้อมข้อมูลยืนยันตัวตนและอ่านผลตอบกลับ (คลาส ApiClient).
   static Future<Map<String, dynamic>> _post(
     String path,
     Map<String, dynamic> data,
@@ -41,6 +45,7 @@ class ApiClient {
     return _decode(response.body);
   }
 
+  /// หน้าที่: ดึงรายการข้อมูลจากผลตอบกลับ API และคืนค่าเป็น List (คลาส ApiClient).
   static List<dynamic> _list(Map<String, dynamic> result) {
     final data = result['data'];
     if (data is List) return data;
@@ -98,8 +103,10 @@ class ApiClient {
     }),
   );
 
+  /// หน้าที่: เรียก API เพื่อโหลดข้อมูล get หมวดหมู่สินค้า แล้วคืนผลให้หน้าจอที่เรียกใช้ (คลาส ApiClient).
   static Future<List<dynamic>> getCategories() async =>
       _list(await _get('shop/products.php', {'action': 'read_categories'}));
+  /// หน้าที่: เรียก API เพื่อโหลดข้อมูล get สินค้า By หมวดหมู่สินค้า แล้วคืนผลให้หน้าจอที่เรียกใช้ (คลาส ApiClient).
   static Future<List<dynamic>> getProductsByCategory(int categoryId) async =>
       _list(
         await _get('shop/products.php', {
@@ -107,20 +114,24 @@ class ApiClient {
           'category_id': categoryId,
         }),
       );
+  /// หน้าที่: ดึงรายการข้อมูลจากผลตอบกลับ API และคืนค่าเป็น List (คลาส ApiClient).
   static Future<List<dynamic>> searchProducts(String keyword) async => _list(
     await _get('shop/products.php', {
       'action': 'search_products',
       'keyword': keyword,
     }),
   );
+  /// หน้าที่: ส่งคำขอ GET ไปยัง API พร้อมข้อมูลยืนยันตัวตนและอ่านผลตอบกลับ (คลาส ApiClient).
   static Future<Map<String, dynamic>> getProduct(int productId) async => _get(
     'shop/products.php',
     {'action': 'get_product', 'product_id': productId},
   );
 
+  /// หน้าที่: ดึงรายการข้อมูลจากผลตอบกลับ API และคืนค่าเป็น List (คลาส ApiClient).
   static Future<List<dynamic>> getCart(int userId) async => _list(
     await _get('shop/cart.php', {'action': 'get_cart', 'user_id': userId}),
   );
+  /// หน้าที่: บันทึกหรือสร้างข้อมูล add To ตะกร้าสินค้า แล้วจัดการผลที่เซิร์ฟเวอร์ตอบกลับ (คลาส ApiClient).
   static Future<Map<String, dynamic>> addToCart({
     required int userId,
     required int productId,
@@ -133,6 +144,7 @@ class ApiClient {
     'quantity': quantity,
     'variant_id': ?variantId,
   });
+  /// หน้าที่: ปรับปรุงข้อมูลหรือสถานะ update ตะกร้าสินค้า ผ่าน API และอัปเดตหน้าจอ (คลาส ApiClient).
   static Future<Map<String, dynamic>> updateCart({
     required int userId,
     required int cartId,
@@ -143,6 +155,7 @@ class ApiClient {
     'cart_id': cartId,
     'quantity': quantity,
   });
+  /// หน้าที่: ลบข้อมูล delete ตะกร้าสินค้า และจัดการผลการลบที่ API ส่งกลับ (คลาส ApiClient).
   static Future<Map<String, dynamic>> deleteCart({
     required int userId,
     required int cartId,
@@ -152,12 +165,14 @@ class ApiClient {
     'cart_id': cartId,
   });
 
+  /// หน้าที่: ดึงรายการข้อมูลจากผลตอบกลับ API และคืนค่าเป็น List (คลาส ApiClient).
   static Future<List<dynamic>> getAddresses(int userId) async => _list(
     await _get('shop/address.php', {
       'action': 'get_addresses',
       'user_id': userId,
     }),
   );
+  /// หน้าที่: ประมวลผลขั้นตอน ที่อยู่จัดส่ง ข้อมูล สำหรับส่วน api client (คลาส ApiClient).
   static Map<String, dynamic> _addressFields(
     int userId,
     String recipientName,
@@ -179,6 +194,7 @@ class ApiClient {
     'postal_code': postalCode,
     'is_default': isDefault ? 1 : 0,
   };
+  /// หน้าที่: บันทึกหรือสร้างข้อมูล add ที่อยู่จัดส่ง แล้วจัดการผลที่เซิร์ฟเวอร์ตอบกลับ (คลาส ApiClient).
   static Future<Map<String, dynamic>> addAddress({
     required int userId,
     required String recipientName,
@@ -203,6 +219,7 @@ class ApiClient {
       isDefault,
     ),
   });
+  /// หน้าที่: ปรับปรุงข้อมูลหรือสถานะ update ที่อยู่จัดส่ง ผ่าน API และอัปเดตหน้าจอ (คลาส ApiClient).
   static Future<Map<String, dynamic>> updateAddress({
     required int userId,
     required int addressId,
@@ -229,6 +246,7 @@ class ApiClient {
       isDefault,
     ),
   });
+  /// หน้าที่: กำหนดค่า set ค่าเริ่มต้น ที่อยู่จัดส่ง และบันทึกหรืออัปเดตสถานะที่เกี่ยวข้อง (คลาส ApiClient).
   static Future<Map<String, dynamic>> setDefaultAddress({
     required int userId,
     required int addressId,
@@ -237,6 +255,7 @@ class ApiClient {
     'user_id': userId,
     'address_id': addressId,
   });
+  /// หน้าที่: ลบข้อมูล delete ที่อยู่จัดส่ง และจัดการผลการลบที่ API ส่งกลับ (คลาส ApiClient).
   static Future<Map<String, dynamic>> deleteAddress({
     required int userId,
     required int addressId,
@@ -246,9 +265,11 @@ class ApiClient {
     'address_id': addressId,
   });
 
+  /// หน้าที่: ดึงรายการข้อมูลจากผลตอบกลับ API และคืนค่าเป็น List (คลาส ApiClient).
   static Future<List<dynamic>> getOrders(int userId) async => _list(
     await _get('shop/orders.php', {'action': 'get_orders', 'user_id': userId}),
   );
+  /// หน้าที่: เรียก API เพื่อโหลดข้อมูล get คำสั่งซื้อ รายละเอียด แล้วคืนผลให้หน้าจอที่เรียกใช้ (คลาส ApiClient).
   static Future<Map<String, dynamic>> getOrderDetail(
     int orderId, {
     int? userId,
@@ -257,6 +278,7 @@ class ApiClient {
     'order_id': orderId,
     'user_id': ?userId,
   });
+  /// หน้าที่: ส่งรายการสินค้า ที่อยู่ และวิธีชำระเงินไปสร้างคำสั่งซื้อ (คลาส ApiClient).
   static Future<Map<String, dynamic>> createOrder({
     required int userId,
     required int addressId,
@@ -275,6 +297,7 @@ class ApiClient {
     'quantity': ?quantity,
     'variant_id': ?variantId,
   });
+  /// หน้าที่: ยกเลิกรายการ cancel คำสั่งซื้อ และอัปเดตสถานะหลัง API ยืนยัน (คลาส ApiClient).
   static Future<Map<String, dynamic>> cancelOrder({
     required int orderId,
     required int userId,
@@ -284,8 +307,10 @@ class ApiClient {
     'user_id': userId,
   });
 
+  /// หน้าที่: เรียก API เพื่อโหลดข้อมูล get ผู้ใช้ แล้วคืนผลให้หน้าจอที่เรียกใช้ (คลาส ApiClient).
   static Future<Map<String, dynamic>> getUser(int userId) =>
       _get('auth/user.php', {'action': 'get_user', 'user_id': userId});
+  /// หน้าที่: ประมวลผลขั้นตอน logout สำหรับส่วน api client (คลาส ApiClient).
   static Future<void> logout() async {
     final token = Session.token;
     if (token.isEmpty) return;
@@ -304,6 +329,7 @@ class ApiClient {
     }
   }
 
+  /// หน้าที่: ปรับปรุงข้อมูลหรือสถานะ update ผู้ใช้ ผ่าน API และอัปเดตหน้าจอ (คลาส ApiClient).
   static Future<Map<String, dynamic>> updateUser({
     required int userId,
     required String name,
@@ -316,6 +342,7 @@ class ApiClient {
     'email': email,
     'phone': phone,
   });
+  /// หน้าที่: ประมวลผลขั้นตอน change รหัสผ่าน สำหรับส่วน api client (คลาส ApiClient).
   static Future<Map<String, dynamic>> changePassword({
     required int userId,
     required String oldPassword,
@@ -325,6 +352,7 @@ class ApiClient {
     'old_password': oldPassword,
     'new_password': newPassword,
   });
+  /// หน้าที่: ปรับปรุงข้อมูลหรือสถานะ update รูปโปรไฟล์ ผ่าน API และอัปเดตหน้าจอ (คลาส ApiClient).
   static Future<Map<String, dynamic>> updateAvatar({
     required int userId,
     required String name,
@@ -346,12 +374,14 @@ class ApiClient {
     return _decode(response.body);
   }
 
+  /// หน้าที่: ดึงรายการข้อมูลจากผลตอบกลับ API และคืนค่าเป็น List (คลาส ApiClient).
   static Future<List<dynamic>> getBuyerRequests(int buyerId) async => _list(
     await _get('shop/wanted_posts.php', {
       'action': 'get_buyer_requests',
       'buyer_id': buyerId,
     }),
   );
+  /// หน้าที่: ดึงรายการข้อมูลจากผลตอบกลับ API และคืนค่าเป็น List (คลาส ApiClient).
   static Future<List<dynamic>> getAllWantedPosts(int viewerId) async => _list(
     await _get('shop/wanted_posts.php', {
       'action': 'get_buyer_requests',
@@ -368,6 +398,7 @@ class ApiClient {
     'wanted_post_id': postId,
     'viewer_id': viewerId ?? 0,
   });
+  /// หน้าที่: บันทึกหรือสร้างข้อมูล create ผู้ซื้อ Request แล้วจัดการผลที่เซิร์ฟเวอร์ตอบกลับ (คลาส ApiClient).
   static Future<Map<String, dynamic>> createBuyerRequest({
     required int userId,
     required String title,
@@ -383,6 +414,7 @@ class ApiClient {
     'description': description,
     'budget': '$budget',
   }, imagePath: imagePath);
+  /// หน้าที่: ปรับปรุงข้อมูลหรือสถานะ update ผู้ซื้อ Request ผ่าน API และอัปเดตหน้าจอ (คลาส ApiClient).
   static Future<Map<String, dynamic>> updateBuyerRequest({
     required int userId,
     required int postId,
@@ -403,6 +435,7 @@ class ApiClient {
     'remove_image': removeImage ? '1' : '0',
   }, imagePath: imagePath);
 
+  /// หน้าที่: ส่งคำขอเกี่ยวกับโพสต์ตามหาสินค้าไปยัง API (คลาส ApiClient).
   static Future<Map<String, dynamic>> _sendWantedRequest(
     Map<String, String> fields, {
     String? imagePath,
@@ -421,6 +454,7 @@ class ApiClient {
     return _decode(response.body);
   }
 
+  /// หน้าที่: ลบข้อมูล delete ผู้ซื้อ Request และจัดการผลการลบที่ API ส่งกลับ (คลาส ApiClient).
   static Future<Map<String, dynamic>> deleteBuyerRequest({
     required int userId,
     required int postId,
@@ -429,6 +463,7 @@ class ApiClient {
     'user_id': userId,
     'wanted_post_id': postId,
   });
+  /// หน้าที่: ส่งคำขอเปลี่ยนสถานะโพสต์ตามหาสินค้าของผู้ซื้อ (คลาส ApiClient).
   static Future<Map<String, dynamic>> setBuyerRequestStatus({
     required int userId,
     required int postId,
@@ -439,6 +474,7 @@ class ApiClient {
     'wanted_post_id': postId,
     'status': status,
   });
+  /// หน้าที่: เรียก API เพื่อโหลดข้อเสนอที่ผู้ขายส่งให้โพสต์ตามหา (คลาส ApiClient).
   static Future<List<dynamic>> getOffers(int postId, {int? viewerId}) async =>
       _list(
         await _get('shop/wanted_posts.php', {
@@ -448,12 +484,14 @@ class ApiClient {
         }),
       );
 
+  /// หน้าที่: ดึงรายการข้อมูลจากผลตอบกลับ API และคืนค่าเป็น List (คลาส ApiClient).
   static Future<List<dynamic>> getBuyerChats(int userId) async => _list(
     await _get('shop/chat.php', {
       'action': 'get_buyer_chats',
       'buyer_id': userId,
     }),
   );
+  /// หน้าที่: เรียก API เพื่อเปิดห้องแชทเดิมหรือสร้างห้องใหม่ (คลาส ApiClient).
   static Future<Map<String, dynamic>> getOrCreateChat({
     required int postId,
     required int buyerId,
@@ -464,6 +502,7 @@ class ApiClient {
     'buyer_id': buyerId,
     'seller_id': sellerId,
   });
+  /// หน้าที่: เรียก API เพื่อโหลดข้อความในห้องแชท (คลาส ApiClient).
   static Future<List<dynamic>> getMessages(int chatId, {int? readerId}) async =>
       _list(
         await _get('shop/chat.php', {
@@ -472,6 +511,7 @@ class ApiClient {
           'reader_id': ?readerId,
         }),
       );
+  /// หน้าที่: ส่งข้อความหรือเนื้อหาแชทไปยัง API เพื่อบันทึก (คลาส ApiClient).
   static Future<Map<String, dynamic>> sendMessage({
     required int chatId,
     required int senderId,
@@ -525,11 +565,13 @@ class ApiClient {
     return result;
   }
 
+  /// หน้าที่: เรียก API เพื่อสร้างหรือโหลด QR สำหรับชำระเงิน (คลาส ApiClient).
   static Future<Map<String, dynamic>> getPaymentQr({
     required int userId,
     required int paymentId,
   }) =>
       _get('shop/qr_payment.php', {'user_id': userId, 'payment_id': paymentId});
+  /// หน้าที่: ส่งข้อมูลยืนยันการโอนเงินไปให้ API ตรวจสอบ (คลาส ApiClient).
   static Future<Map<String, dynamic>> confirmPaymentTransfer({
     required int userId,
     required int paymentId,

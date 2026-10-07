@@ -16,6 +16,7 @@ class ProductImage {
   });
 
   factory ProductImage.fromJson(Map<String, dynamic> json) {
+    /// ประมวลผลขั้นตอน Product Image สำหรับส่วน seller models (คลาส ProductImage).
     return ProductImage(
       imageId: int.tryParse('${json['image_id'] ?? 0}') ?? 0,
       productId:
@@ -53,6 +54,7 @@ class ProductVariant {
   });
 
   factory ProductVariant.fromJson(Map<String, dynamic> j) {
+    /// ประมวลผลขั้นตอน Product Variant สำหรับส่วน seller models (คลาส ProductVariant).
     return ProductVariant(
       variantId: int.tryParse('${j['variant_id'] ?? 0}') ?? 0,
       productId:
@@ -101,6 +103,7 @@ class SellerProduct {
   });
 
   factory SellerProduct.fromJson(Map<String, dynamic> j) {
+    /// ประมวลผลขั้นตอน Seller Product สำหรับส่วน seller models (คลาส SellerProduct).
     return SellerProduct(
       productId: int.tryParse('${j['product_id'] ?? 0}') ?? 0,
       sellerId: int.tryParse('${j['product_seller_id'] ?? 0}') ?? 0,
@@ -144,6 +147,7 @@ class SellerCategory {
   SellerCategory({required this.id, required this.name});
 
   factory SellerCategory.fromJson(Map<String, dynamic> j) {
+    /// ประมวลผลขั้นตอน Seller Category สำหรับส่วน seller models (คลาส SellerCategory).
     return SellerCategory(
       id: int.tryParse('${j['category_id'] ?? 0}') ?? 0,
 
@@ -182,6 +186,7 @@ class WantedPost {
   int get wantedPostId => id;
 
   factory WantedPost.fromJson(Map<String, dynamic> j) {
+    /// ประมวลผลขั้นตอน Wanted Post สำหรับส่วน seller models (คลาส WantedPost).
     return WantedPost(
       id: int.tryParse('${j['wanted_post_id'] ?? 0}') ?? 0,
 
@@ -230,6 +235,7 @@ class WantedComment {
   });
 
   factory WantedComment.fromJson(Map<String, dynamic> j) {
+    /// ประมวลผลขั้นตอน Wanted Comment สำหรับส่วน seller models (คลาส WantedComment).
     return WantedComment(
       commentId: int.tryParse('${j['comment_id'] ?? 0}') ?? 0,
 
@@ -361,6 +367,7 @@ class SellerOrder {
       break;
     }
 
+    /// ประมวลผลขั้นตอน Seller Order สำหรับส่วน seller models (คลาส SellerOrder).
     return SellerOrder(
       orderId: int.tryParse('${j['order_id'] ?? 0}') ?? 0,
 
@@ -423,6 +430,7 @@ class SellerChatRoom {
   });
 
   factory SellerChatRoom.fromJson(Map<String, dynamic> j) {
+    /// ประมวลผลขั้นตอน Seller Chat Room สำหรับส่วน seller models (คลาส SellerChatRoom).
     return SellerChatRoom(
       roomId: int.tryParse('${j['room_id'] ?? 0}') ?? 0,
 
@@ -463,6 +471,7 @@ class SellerMessage {
   });
 
   factory SellerMessage.fromJson(Map<String, dynamic> j) {
+    /// ประมวลผลขั้นตอน Seller Message สำหรับส่วน seller models (คลาส SellerMessage).
     return SellerMessage(
       messageId: int.tryParse('${j['message_id'] ?? 0}') ?? 0,
 
@@ -504,6 +513,7 @@ class SellerSaleSummary {
   });
 
   factory SellerSaleSummary.fromJson(Map<String, dynamic> j) {
+    /// ประมวลผลขั้นตอน Seller Sale Summary สำหรับส่วน seller models (คลาส SellerSaleSummary).
     return SellerSaleSummary(
       totalSales: double.tryParse('${j['total_sales'] ?? 0}') ?? 0,
 

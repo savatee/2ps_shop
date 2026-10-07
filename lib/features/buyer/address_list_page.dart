@@ -20,12 +20,14 @@ class _AddressListPageState extends State<AddressListPage> {
   bool _loading = true;
   final Set<int> _busyIds = {};
 
+  /// หน้าที่: เตรียมสถานะเริ่มต้นของหน้าจอและเริ่มโหลดข้อมูลที่จำเป็น (คลาส _AddressListPageState).
   @override
   void initState() {
     super.initState();
     _load();
   }
 
+  /// หน้าที่: โหลดข้อมูล load และอัปเดตสถานะการแสดงผลของหน้าจอ (คลาส _AddressListPageState).
   Future<void> _load() async {
     setState(() => _loading = true);
     final result = await ApiClient.getAddresses(widget.userId);
@@ -36,16 +38,20 @@ class _AddressListPageState extends State<AddressListPage> {
     });
   }
 
+  /// หน้าที่: บันทึกหรือสร้างข้อมูล add ที่อยู่จัดส่ง แล้วจัดการผลที่เซิร์ฟเวอร์ตอบกลับ (คลาส _AddressListPageState).
   Future<void> _addAddress() async {
     final saved = await showAddressFormSheet(context, userId: widget.userId);
     if (saved == true) _load();
   }
 
+  /// หน้าที่: ประมวลผลขั้นตอน รหัส Of สำหรับส่วน address list page (คลาส _AddressListPageState).
   int _idOf(dynamic a) => int.tryParse(a['address_id']?.toString() ?? '') ?? -1;
 
+  /// หน้าที่: ตรวจสอบเงื่อนไข is ค่าเริ่มต้น Of และคืนผลเป็น true หรือ false (คลาส _AddressListPageState).
   bool _isDefaultOf(dynamic a) =>
       a['is_default'] == 1 || a['is_default'] == '1' || a['is_default'] == true;
 
+  /// หน้าที่: ปรับปรุงข้อมูลหรือสถานะ edit ที่อยู่จัดส่ง ผ่าน API และอัปเดตหน้าจอ (คลาส _AddressListPageState).
   Future<void> _editAddress(dynamic a) async {
     final saved = await showAddressFormSheet(
       context,
@@ -55,6 +61,7 @@ class _AddressListPageState extends State<AddressListPage> {
     if (saved == true) _load();
   }
 
+  /// หน้าที่: กำหนดค่า set ค่าเริ่มต้น และบันทึกหรืออัปเดตสถานะที่เกี่ยวข้อง (คลาส _AddressListPageState).
   Future<void> _setDefault(dynamic a) async {
     final id = _idOf(a);
     if (id == -1) return;
@@ -78,6 +85,7 @@ class _AddressListPageState extends State<AddressListPage> {
     }
   }
 
+  /// หน้าที่: ลบข้อมูล delete ที่อยู่จัดส่ง และจัดการผลการลบที่ API ส่งกลับ (คลาส _AddressListPageState).
   Future<void> _deleteAddress(dynamic a) async {
     final id = _idOf(a);
     if (id == -1) return;
@@ -122,6 +130,7 @@ class _AddressListPageState extends State<AddressListPage> {
     }
   }
 
+  /// หน้าที่: ประมวลผลขั้นตอน บรรทัด สำหรับส่วน address list page (คลาส _AddressListPageState).
   String _line(dynamic a) {
     final parts = [
       a['address_detail'],
@@ -133,6 +142,7 @@ class _AddressListPageState extends State<AddressListPage> {
     return parts.join(' ');
   }
 
+  /// หน้าที่: สร้าง UI ของหน้าจอหรือวิดเจ็ตใน address list page (คลาส _AddressListPageState).
   @override
   Widget build(BuildContext context) {
     return Scaffold(

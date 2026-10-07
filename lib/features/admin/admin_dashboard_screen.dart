@@ -36,12 +36,14 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
   final Color indigo600 = const Color(0xFF4F46E5);
   final Color sky500 = const Color(0xFF0EA5E9);
 
+  /// หน้าที่: เตรียมสถานะเริ่มต้นของหน้าจอและเริ่มโหลดข้อมูลที่จำเป็น (คลาส _AdminDashboardScreenState).
   @override
   void initState() {
     super.initState();
     fetchDashboardData();
   }
 
+  /// หน้าที่: โหลดข้อมูล fetch ภาพรวมระบบ ข้อมูล และอัปเดตสถานะการแสดงผลของหน้าจอ (คลาส _AdminDashboardScreenState).
   Future<void> fetchDashboardData() async {
     setState(() => isLoading = true);
     final data = await AdminApiService.getDashboardStats();
@@ -53,6 +55,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     }
   }
 
+  /// หน้าที่: จัดการเหตุการณ์ handle สินค้า Action จากการกดหรือกรอกข้อมูลของผู้ใช้ (คลาส _AdminDashboardScreenState).
   Future<void> handleProductAction(int productId, String action) async {
     final status = (action == 'approve') ? 'active' : 'rejected';
     final success = await AdminApiService.updateProductStatus(
@@ -101,8 +104,10 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     }
   }
 
+  /// หน้าที่: จัดรูปแบบข้อมูล format จำนวนเงิน ก่อนนำไปแสดงผล (คลาส _AdminDashboardScreenState).
   String formatCurrency(num number) => NumberFormat('#,###').format(number);
 
+  /// หน้าที่: สร้าง UI ของหน้าจอหรือวิดเจ็ตใน admin dashboard screen (คลาส _AdminDashboardScreenState).
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -201,6 +206,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Section Title เพื่อใช้ในหน้าจอนี้ (คลาส _AdminDashboardScreenState).
   Widget _buildSectionTitle(String text) {
     return Text(
       text,
@@ -423,6 +429,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Hero Stat เพื่อใช้ในหน้าจอนี้ (คลาส _AdminDashboardScreenState).
   Widget _buildHeroStat({
     required IconData icon,
     required Color tint,
@@ -523,6 +530,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Metric Tile เพื่อใช้ในหน้าจอนี้ (คลาส _AdminDashboardScreenState).
   Widget _buildMetricTile({
     required IconData icon,
     required String title,
@@ -661,6 +669,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Quick Action Btn เพื่อใช้ในหน้าจอนี้ (คลาส _AdminDashboardScreenState).
   Widget _buildQuickActionBtn({
     required IconData icon,
     required Color tint,
@@ -800,6 +809,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Skeleton Card เพื่อใช้ในหน้าจอนี้ (คลาส _AdminDashboardScreenState).
   Widget _buildSkeletonCard() {
     return Container(
       height: 96,
@@ -839,6 +849,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Product List Item เพื่อใช้ในหน้าจอนี้ (คลาส _AdminDashboardScreenState).
   Widget _buildProductListItem(Map<String, dynamic> item) {
     final String? imageUrl = buildImageUrl(item['product_image']?.toString());
 
@@ -1017,6 +1028,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Bottom Nav เพื่อใช้ในหน้าจอนี้ (คลาส _AdminDashboardScreenState).
   Widget _buildBottomNav() {
     return Container(
       decoration: BoxDecoration(

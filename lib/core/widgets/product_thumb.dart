@@ -14,6 +14,7 @@ class ProductThumb extends StatelessWidget {
     this.dimmed = false,
     this.fit = BoxFit.contain,
   });
+  /// หน้าที่: สร้าง UI ของหน้าจอหรือวิดเจ็ตใน product thumb (คลาส ProductThumb).
   @override
   Widget build(BuildContext context) {
     final resolvedUrl = buildImageUrl(imageUrl);

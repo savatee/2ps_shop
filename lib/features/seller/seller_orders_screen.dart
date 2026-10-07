@@ -23,6 +23,7 @@ class _SellerOrdersScreenState extends State<SellerOrdersScreen> {
 
   final Set<int> updatingOrderIds = {};
 
+  /// หน้าที่: เตรียมสถานะเริ่มต้นของหน้าจอและเริ่มโหลดข้อมูลที่จำเป็น (คลาส _SellerOrdersScreenState).
   @override
   void initState() {
     super.initState();
@@ -174,6 +175,7 @@ class _SellerOrdersScreenState extends State<SellerOrdersScreen> {
     }
   }
 
+  /// หน้าที่: ยกเลิกรายการ cancel คำสั่งซื้อ และอัปเดตสถานะหลัง API ยืนยัน (คลาส _SellerOrdersScreenState).
   Future<void> cancelOrder(SellerOrder order) async {
     final confirmed = await showDialog<bool>(
       context: context,

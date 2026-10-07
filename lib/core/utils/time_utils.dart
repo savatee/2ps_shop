@@ -1,3 +1,4 @@
+/// ประมวลผลขั้นตอน time Ago สำหรับส่วน time utils.
 String timeAgo(String? value) {
   if (value == null || value.isEmpty) return '';
   final date = DateTime.tryParse(value);
@@ -10,6 +11,7 @@ String timeAgo(String? value) {
   return '${date.day}/${date.month}/${date.year}';
 }
 
+/// ประมวลผลขั้นตอน short Time สำหรับส่วน time utils.
 String shortTime(String? value) {
   if (value == null || value.isEmpty) return '';
   final date = DateTime.tryParse(value);

@@ -71,12 +71,14 @@ class _OrderSuccessPageState extends State<OrderSuccessPage> {
         '${date.minute.toString().padLeft(2, '0')} น.';
   }
 
+  /// หน้าที่: เตรียมสถานะเริ่มต้นของหน้าจอและเริ่มโหลดข้อมูลที่จำเป็น (คลาส _OrderSuccessPageState).
   @override
   void initState() {
     super.initState();
     _loadOrderData();
   }
 
+  /// หน้าที่: โหลดข้อมูล load คำสั่งซื้อ ข้อมูล และอัปเดตสถานะการแสดงผลของหน้าจอ (คลาส _OrderSuccessPageState).
   Future<void> _loadOrderData() async {
     setState(() {
       _isLoading = true;
@@ -113,6 +115,7 @@ class _OrderSuccessPageState extends State<OrderSuccessPage> {
     }
   }
 
+  /// หน้าที่: นำทางไปยังหน้า go Home ตามบทบาทและข้อมูลที่เลือก (คลาส _OrderSuccessPageState).
   void _goHome() {
     Navigator.pushAndRemoveUntil(
       context,
@@ -121,6 +124,7 @@ class _OrderSuccessPageState extends State<OrderSuccessPage> {
     );
   }
 
+  /// หน้าที่: นำทางไปยังหน้า go To คำสั่งซื้อ รายละเอียด ตามบทบาทและข้อมูลที่เลือก (คลาส _OrderSuccessPageState).
   void _goToOrderDetail() {
     Navigator.push(
       context,
@@ -133,6 +137,7 @@ class _OrderSuccessPageState extends State<OrderSuccessPage> {
     );
   }
 
+  /// หน้าที่: คัดลอกข้อมูล copy คำสั่งซื้อ รหัส ไปยัง clipboard ของอุปกรณ์ (คลาส _OrderSuccessPageState).
   void _copyOrderId() {
     Clipboard.setData(ClipboardData(text: '2PS-${widget.orderId}'));
     ScaffoldMessenger.of(context).showSnackBar(
@@ -140,6 +145,7 @@ class _OrderSuccessPageState extends State<OrderSuccessPage> {
     );
   }
 
+  /// หน้าที่: ประมวลผลขั้นตอน ที่อยู่จัดส่ง บรรทัด สำหรับส่วน order success page (คลาส _OrderSuccessPageState).
   String _addressLine(Map<String, dynamic> a) {
     final parts = [
       a['address_detail'],
@@ -151,6 +157,7 @@ class _OrderSuccessPageState extends State<OrderSuccessPage> {
     return parts.join(' ');
   }
 
+  /// หน้าที่: สร้าง UI ของหน้าจอหรือวิดเจ็ตใน order success page (คลาส _OrderSuccessPageState).
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -219,6 +226,7 @@ class _OrderSuccessPageState extends State<OrderSuccessPage> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Header Card เพื่อใช้ในหน้าจอนี้ (คลาส _OrderSuccessPageState).
   Widget _buildHeaderCard() {
     final isCancelled = _orderStatus == 'cancelled';
     final isCod = _paymentMethod == 'cod';
@@ -360,6 +368,7 @@ class _OrderSuccessPageState extends State<OrderSuccessPage> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Payment Card เพื่อใช้ในหน้าจอนี้ (คลาส _OrderSuccessPageState).
   Widget _buildPaymentCard() {
     final isCod = _paymentMethod == 'cod';
     final isPaid = {'paid', 'completed'}.contains(_paymentStatus);
@@ -491,6 +500,7 @@ class _OrderSuccessPageState extends State<OrderSuccessPage> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Timeline Card เพื่อใช้ในหน้าจอนี้ (คลาส _OrderSuccessPageState).
   Widget _buildTimelineCard() {
     final statusLabel = switch (_orderStatus) {
       'pending' => 'รอร้านค้าดำเนินการ',
@@ -560,6 +570,7 @@ class _OrderSuccessPageState extends State<OrderSuccessPage> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Address Card เพื่อใช้ในหน้าจอนี้ (คลาส _OrderSuccessPageState).
   Widget _buildAddressCard() {
     final address = _orderData?['shipping_address'];
     final name = address != null ? (address['recipient_name'] ?? '') : '';
@@ -646,6 +657,7 @@ class _OrderSuccessPageState extends State<OrderSuccessPage> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Product Card เพื่อใช้ในหน้าจอนี้ (คลาส _OrderSuccessPageState).
   Widget _buildProductCard() {
     final rawItems = _orderData?['items'];
     final items = rawItems is List
@@ -699,6 +711,7 @@ class _OrderSuccessPageState extends State<OrderSuccessPage> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Product Row เพื่อใช้ในหน้าจอนี้ (คลาส _OrderSuccessPageState).
   Widget _buildProductRow(Map<String, dynamic> item) {
     final name = item['product_name']?.toString() ?? 'สินค้า';
     final imageUrl = pickProductImage(item);
@@ -756,6 +769,7 @@ class _OrderSuccessPageState extends State<OrderSuccessPage> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Summary Card เพื่อใช้ในหน้าจอนี้ (คลาส _OrderSuccessPageState).
   Widget _buildSummaryCard() {
     return Container(
       margin: const EdgeInsets.only(bottom: 24),
@@ -827,6 +841,7 @@ class _OrderSuccessPageState extends State<OrderSuccessPage> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Action Buttons เพื่อใช้ในหน้าจอนี้ (คลาส _OrderSuccessPageState).
   Widget _buildActionButtons() {
     return Column(
       children: [

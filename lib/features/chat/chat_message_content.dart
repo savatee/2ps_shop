@@ -14,6 +14,7 @@ class ChatMessageContent extends StatelessWidget {
     this.onWantedPostTap,
   });
 
+  /// หน้าที่: แปลงหรืออ่านข้อมูล parse ข้อความ ให้อยู่ในรูปแบบที่แอปใช้งานได้ (คลาส ChatMessageContent).
   _ParsedChatMessage _parseMessage() {
     final lines = text.split('\n');
     final hasContext = lines.any(
@@ -28,12 +29,14 @@ class ChatMessageContent extends StatelessWidget {
     var inOffer = false;
     var inUserMessage = false;
 
+    /// หน้าที่: ประมวลผลขั้นตอน append สำหรับส่วน chat message content (คลาส ChatMessageContent).
     void append(String key, String value) {
       if (value.isEmpty) return;
       final previous = fields[key];
       fields[key] = previous == null ? value : '$previous\n$value';
     }
 
+    /// หน้าที่: ประมวลผลขั้นตอน read Field สำหรับส่วน chat message content (คลาส ChatMessageContent).
     void readField(String line, String label, String key) {
       activeField = key;
       append(key, line.substring(label.length).trim());
@@ -104,6 +107,7 @@ class ChatMessageContent extends StatelessWidget {
     );
   }
 
+  /// หน้าที่: สร้าง UI ของหน้าจอหรือวิดเจ็ตใน chat message content (คลาส ChatMessageContent).
   @override
   Widget build(BuildContext context) {
     final parsed = _parseMessage();
@@ -246,6 +250,7 @@ class ChatMessageContent extends StatelessWidget {
     );
   }
 
+  /// หน้าที่: ประมวลผลขั้นตอน รายละเอียด บรรทัด สำหรับส่วน chat message content (คลาส ChatMessageContent).
   Widget _detailLine(
     String label,
     String value,

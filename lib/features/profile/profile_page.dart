@@ -44,12 +44,14 @@ class _ProfilePageState extends State<ProfilePage> {
   Uint8List? _newProfileImage;
   String? _newProfileImagePath;
 
+  /// หน้าที่: เตรียมสถานะเริ่มต้นของหน้าจอและเริ่มโหลดข้อมูลที่จำเป็น (คลาส _ProfilePageState).
   @override
   void initState() {
     super.initState();
     _loadProfile();
   }
 
+  /// หน้าที่: คืนทรัพยากรของหน้าจอ เช่น controller และ listener ก่อนปิดหน้า (คลาส _ProfilePageState).
   @override
   void dispose() {
     _nameController.dispose();
@@ -58,6 +60,7 @@ class _ProfilePageState extends State<ProfilePage> {
     super.dispose();
   }
 
+  /// หน้าที่: โหลดข้อมูล load โปรไฟล์ และอัปเดตสถานะการแสดงผลของหน้าจอ (คลาส _ProfilePageState).
   Future<void> _loadProfile({bool showLoading = true}) async {
     if (showLoading && mounted) {
       setState(() {
@@ -129,6 +132,7 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
+  /// หน้าที่: ประมวลผลขั้นตอน start เข้าสู่ระบบ Again สำหรับส่วน profile page (คลาส _ProfilePageState).
   Future<void> _startLoginAgain() async {
     final prefs = await SharedPreferences.getInstance();
     Session.token = '';
@@ -145,6 +149,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  /// หน้าที่: โหลดข้อมูล load ที่อยู่จัดส่ง Count และอัปเดตสถานะการแสดงผลของหน้าจอ (คลาส _ProfilePageState).
   Future<void> _loadAddressCount(int userId) async {
     try {
       final addresses = await ApiClient.getAddresses(userId);
@@ -154,6 +159,7 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
+  /// หน้าที่: เลือกรับข้อมูล pick โปรไฟล์ รูปภาพ จากผู้ใช้หรืออุปกรณ์ (คลาส _ProfilePageState).
   Future<void> _pickProfileImage() async {
     try {
       final image = await _imagePicker.pickImage(
@@ -176,6 +182,7 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
+  /// หน้าที่: บันทึกหรือสร้างข้อมูล save โปรไฟล์ แล้วจัดการผลที่เซิร์ฟเวอร์ตอบกลับ (คลาส _ProfilePageState).
   Future<void> _saveProfile() async {
     final userId = _userId;
     if (userId == null) return;
@@ -237,6 +244,7 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
+  /// หน้าที่: ปรับปรุงข้อมูลหรือสถานะ edit โปรไฟล์ ผ่าน API และอัปเดตหน้าจอ (คลาส _ProfilePageState).
   Future<void> _editProfile() async {
     final values = await Navigator.push<Map<String, String>>(
       context,
@@ -257,6 +265,7 @@ class _ProfilePageState extends State<ProfilePage> {
     await _saveProfile();
   }
 
+  /// หน้าที่: ประมวลผลขั้นตอน change รหัสผ่าน สำหรับส่วน profile page (คลาส _ProfilePageState).
   Future<void> _changePassword() async {
     if (_userId == null || _userId! <= 0) {
       _showMessage('ไม่พบข้อมูลผู้ใช้', isError: true);
@@ -269,6 +278,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  /// หน้าที่: ประมวลผลขั้นตอน logout สำหรับส่วน profile page (คลาส _ProfilePageState).
   Future<void> _logout() async {
     final shouldLogout = await showDialog<bool>(
       context: context,
@@ -305,6 +315,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  /// หน้าที่: เปิดหรือแสดงหน้าต่าง/ส่วน UI สำหรับ show ข้อความ (คลาส _ProfilePageState).
   void _showMessage(String message, {bool isError = false}) {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
@@ -322,6 +333,7 @@ class _ProfilePageState extends State<ProfilePage> {
     _ => 'ไม่ระบุบทบาท',
   };
 
+  /// หน้าที่: สร้าง UI ส่วน Profile Header เพื่อใช้ในหน้าจอนี้ (คลาส _ProfilePageState).
   Widget _buildProfileHeader(ImageProvider<Object>? avatarImage) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
@@ -403,6 +415,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Profile Menu เพื่อใช้ในหน้าจอนี้ (คลาส _ProfilePageState).
   Widget _buildProfileMenu({
     required IconData icon,
     required String title,
@@ -448,6 +461,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  /// หน้าที่: เปิดหรือแสดงหน้าต่าง/ส่วน UI สำหรับ show โปรไฟล์ รายละเอียด (คลาส _ProfilePageState).
   void _showProfileDetails() {
     // ลบ "รหัสผู้ใช้ (ID)" ออกแล้ว ใช้ร่วมกันทั้ง buyer / seller / admin
     final details = [
@@ -533,6 +547,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Info Row เพื่อใช้ในหน้าจอนี้ (คลาส _ProfilePageState).
   Widget _buildInfoRow(IconData icon, String title, String value) {
     return Row(
       children: [
@@ -557,6 +572,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ของหน้าจอหรือวิดเจ็ตใน profile page (คลาส _ProfilePageState).
   @override
   Widget build(BuildContext context) {
     final imageUrl = SellerApi.imageUrl(_profile['profile_image']);
@@ -711,6 +727,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   late final TextEditingController _emailController;
   late final TextEditingController _phoneController;
 
+  /// หน้าที่: เตรียมสถานะเริ่มต้นของหน้าจอและเริ่มโหลดข้อมูลที่จำเป็น (คลาส _EditProfilePageState).
   @override
   void initState() {
     super.initState();
@@ -719,6 +736,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     _phoneController = TextEditingController(text: widget.phone);
   }
 
+  /// หน้าที่: คืนทรัพยากรของหน้าจอ เช่น controller และ listener ก่อนปิดหน้า (คลาส _EditProfilePageState).
   @override
   void dispose() {
     _nameController.dispose();
@@ -727,6 +745,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     super.dispose();
   }
 
+  /// หน้าที่: บันทึกหรือสร้างข้อมูล save แล้วจัดการผลที่เซิร์ฟเวอร์ตอบกลับ (คลาส _EditProfilePageState).
   void _save() {
     final name = _nameController.text.trim();
     final email = _emailController.text.trim();
@@ -745,6 +764,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     });
   }
 
+  /// หน้าที่: สร้าง UI ของหน้าจอหรือวิดเจ็ตใน profile page (คลาส _EditProfilePageState).
   @override
   Widget build(BuildContext context) {
     return Scaffold(

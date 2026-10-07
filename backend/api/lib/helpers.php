@@ -24,11 +24,13 @@ function appConfig(string $key, string $default = ''): string
     return isset($local[$key]) ? (string)$local[$key] : $default;
 }
 
+// หน้าที่: อ่านเบอร์ PromptPay ของร้านจากค่าตั้งค่าเซิร์ฟเวอร์.
 function getShopPromptPayPhone(): string
 {
     return trim(appConfig('PROMPTPAY_PHONE'));
 }
 
+// หน้าที่: ส่ง JSON สถานะสำเร็จและข้อมูลกลับไปยังแอป แล้วจบคำขอ.
 function successResponse($message, $data = null)
 {
     http_response_code(200);
@@ -44,6 +46,7 @@ function successResponse($message, $data = null)
     exit;
 }
 
+// หน้าที่: ส่ง JSON แจ้งข้อผิดพลาดพร้อม HTTP status code แล้วจบคำขอ.
 function errorResponse($message, $code = 400, $error = null)
 {
     if (!is_numeric($code)) {
@@ -68,6 +71,7 @@ function errorResponse($message, $code = 400, $error = null)
     exit;
 }
 
+// หน้าที่: อ่านและตรวจสอบ Bearer token จากส่วนหัวคำขอเพื่อยืนยันตัวตน.
 function apiBearerToken(): string
 {
     $headers = function_exists('getallheaders') ? getallheaders() : [];
@@ -89,6 +93,7 @@ function apiBearerToken(): string
     return strtolower($matches[1]);
 }
 
+// หน้าที่: เริ่ม session โดยใช้ token เพื่อให้ API อ่านข้อมูลบัญชีได้.
 function startApiSession(string $token): void
 {
     if (session_status() === PHP_SESSION_ACTIVE) {
@@ -106,6 +111,7 @@ function startApiSession(string $token): void
     }
 }
 
+// หน้าที่: สร้าง token และ session สำหรับบัญชีผู้ใช้หลังเข้าสู่ระบบ.
 function createApiSession(int $userId): string
 {
     $token = bin2hex(random_bytes(16));
@@ -119,6 +125,7 @@ function createApiSession(int $userId): string
     return $token;
 }
 
+// หน้าที่: ตรวจ token และดึงข้อมูลบัญชีผู้ใช้จากฐานข้อมูล.
 function requireUser(mysqli $conn): array
 {
     $token = apiBearerToken();
@@ -151,6 +158,7 @@ function requireUser(mysqli $conn): array
     return $user;
 }
 
+// หน้าที่: ตรวจว่าบัญชีที่เข้าสู่ระบบมีบทบาทตรงกับที่ API อนุญาต.
 function requireRole(mysqli $conn, string $role): array
 {
     $user = requireUser($conn);

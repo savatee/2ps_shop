@@ -18,6 +18,7 @@ class LoginUserModel {
   });
 
   factory LoginUserModel.fromJson(Map<String, dynamic> json) {
+    /// ประมวลผลขั้นตอน Login User Model สำหรับส่วน login user model (คลาส LoginUserModel).
     return LoginUserModel(
       userId: json['user_id'] is int
           ? json['user_id']

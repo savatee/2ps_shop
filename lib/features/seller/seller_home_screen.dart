@@ -30,12 +30,14 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
     return int.tryParse('${widget.user['user_id']}') ?? 0;
   }
 
+  /// หน้าที่: เตรียมสถานะเริ่มต้นของหน้าจอและเริ่มโหลดข้อมูลที่จำเป็น (คลาส _SellerHomeScreenState).
   @override
   void initState() {
     super.initState();
     loadDashboard();
   }
 
+  /// หน้าที่: โหลดข้อมูล load ภาพรวมระบบ และอัปเดตสถานะการแสดงผลของหน้าจอ (คลาส _SellerHomeScreenState).
   Future<void> loadDashboard() async {
     try {
       final results = await Future.wait([
@@ -65,12 +67,14 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
     }
   }
 
+  /// หน้าที่: นำทางไปยังหน้า go ตามบทบาทและข้อมูลที่เลือก (คลาส _SellerHomeScreenState).
   void go(Widget page) {
     Navigator.push(context, MaterialPageRoute(builder: (_) => page)).then((_) {
       loadDashboard();
     });
   }
 
+  /// หน้าที่: สร้าง UI ของหน้าจอหรือวิดเจ็ตใน seller home screen (คลาส _SellerHomeScreenState).
   @override
   Widget build(BuildContext context) {
     final name = widget.user['name'] ?? 'ผู้ขาย';
@@ -322,6 +326,7 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
     );
   }
 
+  /// หน้าที่: ประมวลผลขั้นตอน stat Card สำหรับส่วน seller home screen (คลาส _SellerHomeScreenState).
   Widget statCard(
     String title,
     String value,
@@ -373,6 +378,7 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
     );
   }
 
+  /// หน้าที่: ประมวลผลขั้นตอน menu สำหรับส่วน seller home screen (คลาส _SellerHomeScreenState).
   Widget menu(
     String title,
     IconData icon,

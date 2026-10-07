@@ -16,6 +16,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  /// หน้าที่: เตรียมสถานะเริ่มต้นของหน้าจอและเริ่มโหลดข้อมูลที่จำเป็น (คลาส _SplashScreenState).
   @override
   void initState() {
     super.initState();
@@ -69,6 +70,7 @@ class _SplashScreenState extends State<SplashScreen> {
     });
   }
 
+  /// หน้าที่: สร้าง UI ของหน้าจอหรือวิดเจ็ตใน splash screen (คลาส _SplashScreenState).
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -36,6 +36,7 @@ class _VariantRow {
        price = TextEditingController(text: priceValue),
        stock = TextEditingController(text: stockValue);
 
+  /// หน้าที่: คืนทรัพยากรของหน้าจอ เช่น controller และ listener ก่อนปิดหน้า (คลาส _VariantRow).
   void dispose() {
     size.dispose();
     color.dispose();
@@ -66,6 +67,7 @@ class _SellerAddProductScreenState extends State<SellerAddProductScreen> {
 
   bool get isEdit => widget.product != null;
 
+  /// หน้าที่: เตรียมสถานะเริ่มต้นของหน้าจอและเริ่มโหลดข้อมูลที่จำเป็น (คลาส _SellerAddProductScreenState).
   @override
   void initState() {
     super.initState();
@@ -101,6 +103,7 @@ class _SellerAddProductScreenState extends State<SellerAddProductScreen> {
     loadData();
   }
 
+  /// หน้าที่: โหลดข้อมูล load ข้อมูล และอัปเดตสถานะการแสดงผลของหน้าจอ (คลาส _SellerAddProductScreenState).
   Future<void> loadData() async {
     try {
       final categoryData = await SellerApi.categories();
@@ -157,6 +160,7 @@ class _SellerAddProductScreenState extends State<SellerAddProductScreen> {
     }
   }
 
+  /// หน้าที่: เลือกรับข้อมูล pick Images จากผู้ใช้หรืออุปกรณ์ (คลาส _SellerAddProductScreenState).
   Future<void> pickImages() async {
     try {
       final picker = ImagePicker();
@@ -188,6 +192,7 @@ class _SellerAddProductScreenState extends State<SellerAddProductScreen> {
     }
   }
 
+  /// หน้าที่: ลบข้อมูล remove Old รูปภาพ และจัดการผลการลบที่ API ส่งกลับ (คลาส _SellerAddProductScreenState).
   void removeOldImage(int index) {
     if (index < 0 || index >= oldImages.length) {
       return;
@@ -204,6 +209,7 @@ class _SellerAddProductScreenState extends State<SellerAddProductScreen> {
     });
   }
 
+  /// หน้าที่: ลบข้อมูล remove New รูปภาพ และจัดการผลการลบที่ API ส่งกลับ (คลาส _SellerAddProductScreenState).
   void removeNewImage(int index) {
     if (index < 0 || index >= newImages.length) {
       return;
@@ -214,6 +220,7 @@ class _SellerAddProductScreenState extends State<SellerAddProductScreen> {
     });
   }
 
+  /// หน้าที่: กำหนดค่า set Has Variants และบันทึกหรืออัปเดตสถานะที่เกี่ยวข้อง (คลาส _SellerAddProductScreenState).
   void setHasVariants(bool value) {
     if (saving) return;
 
@@ -226,12 +233,14 @@ class _SellerAddProductScreenState extends State<SellerAddProductScreen> {
     });
   }
 
+  /// หน้าที่: บันทึกหรือสร้างข้อมูล add ตัวเลือกสินค้า Row แล้วจัดการผลที่เซิร์ฟเวอร์ตอบกลับ (คลาส _SellerAddProductScreenState).
   void addVariantRow() {
     setState(() {
       variantRows.add(_VariantRow());
     });
   }
 
+  /// หน้าที่: ลบข้อมูล remove ตัวเลือกสินค้า Row และจัดการผลการลบที่ API ส่งกลับ (คลาส _SellerAddProductScreenState).
   void removeVariantRow(int index) {
     if (index < 0 || index >= variantRows.length) {
       return;
@@ -249,6 +258,7 @@ class _SellerAddProductScreenState extends State<SellerAddProductScreen> {
     setState(() {});
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Variants เพื่อใช้ในหน้าจอนี้ (คลาส _SellerAddProductScreenState).
   List<Map<String, dynamic>> buildVariants() {
     final result = <Map<String, dynamic>>[];
 
@@ -286,6 +296,7 @@ class _SellerAddProductScreenState extends State<SellerAddProductScreen> {
     return result;
   }
 
+  /// หน้าที่: บันทึกหรือสร้างข้อมูล save แล้วจัดการผลที่เซิร์ฟเวอร์ตอบกลับ (คลาส _SellerAddProductScreenState).
   Future<void> save() async {
     if (name.text.trim().isEmpty) {
       showMessage('กรุณากรอกชื่อสินค้า');
@@ -400,6 +411,7 @@ class _SellerAddProductScreenState extends State<SellerAddProductScreen> {
     }
   }
 
+  /// หน้าที่: เปิดหรือแสดงหน้าต่าง/ส่วน UI สำหรับ show ข้อความ (คลาส _SellerAddProductScreenState).
   void showMessage(String message) {
     if (!mounted) return;
 
@@ -408,6 +420,7 @@ class _SellerAddProductScreenState extends State<SellerAddProductScreen> {
       ..showSnackBar(SnackBar(content: Text(message)));
   }
 
+  /// หน้าที่: คืนทรัพยากรของหน้าจอ เช่น controller และ listener ก่อนปิดหน้า (คลาส _SellerAddProductScreenState).
   @override
   void dispose() {
     name.dispose();
@@ -422,6 +435,7 @@ class _SellerAddProductScreenState extends State<SellerAddProductScreen> {
     super.dispose();
   }
 
+  /// หน้าที่: สร้าง UI ของหน้าจอหรือวิดเจ็ตใน seller add product screen (คลาส _SellerAddProductScreenState).
   @override
   Widget build(BuildContext context) {
     final totalImages = oldImages.length + newImages.length;

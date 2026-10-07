@@ -14,6 +14,7 @@ class EmptyState extends StatelessWidget {
     this.actionLabel,
     this.onAction,
   });
+  /// หน้าที่: สร้าง UI ของหน้าจอหรือวิดเจ็ตใน empty state (คลาส EmptyState).
   @override
   Widget build(BuildContext context) => Center(
     child: Padding(

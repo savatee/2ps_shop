@@ -17,6 +17,7 @@ class PopularProductCard extends StatelessWidget {
     this.imageUrl,
     required this.onTap,
   });
+  /// หน้าที่: สร้าง UI ของหน้าจอหรือวิดเจ็ตใน popular product card (คลาส PopularProductCard).
   @override
   Widget build(BuildContext context) => InkWell(
     onTap: onTap,

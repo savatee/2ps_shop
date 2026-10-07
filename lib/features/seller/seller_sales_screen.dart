@@ -40,12 +40,14 @@ class _SellerSalesScreenState extends State<SellerSalesScreen> {
     'ธ.ค.',
   ];
 
+  /// หน้าที่: เตรียมสถานะเริ่มต้นของหน้าจอและเริ่มโหลดข้อมูลที่จำเป็น (คลาส _SellerSalesScreenState).
   @override
   void initState() {
     super.initState();
     load();
   }
 
+  /// หน้าที่: โหลดข้อมูล load และอัปเดตสถานะการแสดงผลของหน้าจอ (คลาส _SellerSalesScreenState).
   Future<void> load() async {
     if (mounted) {
       setState(() {
@@ -81,10 +83,12 @@ class _SellerSalesScreenState extends State<SellerSalesScreen> {
     }
   }
 
+  /// หน้าที่: จัดรูปแบบข้อมูล format Money ก่อนนำไปแสดงผล (คลาส _SellerSalesScreenState).
   String formatMoney(double value) {
     return value.toStringAsFixed(2);
   }
 
+  /// หน้าที่: จัดรูปแบบข้อมูล format Date ก่อนนำไปแสดงผล (คลาส _SellerSalesScreenState).
   String formatDate(String date) {
     final parts = date.split('-');
 
@@ -185,6 +189,7 @@ class _SellerSalesScreenState extends State<SellerSalesScreen> {
     });
   }
 
+  /// หน้าที่: ประมวลผลขั้นตอน selected Period ข้อความ สำหรับส่วน seller sales screen (คลาส _SellerSalesScreenState).
   String _selectedPeriodText() {
     final year = (selectedYear ?? DateTime.now().year) + 543;
     if (selectedMonth == null) {
@@ -193,6 +198,7 @@ class _SellerSalesScreenState extends State<SellerSalesScreen> {
     return '${_monthNames[selectedMonth! - 1]} $year';
   }
 
+  /// หน้าที่: สร้าง UI ของหน้าจอหรือวิดเจ็ตใน seller sales screen (คลาส _SellerSalesScreenState).
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -360,6 +366,7 @@ class _SellerSalesScreenState extends State<SellerSalesScreen> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Period Selector เพื่อใช้ในหน้าจอนี้ (คลาส _SellerSalesScreenState).
   Widget _buildPeriodSelector() {
     final years = _availableYears(summary?.dailySales ?? []);
     final year = years.contains(selectedYear) ? selectedYear : years.first;

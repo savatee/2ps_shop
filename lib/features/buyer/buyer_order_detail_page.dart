@@ -30,6 +30,7 @@ class _BuyerOrderDetailPageState extends State<BuyerOrderDetailPage> {
 
   List<dynamic> items = [];
 
+  /// หน้าที่: เตรียมสถานะเริ่มต้นของหน้าจอและเริ่มโหลดข้อมูลที่จำเป็น (คลาส _BuyerOrderDetailPageState).
   @override
   void initState() {
     super.initState();
@@ -155,6 +156,7 @@ class _BuyerOrderDetailPageState extends State<BuyerOrderDetailPage> {
   bool get canCancelOrder =>
       (order['order_status'] ?? '').toString().toLowerCase() == 'pending';
 
+  /// หน้าที่: เปิดหรือแสดงหน้าต่าง/ส่วน UI สำหรับ open ผู้ขาย แชท (คลาส _BuyerOrderDetailPageState).
   void openSellerChat() {
     final sellerId = int.tryParse(
       (items.isNotEmpty
@@ -203,6 +205,7 @@ class _BuyerOrderDetailPageState extends State<BuyerOrderDetailPage> {
     );
   }
 
+  /// หน้าที่: ยกเลิกรายการ cancel คำสั่งซื้อ และอัปเดตสถานะหลัง API ยืนยัน (คลาส _BuyerOrderDetailPageState).
   Future<void> cancelOrder() async {
     final confirmed = await showDialog<bool>(
       context: context,
@@ -261,6 +264,7 @@ class _BuyerOrderDetailPageState extends State<BuyerOrderDetailPage> {
     return (id != null && id > 0) ? id : null;
   }
 
+  /// หน้าที่: ประมวลผลขั้นตอน buy Again สำหรับส่วน buyer order detail page (คลาส _BuyerOrderDetailPageState).
   Future<void> buyAgain() async {
     if (isBuyingAgain || items.isEmpty) return;
 
@@ -427,6 +431,7 @@ class _BuyerOrderDetailPageState extends State<BuyerOrderDetailPage> {
     }
   }
 
+  /// หน้าที่: อ่านหรือคำนวณค่า get Time จากข้อมูลปัจจุบัน (คลาส _BuyerOrderDetailPageState).
   String getTime(String key) {
     final value = order[key];
 
@@ -444,6 +449,7 @@ class _BuyerOrderDetailPageState extends State<BuyerOrderDetailPage> {
     }
   }
 
+  /// หน้าที่: ประมวลผลขั้นตอน ไทย Month สำหรับส่วน buyer order detail page (คลาส _BuyerOrderDetailPageState).
   String thaiMonth(int month) {
     const months = [
       'ม.ค.',
@@ -478,6 +484,7 @@ class _BuyerOrderDetailPageState extends State<BuyerOrderDetailPage> {
     return double.tryParse(value.toString()) ?? 0;
   }
 
+  /// หน้าที่: อ่านหรือคำนวณค่า get Subtotal จากข้อมูลปัจจุบัน (คลาส _BuyerOrderDetailPageState).
   double getSubtotal() {
     final value =
         order['subtotal'] ??
@@ -504,6 +511,7 @@ class _BuyerOrderDetailPageState extends State<BuyerOrderDetailPage> {
     return order;
   }
 
+  /// หน้าที่: ประมวลผลขั้นตอน ที่อยู่จัดส่ง Value สำหรับส่วน buyer order detail page (คลาส _BuyerOrderDetailPageState).
   String addressValue(List<String> keys) {
     for (final key in keys) {
       final value = address[key];
@@ -567,6 +575,7 @@ class _BuyerOrderDetailPageState extends State<BuyerOrderDetailPage> {
         .toString();
   }
 
+  /// หน้าที่: ประมวลผลขั้นตอน สินค้า รูปภาพ สำหรับส่วน buyer order detail page (คลาส _BuyerOrderDetailPageState).
   Widget productImage(dynamic item) {
     final image = imageUrl(item);
 
@@ -1103,6 +1112,7 @@ class _BuyerOrderDetailPageState extends State<BuyerOrderDetailPage> {
     if (mounted) loadOrderDetail();
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Payment Card เพื่อใช้ในหน้าจอนี้ (คลาส _BuyerOrderDetailPageState).
   Widget buildPaymentCard(double subtotal, double total) {
     return whiteCard(
       child: Column(
@@ -1229,6 +1239,7 @@ class _BuyerOrderDetailPageState extends State<BuyerOrderDetailPage> {
     );
   }
 
+  /// หน้าที่: ประมวลผลขั้นตอน price Row สำหรับส่วน buyer order detail page (คลาส _BuyerOrderDetailPageState).
   Widget priceRow(String title, double price) {
     return Row(
       children: [
@@ -1289,6 +1300,7 @@ class _BuyerOrderDetailPageState extends State<BuyerOrderDetailPage> {
     );
   }
 
+  /// หน้าที่: ประมวลผลขั้นตอน info Row สำหรับส่วน buyer order detail page (คลาส _BuyerOrderDetailPageState).
   Widget infoRow(String title, String value) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,

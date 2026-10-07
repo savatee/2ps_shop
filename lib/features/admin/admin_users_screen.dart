@@ -41,12 +41,14 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
   static const Color amber600 = Color(0xFFD97706);
   static const Color amber100 = Color(0xFFFEF3C7);
 
+  /// หน้าที่: เตรียมสถานะเริ่มต้นของหน้าจอและเริ่มโหลดข้อมูลที่จำเป็น (คลาส _AdminUsersScreenState).
   @override
   void initState() {
     super.initState();
     _fetchUsers();
   }
 
+  /// หน้าที่: คืนทรัพยากรของหน้าจอ เช่น controller และ listener ก่อนปิดหน้า (คลาส _AdminUsersScreenState).
   @override
   void dispose() {
     _searchController.dispose();
@@ -54,6 +56,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
     super.dispose();
   }
 
+  /// หน้าที่: โหลดข้อมูล fetch ผู้ใช้ และอัปเดตสถานะการแสดงผลของหน้าจอ (คลาส _AdminUsersScreenState).
   Future<void> _fetchUsers() async {
     setState(() => _isLoading = true);
     try {
@@ -73,6 +76,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
     }
   }
 
+  /// หน้าที่: จัดการเหตุการณ์ on การค้นหา ที่เปลี่ยน จากการกดหรือกรอกข้อมูลของผู้ใช้ (คลาส _AdminUsersScreenState).
   void _onSearchChanged(String query) {
     if (_debounce?.isActive ?? false) _debounce!.cancel();
     _debounce = Timer(const Duration(milliseconds: 400), () {
@@ -80,6 +84,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
     });
   }
 
+  /// หน้าที่: อ่านหรือคำนวณค่า get ผู้ใช้ รูปภาพ URL จากข้อมูลปัจจุบัน (คลาส _AdminUsersScreenState).
   String? _getUserImageUrl(Map<String, dynamic> user) {
     final raw =
         user['profile_image'] ??
@@ -94,6 +99,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
     return null;
   }
 
+  /// หน้าที่: เปิดหรือแสดงหน้าต่าง/ส่วน UI สำหรับ show ผู้ใช้ รายละเอียด Dialog (คลาส _AdminUsersScreenState).
   void _showUserDetailsDialog(Map<String, dynamic> user) {
     final int userId = user['user_id'] ?? 0;
     final String name = user['name'] ?? user['username'] ?? 'ผู้ใช้งาน';
@@ -260,6 +266,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Detail Row เพื่อใช้ในหน้าจอนี้ (คลาส _AdminUsersScreenState).
   Widget _buildDetailRow(IconData icon, String title, String value) {
     return Row(
       children: [
@@ -291,6 +298,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
     );
   }
 
+  /// หน้าที่: สลับค่า toggle ผู้ใช้ สถานะ และอัปเดตหน้าจอตามสถานะใหม่ (คลาส _AdminUsersScreenState).
   Future<void> _toggleUserStatus(int userId, String currentStatus) async {
     final bool isCurrentlySuspended =
         (currentStatus == 'inactive' || currentStatus == 'suspended');
@@ -346,6 +354,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
     }
   }
 
+  /// หน้าที่: เปิดหรือแสดงหน้าต่าง/ส่วน UI สำหรับ show Role Selection Dialog (คลาส _AdminUsersScreenState).
   void _showRoleSelectionDialog(int userId, String currentRole) {
     final roles = [
       {'key': 'buyer', 'label': 'ผู้ซื้อ'},
@@ -417,6 +426,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ของหน้าจอหรือวิดเจ็ตใน admin users screen (คลาส _AdminUsersScreenState).
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -455,6 +465,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Header เพื่อใช้ในหน้าจอนี้ (คลาส _AdminUsersScreenState).
   Widget _buildHeader() {
     return Container(
       decoration: const BoxDecoration(
@@ -548,6 +559,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Role Filter Bar เพื่อใช้ในหน้าจอนี้ (คลาส _AdminUsersScreenState).
   Widget _buildRoleFilterBar() {
     final roles = [
       {'key': 'all', 'label': 'ทั้งหมด'},
@@ -687,6 +699,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน User Card เพื่อใช้ในหน้าจอนี้ (คลาส _AdminUsersScreenState).
   Widget _buildUserCard(Map<String, dynamic> user) {
     final int userId = user['user_id'] ?? 0;
     final String name = user['name'] ?? 'ผู้ใช้งาน';
@@ -899,6 +912,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Role Chip เพื่อใช้ในหน้าจอนี้ (คลาส _AdminUsersScreenState).
   Widget _buildRoleChip(String role) {
     String label = 'ผู้ซื้อ';
     Color bg = amber100;
@@ -931,6 +945,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Bottom Nav เพื่อใช้ในหน้าจอนี้ (คลาส _AdminUsersScreenState).
   Widget _buildBottomNav() {
     return BottomNavigationBar(
       currentIndex: _currentIndex,

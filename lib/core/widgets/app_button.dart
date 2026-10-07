@@ -14,6 +14,7 @@ class PrimaryButton extends StatelessWidget {
     required this.onPressed,
   });
 
+  /// หน้าที่: สร้าง UI ของหน้าจอหรือวิดเจ็ตใน app button (คลาส PrimaryButton).
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -52,6 +53,7 @@ class SecondaryButton extends StatelessWidget {
     required this.onPressed,
   });
 
+  /// หน้าที่: สร้าง UI ของหน้าจอหรือวิดเจ็ตใน app button (คลาส SecondaryButton).
   @override
   Widget build(BuildContext context) {
     return SizedBox(

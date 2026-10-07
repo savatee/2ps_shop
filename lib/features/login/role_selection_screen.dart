@@ -52,6 +52,7 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
     },
   ];
 
+  /// หน้าที่: สร้าง UI ส่วน Role Card เพื่อใช้ในหน้าจอนี้ (คลาส _RoleSelectionScreenState).
   Widget _buildRoleCard(Map<String, dynamic> role) {
     final String code = role['code'];
     final String title = role['title'];
@@ -176,6 +177,7 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ของหน้าจอหรือวิดเจ็ตใน role selection screen (คลาส _RoleSelectionScreenState).
   @override
   Widget build(BuildContext context) {
     return Scaffold(

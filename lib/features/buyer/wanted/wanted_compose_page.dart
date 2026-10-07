@@ -38,6 +38,7 @@ class _WantedComposePageState extends State<WantedComposePage> {
   bool _submitting = false;
   bool _removeExistingImage = false;
 
+  /// หน้าที่: เตรียมสถานะเริ่มต้นของหน้าจอและเริ่มโหลดข้อมูลที่จำเป็น (คลาส _WantedComposePageState).
   @override
   void initState() {
     super.initState();
@@ -84,6 +85,7 @@ class _WantedComposePageState extends State<WantedComposePage> {
     }
   }
 
+  /// หน้าที่: โหลดข้อมูล load หมวดหมู่สินค้า และอัปเดตสถานะการแสดงผลของหน้าจอ (คลาส _WantedComposePageState).
   Future<void> _loadCategories() async {
     try {
       final result = await ApiClient.getCategories();
@@ -103,6 +105,7 @@ class _WantedComposePageState extends State<WantedComposePage> {
     }
   }
 
+  /// หน้าที่: เลือกรับข้อมูล pick รูปภาพ จากผู้ใช้หรืออุปกรณ์ (คลาส _WantedComposePageState).
   Future<void> _pickImage() async {
     try {
       final image = await _imagePicker.pickImage(
@@ -125,6 +128,7 @@ class _WantedComposePageState extends State<WantedComposePage> {
     }
   }
 
+  /// หน้าที่: ลบข้อมูล remove รูปภาพ และจัดการผลการลบที่ API ส่งกลับ (คลาส _WantedComposePageState).
   void _removeImage() {
     setState(() {
       _selectedImagePath = null;
@@ -133,6 +137,7 @@ class _WantedComposePageState extends State<WantedComposePage> {
     });
   }
 
+  /// หน้าที่: คืนทรัพยากรของหน้าจอ เช่น controller และ listener ก่อนปิดหน้า (คลาส _WantedComposePageState).
   @override
   void dispose() {
     _titleController.dispose();
@@ -141,6 +146,7 @@ class _WantedComposePageState extends State<WantedComposePage> {
     super.dispose();
   }
 
+  /// หน้าที่: ตรวจสอบและส่งข้อมูล submit ไปบันทึกผ่าน API (คลาส _WantedComposePageState).
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
     if (_selectedCategoryId == null || _loadingCategories) {
@@ -201,6 +207,7 @@ class _WantedComposePageState extends State<WantedComposePage> {
     ],
   );
 
+  /// หน้าที่: ประมวลผลขั้นตอน plain Decoration สำหรับส่วน wanted compose page (คลาส _WantedComposePageState).
   InputDecoration _plainDecoration(String hint, {Widget? suffix}) =>
       InputDecoration(
         hintText: hint,
@@ -222,6 +229,7 @@ class _WantedComposePageState extends State<WantedComposePage> {
         errorStyle: const TextStyle(fontSize: 11, color: AppColors.danger),
       );
 
+  /// หน้าที่: ประมวลผลขั้นตอน field Card สำหรับส่วน wanted compose page (คลาส _WantedComposePageState).
   Widget _fieldCard({
     required String label,
     bool required = false,
@@ -268,6 +276,7 @@ class _WantedComposePageState extends State<WantedComposePage> {
     );
   }
 
+  /// หน้าที่: สลับค่า toggle Tag และอัปเดตหน้าจอตามสถานะใหม่ (คลาส _WantedComposePageState).
   void _toggleTag(String tag) {
     final current = _descriptionController.text.trimRight();
     if (current.contains(tag)) {
@@ -294,6 +303,7 @@ class _WantedComposePageState extends State<WantedComposePage> {
     setState(() {});
   }
 
+  /// หน้าที่: ประมวลผลขั้นตอน tag Chip สำหรับส่วน wanted compose page (คลาส _WantedComposePageState).
   Widget _tagChip(String tag, {bool urgent = false}) {
     final selected = _descriptionController.text.contains(tag);
     final fg = urgent ? const Color(0xFFB45309) : AppColors.textDark;
@@ -340,6 +350,7 @@ class _WantedComposePageState extends State<WantedComposePage> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Image Picker เพื่อใช้ในหน้าจอนี้ (คลาส _WantedComposePageState).
   Widget _buildImagePicker() {
     final existing = _removeExistingImage ? null : _existingImagePath;
     final hasImage =
@@ -434,6 +445,7 @@ class _WantedComposePageState extends State<WantedComposePage> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Category Field เพื่อใช้ในหน้าจอนี้ (คลาส _WantedComposePageState).
   Widget _buildCategoryField() {
     final validSelection = _categories.any(
       (category) =>
@@ -505,6 +517,7 @@ class _WantedComposePageState extends State<WantedComposePage> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ของหน้าจอหรือวิดเจ็ตใน wanted compose page (คลาส _WantedComposePageState).
   @override
   Widget build(BuildContext context) {
     final isEdit = widget.post != null;
@@ -787,6 +800,7 @@ class _DashedBorderPainter extends CustomPainter {
 
   const _DashedBorderPainter({required this.color, required this.radius});
 
+  /// หน้าที่: วาดเส้นขอบแบบประตามขนาดพื้นที่ที่ Flutter กำหนด (คลาส _DashedBorderPainter).
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
@@ -806,6 +820,7 @@ class _DashedBorderPainter extends CustomPainter {
     }
   }
 
+  /// หน้าที่: บอก Flutter ว่าต้องวาดใหม่เมื่อข้อมูล painter เปลี่ยนหรือไม่ (คลาส _DashedBorderPainter).
   @override
   bool shouldRepaint(covariant _DashedBorderPainter old) =>
       old.color != color || old.radius != radius;

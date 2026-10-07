@@ -92,6 +92,7 @@ class _SellerProductsScreenState extends State<SellerProductsScreen> {
     return options;
   }
 
+  /// หน้าที่: ค้นหาหรือกรองข้อมูล filter By หมวดหมู่สินค้า ตามเงื่อนไขที่ผู้ใช้เลือก (คลาส _SellerProductsScreenState).
   List<SellerProduct> filterByCategory(Iterable<SellerProduct> list) {
     if (selectedCategoryIds.isEmpty) return list.toList();
 
@@ -243,6 +244,7 @@ class _SellerProductsScreenState extends State<SellerProductsScreen> {
     await load();
   }
 
+  /// หน้าที่: เปิดหรือแสดงหน้าต่าง/ส่วน UI สำหรับ open หมวดหมู่สินค้า Filter Sheet (คลาส _SellerProductsScreenState).
   void openCategoryFilterSheet() {
     final draftSelectedIds = Set<int>.from(selectedCategoryIds);
 

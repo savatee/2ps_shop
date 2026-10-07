@@ -1,5 +1,6 @@
 import '../config/app_config.dart';
 
+/// เลือกหรือรับข้อมูล pick Product Image จากผู้ใช้หรืออุปกรณ์.
 String? pickProductImage(dynamic product) {
   if (product is! Map) return null;
   for (final key in [
@@ -15,6 +16,7 @@ String? pickProductImage(dynamic product) {
   return null;
 }
 
+/// สร้าง UI ส่วน Image Url เพื่อใช้ในหน้าจอนี้.
 String? buildImageUrl(String? path) {
   if (path == null || path.trim().isEmpty) return null;
   final value = path.trim();
@@ -33,6 +35,7 @@ String? buildImageUrl(String? path) {
   return '${AppConfig.appBaseUrl}/$relativePath';
 }
 
+/// ประมวลผลขั้นตอน is Image Path สำหรับส่วน image utils.
 bool isImagePath(String? value) {
   if (value == null || value.isEmpty) return false;
   if (value.startsWith('data:image/')) return true;

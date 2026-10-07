@@ -21,6 +21,7 @@ class _BuyerMainPageState extends State<BuyerMainPage> {
 
   late final List<Widget> _pages;
 
+  /// หน้าที่: เตรียมสถานะเริ่มต้นของหน้าจอและเริ่มโหลดข้อมูลที่จำเป็น (คลาส _BuyerMainPageState).
   @override
   void initState() {
     super.initState();
@@ -59,6 +60,7 @@ class _BuyerMainPageState extends State<BuyerMainPage> {
     });
   }
 
+  /// หน้าที่: สร้าง UI ของหน้าจอหรือวิดเจ็ตใน buyer main page (คลาส _BuyerMainPageState).
   @override
   Widget build(BuildContext context) {
     return Theme(

@@ -20,6 +20,7 @@ class _SellerHistoryScreenState extends State<SellerHistoryScreen> {
 
   String filter = 'ทั้งหมด';
 
+  /// หน้าที่: เตรียมสถานะเริ่มต้นของหน้าจอและเริ่มโหลดข้อมูลที่จำเป็น (คลาส _SellerHistoryScreenState).
   @override
   void initState() {
     super.initState();

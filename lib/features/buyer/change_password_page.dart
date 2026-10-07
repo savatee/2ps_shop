@@ -22,6 +22,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   bool _submitting = false;
   bool _showPasswords = false;
 
+  /// หน้าที่: คืนทรัพยากรของหน้าจอ เช่น controller และ listener ก่อนปิดหน้า (คลาส _ChangePasswordPageState).
   @override
   void dispose() {
     _oldPasswordController.dispose();
@@ -30,6 +31,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
     super.dispose();
   }
 
+  /// หน้าที่: ตรวจสอบและส่งข้อมูล submit ไปบันทึกผ่าน API (คลาส _ChangePasswordPageState).
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
 
@@ -53,6 +55,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
     if (success) Navigator.pop(context);
   }
 
+  /// หน้าที่: สร้าง UI ของหน้าจอหรือวิดเจ็ตใน change password page (คลาส _ChangePasswordPageState).
   @override
   Widget build(BuildContext context) {
     return Scaffold(

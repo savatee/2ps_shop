@@ -53,6 +53,7 @@ class _BuyerStorePageState extends State<BuyerStorePage> {
     return 'ร้านค้า';
   }
 
+  /// หน้าที่: เตรียมสถานะเริ่มต้นของหน้าจอและเริ่มโหลดข้อมูลที่จำเป็น (คลาส _BuyerStorePageState).
   @override
   void initState() {
     super.initState();
@@ -60,12 +61,14 @@ class _BuyerStorePageState extends State<BuyerStorePage> {
     _loadCartCount();
   }
 
+  /// หน้าที่: คืนทรัพยากรของหน้าจอ เช่น controller และ listener ก่อนปิดหน้า (คลาส _BuyerStorePageState).
   @override
   void dispose() {
     _searchController.dispose();
     super.dispose();
   }
 
+  /// หน้าที่: โหลดข้อมูล load Store และอัปเดตสถานะการแสดงผลของหน้าจอ (คลาส _BuyerStorePageState).
   Future<void> _loadStore() async {
     setState(() {
       _isLoading = true;
@@ -150,6 +153,7 @@ class _BuyerStorePageState extends State<BuyerStorePage> {
         .toList();
   }
 
+  /// หน้าที่: เปิดหรือแสดงหน้าต่าง/ส่วน UI สำหรับ open แชท (คลาส _BuyerStorePageState).
   void _openChat() {
     if (widget.userId == widget.sellerId) {
       ScaffoldMessenger.of(
@@ -170,6 +174,7 @@ class _BuyerStorePageState extends State<BuyerStorePage> {
     );
   }
 
+  /// หน้าที่: เปิดหรือแสดงหน้าต่าง/ส่วน UI สำหรับ open หมวดหมู่สินค้า (คลาส _BuyerStorePageState).
   Future<void> _openCategories() async {
     if (_categories.isEmpty) return;
     final selected = await showModalBottomSheet<int?>(
@@ -207,6 +212,7 @@ class _BuyerStorePageState extends State<BuyerStorePage> {
     });
   }
 
+  /// หน้าที่: เปิดหรือแสดงหน้าต่าง/ส่วน UI สำหรับ open สินค้า (คลาส _BuyerStorePageState).
   void _openProduct(Map<String, dynamic> product) {
     final productId = int.tryParse(product['product_id']?.toString() ?? '');
     if (productId == null) return;
@@ -219,12 +225,14 @@ class _BuyerStorePageState extends State<BuyerStorePage> {
     );
   }
 
+  /// หน้าที่: โหลดข้อมูล load ตะกร้าสินค้า Count และอัปเดตสถานะการแสดงผลของหน้าจอ (คลาส _BuyerStorePageState).
   Future<void> _loadCartCount() async {
     final cart = await ApiClient.getCart(widget.userId);
     if (!mounted) return;
     setState(() => _cartCount = cart.length);
   }
 
+  /// หน้าที่: เปิดหรือแสดงหน้าต่าง/ส่วน UI สำหรับ open ตะกร้าสินค้า (คลาส _BuyerStorePageState).
   Future<void> _openCart() async {
     await Navigator.push(
       context,
@@ -233,6 +241,7 @@ class _BuyerStorePageState extends State<BuyerStorePage> {
     await _loadCartCount();
   }
 
+  /// หน้าที่: เปิดหรือแสดงหน้าต่าง/ส่วน UI สำหรับ open Main Tab (คลาส _BuyerStorePageState).
   void _openMainTab(int index) {
     Navigator.pushAndRemoveUntil(
       context,
@@ -243,6 +252,7 @@ class _BuyerStorePageState extends State<BuyerStorePage> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Search Bar เพื่อใช้ในหน้าจอนี้ (คลาส _BuyerStorePageState).
   Widget _buildSearchBar() {
     return Container(
       height: 38,
@@ -273,6 +283,7 @@ class _BuyerStorePageState extends State<BuyerStorePage> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Store Header เพื่อใช้ในหน้าจอนี้ (คลาส _BuyerStorePageState).
   Widget _buildStoreHeader() {
     final profileImage = _seller['profile_image_url']?.toString() ?? '';
     final createdAt = DateTime.tryParse(
@@ -391,6 +402,7 @@ class _BuyerStorePageState extends State<BuyerStorePage> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Store Tabs เพื่อใช้ในหน้าจอนี้ (คลาส _BuyerStorePageState).
   Widget _buildStoreTabs() {
     final tabs = ['แนะนำ', 'สินค้าทั้งหมด (${_products.length})'];
     return Container(
@@ -449,6 +461,7 @@ class _BuyerStorePageState extends State<BuyerStorePage> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Products เพื่อใช้ในหน้าจอนี้ (คลาส _BuyerStorePageState).
   Widget _buildProducts() {
     final products = _filteredProducts;
     final sectionTitle = _selectedCategoryId != null
@@ -566,6 +579,7 @@ class _BuyerStorePageState extends State<BuyerStorePage> {
     return 'สินค้าในหมวดหมู่';
   }
 
+  /// หน้าที่: สร้าง UI ของหน้าจอหรือวิดเจ็ตใน buyer store page (คลาส _BuyerStorePageState).
   @override
   Widget build(BuildContext context) {
     return Scaffold(

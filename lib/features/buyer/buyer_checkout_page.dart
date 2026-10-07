@@ -62,6 +62,7 @@ class _BuyerCheckoutPageState extends State<BuyerCheckoutPage> {
     return groups;
   }
 
+  /// หน้าที่: ประมวลผลขั้นตอน ผู้ขาย Label สำหรับส่วน buyer checkout page (คลาส _BuyerCheckoutPageState).
   String _sellerLabel(List<Map<String, dynamic>> items) {
     final first = items.first;
     final name = first['seller_name']?.toString().trim() ?? '';
@@ -76,12 +77,14 @@ class _BuyerCheckoutPageState extends State<BuyerCheckoutPage> {
     return 'ร้านค้าพันธมิตร 2PS Official';
   }
 
+  /// หน้าที่: เตรียมสถานะเริ่มต้นของหน้าจอและเริ่มโหลดข้อมูลที่จำเป็น (คลาส _BuyerCheckoutPageState).
   @override
   void initState() {
     super.initState();
     _loadData();
   }
 
+  /// หน้าที่: โหลดข้อมูล load ข้อมูล และอัปเดตสถานะการแสดงผลของหน้าจอ (คลาส _BuyerCheckoutPageState).
   Future<void> _loadData() async {
     setState(() => _isLoading = true);
 
@@ -176,11 +179,13 @@ class _BuyerCheckoutPageState extends State<BuyerCheckoutPage> {
     });
   }
 
+  /// หน้าที่: บันทึกหรือสร้างข้อมูล add ที่อยู่จัดส่ง แล้วจัดการผลที่เซิร์ฟเวอร์ตอบกลับ (คลาส _BuyerCheckoutPageState).
   Future<void> _addAddress() async {
     final saved = await showAddressFormSheet(context, userId: widget.userId);
     if (saved == true) _loadData();
   }
 
+  /// หน้าที่: เปิดหรือแสดงหน้าต่าง/ส่วน UI สำหรับ show ที่อยู่จัดส่ง Selector (คลาส _BuyerCheckoutPageState).
   void _showAddressSelector() {
     showModalBottomSheet(
       context: context,
@@ -255,6 +260,7 @@ class _BuyerCheckoutPageState extends State<BuyerCheckoutPage> {
     );
   }
 
+  /// หน้าที่: ตรวจสอบและยืนยันรายการ confirm คำสั่งซื้อ ก่อนดำเนินการต่อ (คลาส _BuyerCheckoutPageState).
   Future<void> _confirmOrder() async {
     if (_selectedAddressId == null) {
       showAppSnackBar(context, 'กรุณาเลือกที่อยู่จัดส่ง', isError: true);
@@ -377,6 +383,7 @@ class _BuyerCheckoutPageState extends State<BuyerCheckoutPage> {
     );
   }
 
+  /// หน้าที่: ประมวลผลขั้นตอน ที่อยู่จัดส่ง บรรทัด สำหรับส่วน buyer checkout page (คลาส _BuyerCheckoutPageState).
   String _addressLine(Map<String, dynamic> a) {
     final parts = [
       a['address_detail'],
@@ -388,6 +395,7 @@ class _BuyerCheckoutPageState extends State<BuyerCheckoutPage> {
     return parts.join(' ');
   }
 
+  /// หน้าที่: สร้าง UI ของหน้าจอหรือวิดเจ็ตใน buyer checkout page (คลาส _BuyerCheckoutPageState).
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -582,6 +590,7 @@ class _BuyerCheckoutPageState extends State<BuyerCheckoutPage> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Address Card เพื่อใช้ในหน้าจอนี้ (คลาส _BuyerCheckoutPageState).
   Widget _buildAddressCard() {
     Map<String, dynamic>? selectedAddress;
     if (_selectedAddressId != null) {
@@ -697,6 +706,7 @@ class _BuyerCheckoutPageState extends State<BuyerCheckoutPage> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Product Card เพื่อใช้ในหน้าจอนี้ (คลาส _BuyerCheckoutPageState).
   Widget _buildProductCard() {
     final shopGroups = _itemsBySeller.values.toList();
     if (shopGroups.isEmpty) return const SizedBox.shrink();
@@ -706,6 +716,7 @@ class _BuyerCheckoutPageState extends State<BuyerCheckoutPage> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Shop Card เพื่อใช้ในหน้าจอนี้ (คลาส _BuyerCheckoutPageState).
   Widget _buildShopCard(List<Map<String, dynamic>> shopItems) {
     return Container(
       margin: const EdgeInsets.only(bottom: 14),
@@ -861,6 +872,7 @@ class _BuyerCheckoutPageState extends State<BuyerCheckoutPage> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Payment Methods เพื่อใช้ในหน้าจอนี้ (คลาส _BuyerCheckoutPageState).
   Widget _buildPaymentMethods() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -893,6 +905,7 @@ class _BuyerCheckoutPageState extends State<BuyerCheckoutPage> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Payment Option เพื่อใช้ในหน้าจอนี้ (คลาส _BuyerCheckoutPageState).
   Widget _buildPaymentOption({
     required String id,
     required String title,
@@ -957,6 +970,7 @@ class _BuyerCheckoutPageState extends State<BuyerCheckoutPage> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Summary เพื่อใช้ในหน้าจอนี้ (คลาส _BuyerCheckoutPageState).
   Widget _buildSummary() {
     return Container(
       margin: const EdgeInsets.only(top: 20, bottom: 20),

@@ -8,6 +8,7 @@ import '../features/seller/seller_home_screen.dart';
 class AppRouter {
   const AppRouter._();
 
+  /// หน้าที่: เลือกหน้าหลักที่จะแสดงตามบทบาทของบัญชีผู้ใช้ (คลาส AppRouter).
   static Widget screenForUser(LoginUserModel user) {
     switch (user.role.trim().toLowerCase()) {
       case 'admin':

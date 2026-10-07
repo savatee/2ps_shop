@@ -49,11 +49,13 @@ class AppRadius {
 class AppBreakpoints {
   static const double tablet = 700;
   static const double desktop = 1100;
+  /// หน้าที่: คำนวณระยะขอบแนวนอนตามความกว้างหน้าจอเพื่อปรับ layout ให้เหมาะกับอุปกรณ์ (คลาส AppBreakpoints).
   static double horizontalPadding(double width) => width >= desktop
       ? 32
       : width >= tablet
       ? 24
       : 16;
+  /// หน้าที่: เลือกจำนวนคอลัมน์สินค้าให้เหมาะกับความกว้างหน้าจอ (คลาส AppBreakpoints).
   static int gridColumns(double width) => width >= desktop
       ? 5
       : width >= tablet
@@ -116,11 +118,13 @@ class AppTheme {
 }
 
 class Validators {
+  /// หน้าที่: ตรวจว่าช่องกรอกข้อมูลไม่ว่าง และคืนข้อความเตือนหากไม่ได้กรอก (คลาส Validators).
   static String? required(
     String? value, {
     String message = 'กรุณากรอกข้อมูล',
   }) => value == null || value.trim().isEmpty ? message : null;
 
+  /// หน้าที่: ตรวจชื่อผู้รับให้มีเฉพาะตัวอักษรและเครื่องหมายที่อนุญาต (คลาส Validators).
   static String? recipientName(String? value) {
     final text = value?.trim() ?? '';
     if (text.isEmpty) return 'กรุณากรอกชื่อ-นามสกุลผู้รับ';
@@ -130,6 +134,7 @@ class Validators {
     return null;
   }
 
+  /// หน้าที่: ตรวจข้อความที่อยู่ให้มีเฉพาะตัวอักษรและเครื่องหมายที่อนุญาต (คลาส Validators).
   static String? addressText(String? value, {required String label}) {
     final text = value?.trim() ?? '';
     if (text.isEmpty) return 'กรุณากรอก$label';
@@ -139,6 +144,7 @@ class Validators {
     return null;
   }
 
+  /// หน้าที่: ตรวจรูปแบบที่อยู่และกำหนดให้มีเลขที่บ้าน (คลาส Validators).
   static String? addressLine(String? value) {
     final text = value?.trim() ?? '';
     if (text.isEmpty) return 'กรุณากรอกที่อยู่ (บ้านเลขที่, ถนน)';
@@ -151,6 +157,7 @@ class Validators {
     return null;
   }
 
+  /// หน้าที่: ตรวจว่าเบอร์โทรศัพท์ขึ้นต้นด้วย 0 และมีตัวเลขครบ 10 หลัก (คลาส Validators).
   static String? thaiPhone(String? value) {
     final phone = value?.trim() ?? '';
     if (!RegExp(r'^0[0-9]{9}$').hasMatch(phone)) {
@@ -159,6 +166,7 @@ class Validators {
     return null;
   }
 
+  /// หน้าที่: ตรวจว่ารหัสไปรษณีย์เป็นตัวเลข 5 หลัก (คลาส Validators).
   static String? postalCode(String? value) {
     final code = value?.trim() ?? '';
     if (!RegExp(r'^[0-9]{5}$').hasMatch(code)) {
@@ -167,9 +175,11 @@ class Validators {
     return null;
   }
 
+  /// หน้าที่: ตรวจว่ารหัสผ่านมีความยาวอย่างน้อย 6 ตัวอักษร (คลาส Validators).
   static String? password(String? value) => value == null || value.length < 6
       ? 'รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร'
       : null;
+  /// หน้าที่: ตรวจว่าค่าที่กรอกเป็นตัวเลขมากกว่า 0 (คลาส Validators).
   static String? positiveNumber(
     String? value, {
     String message = 'กรุณากรอกตัวเลขที่มากกว่า 0',

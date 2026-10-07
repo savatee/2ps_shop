@@ -29,6 +29,7 @@ function sellerIdValue(): int
 }
 
 
+// หน้าที่: ประมวลผลข้อมูล ผู้ขาย Exists ฝั่ง API และส่งผลลัพธ์กลับไปยังแอป.
 function sellerExists(mysqli $conn, int $sellerId): bool
 {
     $stmt = $conn->prepare(

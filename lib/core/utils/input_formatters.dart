@@ -42,6 +42,7 @@ class _MoneyInputFormatter extends TextInputFormatter {
     : _pattern = RegExp('^\\d*(\\.\\d{0,$decimalDigits})?\$');
 
   @override
+  /// จัดรูปแบบข้อมูล format Edit Update ก่อนนำไปแสดงผล (คลาส _MoneyInputFormatter).
   TextEditingValue formatEditUpdate(
     TextEditingValue oldValue,
     TextEditingValue newValue,

@@ -363,6 +363,7 @@ class SellerApi {
     return r;
   }
 
+  /// หน้าที่: ยกเลิกรายการ cancel คำสั่งซื้อ และอัปเดตสถานะหลัง API ยืนยัน (คลาส SellerApi).
   static Future<Map<String, dynamic>> cancelOrder({
     required int sellerId,
     required int orderId,

@@ -35,6 +35,7 @@ class _PaymentPageState extends State<PaymentPage> {
 
   String _paymentStatus = 'pending';
 
+  /// หน้าที่: เตรียมสถานะเริ่มต้นของหน้าจอและเริ่มโหลดข้อมูลที่จำเป็น (คลาส _PaymentPageState).
   @override
   void initState() {
     super.initState();
@@ -192,6 +193,7 @@ class _PaymentPageState extends State<PaymentPage> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Timer Card เพื่อใช้ในหน้าจอนี้ (คลาส _PaymentPageState).
   Widget _buildTimerCard() {
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
@@ -259,6 +261,7 @@ class _PaymentPageState extends State<PaymentPage> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Qr Card เพื่อใช้ในหน้าจอนี้ (คลาส _PaymentPageState).
   Widget _buildQrCard() {
     final qrUrl = _paymentData?['qr_image_url']?.toString();
 
@@ -462,6 +465,7 @@ class _PaymentPageState extends State<PaymentPage> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Order Summary เพื่อใช้ในหน้าจอนี้ (คลาส _PaymentPageState).
   Widget _buildOrderSummary() {
     if (_orderData == null) return const SizedBox.shrink();
 
@@ -552,6 +556,7 @@ class _PaymentPageState extends State<PaymentPage> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Bottom Action เพื่อใช้ในหน้าจอนี้ (คลาส _PaymentPageState).
   Widget _buildBottomAction() {
     return SafeArea(
       child: Container(

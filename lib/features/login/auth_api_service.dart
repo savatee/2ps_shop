@@ -36,6 +36,7 @@ class AuthApiService {
     }
   }
 
+  /// หน้าที่: ประมวลผลขั้นตอน invalid Response สำหรับส่วน auth api service (คลาส AuthApiService).
   static AuthResult _invalidResponse(http.Response response) {
     return AuthResult(
       success: false,
@@ -45,6 +46,7 @@ class AuthApiService {
     );
   }
 
+  /// หน้าที่: ประมวลผลขั้นตอน เข้าสู่ระบบ สำหรับส่วน auth api service (คลาส AuthApiService).
   Future<AuthResult> login({
     required String email,
     required String password,
@@ -138,6 +140,7 @@ class AuthApiService {
     }
   }
 
+  /// หน้าที่: ประมวลผลขั้นตอน สมัครสมาชิก สำหรับส่วน auth api service (คลาส AuthApiService).
   Future<AuthResult> register({
     required String name,
     required String email,

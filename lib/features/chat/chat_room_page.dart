@@ -90,6 +90,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
 
   Timer? _refreshTimer;
 
+  /// หน้าที่: เตรียมสถานะเริ่มต้นของหน้าจอและเริ่มโหลดข้อมูลที่จำเป็น (คลาส _ChatRoomPageState).
   @override
   void initState() {
     super.initState();
@@ -104,6 +105,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     });
   }
 
+  /// หน้าที่: คืนทรัพยากรของหน้าจอ เช่น controller และ listener ก่อนปิดหน้า (คลาส _ChatRoomPageState).
   @override
   void dispose() {
     _refreshTimer?.cancel();
@@ -112,6 +114,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     super.dispose();
   }
 
+  /// หน้าที่: ประมวลผลขั้นตอน init สำหรับส่วน chat room page (คลาส _ChatRoomPageState).
   Future<void> _init() async {
     setState(() {
       _loading = true;
@@ -156,6 +159,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     }
   }
 
+  /// หน้าที่: โหลดข้อมูล load ข้อความ และอัปเดตสถานะการแสดงผลของหน้าจอ (คลาส _ChatRoomPageState).
   Future<void> _loadMessages({bool forceScroll = true}) async {
     if (_chatId == null || _refreshing) return;
     _refreshing = true;
@@ -187,6 +191,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     }
   }
 
+  /// หน้าที่: ประมวลผลขั้นตอน scroll To Bottom สำหรับส่วน chat room page (คลาส _ChatRoomPageState).
   void _scrollToBottom() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!_scrollController.hasClients) return;
@@ -194,6 +199,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     });
   }
 
+  /// หน้าที่: ประมวลผลขั้นตอน maybe Scroll To Bottom สำหรับส่วน chat room page (คลาส _ChatRoomPageState).
   void _maybeScrollToBottom() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!_scrollController.hasClients) return;
@@ -205,6 +211,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     });
   }
 
+  /// หน้าที่: ประมวลผลขั้นตอน ข้อความ With โพสต์ตามหาสินค้า Context สำหรับส่วน chat room page (คลาส _ChatRoomPageState).
   String? _messageWithWantedContext(String? text) {
     final userText = text?.trim();
     if (!_hasWantedContext || _wantedContextSent) return userText;
@@ -236,6 +243,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     return '$messageContext\n\nข้อความ: $userText';
   }
 
+  /// หน้าที่: ส่งข้อมูล send ไปยังผู้รับหรือ API แล้วจัดการผลตอบกลับ (คลาส _ChatRoomPageState).
   Future<void> _send({
     String? text,
     String? imageBase64,
@@ -336,6 +344,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
 
   int get _activeUserId => widget.isSeller ? widget.sellerId : widget.buyerId;
 
+  /// หน้าที่: เลือกรับข้อมูล pick รูปภาพ จากผู้ใช้หรืออุปกรณ์ (คลาส _ChatRoomPageState).
   Future<void> _pickImage() async {
     if (_sending) return;
     final file = await _picker.pickImage(
@@ -350,6 +359,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     setState(() => _selectedImage = bytes);
   }
 
+  /// หน้าที่: ส่งข้อมูล send Composer ข้อความ ไปยังผู้รับหรือ API แล้วจัดการผลตอบกลับ (คลาส _ChatRoomPageState).
   Future<void> _sendComposerMessage() async {
     if (_sending) return;
     final text = _messageController.text;
@@ -361,6 +371,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ของหน้าจอหรือวิดเจ็ตใน chat room page (คลาส _ChatRoomPageState).
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -400,6 +411,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
       widget.offerPrice?.trim().isNotEmpty == true ||
       widget.offerComment?.trim().isNotEmpty == true;
 
+  /// หน้าที่: สร้าง UI ส่วน Wanted Context เพื่อใช้ในหน้าจอนี้ (คลาส _ChatRoomPageState).
   Widget _buildWantedContext() {
     final description = widget.postDescription?.trim();
     final budget = widget.postBudget?.trim();
@@ -516,6 +528,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Body เพื่อใช้ในหน้าจอนี้ (คลาส _ChatRoomPageState).
   Widget _buildBody() {
     if (_loading) return const LoadingView();
 
@@ -597,6 +610,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Date Separator เพื่อใช้ในหน้าจอนี้ (คลาส _ChatRoomPageState).
   Widget _buildDateSeparator(DateTime date) {
     final label =
         'วันที่ ${date.day} ${_thaiMonths[date.month - 1]} ${date.year + 543}';
@@ -625,6 +639,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Composer เพื่อใช้ในหน้าจอนี้ (คลาส _ChatRoomPageState).
   Widget _buildComposer() {
     return Container(
       decoration: const BoxDecoration(
@@ -796,6 +811,7 @@ class _MessageBubble extends StatelessWidget {
     }
   }
 
+  /// หน้าที่: สร้าง UI ของหน้าจอหรือวิดเจ็ตใน chat room page (คลาส _MessageBubble).
   @override
   Widget build(BuildContext context) {
     final text = message['message']?.toString();

@@ -12,6 +12,7 @@ class QuantitySelector extends StatelessWidget {
     this.maxQuantity = 999,
     this.iconSize = 20,
   });
+  /// หน้าที่: สร้าง UI ของหน้าจอหรือวิดเจ็ตใน quantity selector (คลาส QuantitySelector).
   @override
   Widget build(BuildContext context) => Row(
     mainAxisSize: MainAxisSize.min,

@@ -26,6 +26,7 @@ class AppTextField extends StatelessWidget {
     this.inputFormatters,
     this.validator,
   });
+  /// หน้าที่: สร้าง UI ของหน้าจอหรือวิดเจ็ตใน app text field (คลาส AppTextField).
   @override
   Widget build(BuildContext context) => TextFormField(
     controller: controller,

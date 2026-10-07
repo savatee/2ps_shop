@@ -19,6 +19,7 @@ class ProductCard extends StatelessWidget {
     this.imageUrl,
     required this.onTap,
   });
+  /// หน้าที่: สร้าง UI ของหน้าจอหรือวิดเจ็ตใน product card (คลาส ProductCard).
   @override
   Widget build(BuildContext context) => InkWell(
     onTap: onTap,

@@ -4,6 +4,7 @@ class SectionHeader extends StatelessWidget {
   final String title;
   final IconData? icon;
   const SectionHeader({super.key, required this.title, this.icon});
+  /// หน้าที่: สร้าง UI ของหน้าจอหรือวิดเจ็ตใน section header (คลาส SectionHeader).
   @override
   Widget build(BuildContext context) => Row(
     children: [

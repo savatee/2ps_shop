@@ -40,18 +40,21 @@ class _WantedFeedPageState extends State<WantedFeedPage> {
   ];
   int _selectedCategoryIndex = 0;
 
+  /// หน้าที่: เตรียมสถานะเริ่มต้นของหน้าจอและเริ่มโหลดข้อมูลที่จำเป็น (คลาส _WantedFeedPageState).
   @override
   void initState() {
     super.initState();
     _load();
   }
 
+  /// หน้าที่: คืนทรัพยากรของหน้าจอ เช่น controller และ listener ก่อนปิดหน้า (คลาส _WantedFeedPageState).
   @override
   void dispose() {
     _searchController.dispose();
     super.dispose();
   }
 
+  /// หน้าที่: โหลดข้อมูล load และอัปเดตสถานะการแสดงผลของหน้าจอ (คลาส _WantedFeedPageState).
   Future<void> _load() async {
     setState(() => _loading = true);
 
@@ -108,6 +111,7 @@ class _WantedFeedPageState extends State<WantedFeedPage> {
     }).toList();
   }
 
+  /// หน้าที่: เปิดหรือแสดงหน้าต่าง/ส่วน UI สำหรับ open Compose (คลาส _WantedFeedPageState).
   Future<void> _openCompose() async {
     final posted = await Navigator.push<bool>(
       context,
@@ -118,6 +122,7 @@ class _WantedFeedPageState extends State<WantedFeedPage> {
     if (posted == true) _load();
   }
 
+  /// หน้าที่: ปรับปรุงข้อมูลหรือสถานะ edit โพสต์ ผ่าน API และอัปเดตหน้าจอ (คลาส _WantedFeedPageState).
   Future<void> _editPost(Map<String, dynamic> post) async {
     final updated = await Navigator.push<bool>(
       context,
@@ -128,6 +133,7 @@ class _WantedFeedPageState extends State<WantedFeedPage> {
     if (updated == true) _load();
   }
 
+  /// หน้าที่: ลบข้อมูล delete โพสต์ และจัดการผลการลบที่ API ส่งกลับ (คลาส _WantedFeedPageState).
   Future<void> _deletePost(Map<String, dynamic> post) async {
     final postId = int.tryParse(post['wanted_post_id']?.toString() ?? '');
     if (postId == null) return;
@@ -166,6 +172,7 @@ class _WantedFeedPageState extends State<WantedFeedPage> {
     if (success) _load();
   }
 
+  /// หน้าที่: สลับค่า toggle โพสต์ สถานะ และอัปเดตหน้าจอตามสถานะใหม่ (คลาส _WantedFeedPageState).
   Future<void> _togglePostStatus(Map<String, dynamic> post) async {
     final postId = int.tryParse(post['wanted_post_id']?.toString() ?? '');
     if (postId == null) return;
@@ -186,6 +193,7 @@ class _WantedFeedPageState extends State<WantedFeedPage> {
     if (success) _load();
   }
 
+  /// หน้าที่: เปิดหรือแสดงหน้าต่าง/ส่วน UI สำหรับ show ผู้ขาย ข้อเสนอ Dialog (คลาส _WantedFeedPageState).
   Future<void> _showSellerOfferDialog(Map<String, dynamic> post) async {
     final postId = int.tryParse(post['wanted_post_id']?.toString() ?? '');
     if (postId == null || widget.userId <= 0) return;
@@ -199,6 +207,7 @@ class _WantedFeedPageState extends State<WantedFeedPage> {
         context: context,
         builder: (dialogContext) => StatefulBuilder(
           builder: (dialogContentContext, setDialogState) {
+            /// หน้าที่: ตรวจสอบและส่งข้อมูล submit ไปบันทึกผ่าน API (คลาส _WantedFeedPageState).
             Future<void> submit() async {
               final price = double.tryParse(priceController.text.trim());
               final detail = detailController.text.trim();
@@ -307,6 +316,7 @@ class _WantedFeedPageState extends State<WantedFeedPage> {
     }
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Empty State เพื่อใช้ในหน้าจอนี้ (คลาส _WantedFeedPageState).
   Widget _buildEmptyState() {
     if (_posts.isEmpty &&
         _searchKeyword.isEmpty &&
@@ -330,6 +340,7 @@ class _WantedFeedPageState extends State<WantedFeedPage> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ของหน้าจอหรือวิดเจ็ตใน wanted feed page (คลาส _WantedFeedPageState).
   @override
   Widget build(BuildContext context) {
     final displayPosts = _filteredPosts;
@@ -422,6 +433,7 @@ class _WantedFeedPageState extends State<WantedFeedPage> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Header เพื่อใช้ในหน้าจอนี้ (คลาส _WantedFeedPageState).
   Widget _buildHeader() {
     return Container(
       color: SellerTheme.navy,
@@ -547,6 +559,7 @@ class _WantedFeedPageState extends State<WantedFeedPage> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Category Row เพื่อใช้ในหน้าจอนี้ (คลาส _WantedFeedPageState).
   Widget _buildCategoryRow() {
     return SizedBox(
       height: 54,
@@ -613,6 +626,7 @@ class _WantedFeedPageState extends State<WantedFeedPage> {
     );
   }
 
+  /// หน้าที่: ประมวลผลขั้นตอน หมวดหมู่สินค้า Chip สำหรับส่วน wanted feed page (คลาส _WantedFeedPageState).
   Widget _categoryChip(int index) {
     final selected = _selectedCategoryIndex == index;
     final icon = switch (index) {
@@ -682,6 +696,7 @@ class _FeedCard extends StatelessWidget {
     required this.onToggleStatus,
   });
 
+  /// หน้าที่: สร้าง UI ของหน้าจอหรือวิดเจ็ตใน wanted feed page (คลาส _FeedCard).
   @override
   Widget build(BuildContext context) {
     final buyerName = post['buyer_name']?.toString() ?? 'ผู้ซื้อ';

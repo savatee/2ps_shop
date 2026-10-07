@@ -23,6 +23,7 @@ class AdminApiService {
     return json.decode(text);
   }
 
+  /// หน้าที่: ตรวจสอบเงื่อนไข is Success และคืนผลเป็น true หรือ false (คลาส AdminApiService).
   static bool _isSuccess(dynamic decoded) =>
       decoded is Map &&
       (decoded['status'] == 'success' || decoded['success'] == true);
@@ -95,6 +96,7 @@ class AdminApiService {
     List<int> categoryIds = const [],
     String search = '',
   }) async {
+    /// หน้าที่: ประมวลผลขั้นตอน empty สำหรับส่วน admin api service (คลาส AdminApiService).
     Map<String, dynamic> empty() => {'categories': [], 'products': []};
     try {
       final res = await _get(

@@ -21,6 +21,7 @@ function emvField($id, $value) {
     return $id . sprintf("%02d", strlen($value)) . $value;
 }
 
+// หน้าที่: สร้าง payload สำหรับนำไปสร้าง QR PromptPay.
 function generatePromptPayPayload($target, $amount = null) {
     $target = preg_replace('/[^0-9]/', '', $target);
     if (strlen($target) == 10) {

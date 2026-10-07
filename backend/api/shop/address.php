@@ -3,6 +3,7 @@ require_once __DIR__ . '/../config/bootstrap.php';
 
 $action = $_POST['action'] ?? $_GET['action'] ?? '';
 
+// หน้าที่: ประมวลผลข้อมูล read ที่อยู่จัดส่ง ข้อมูล ฝั่ง API และส่งผลลัพธ์กลับไปยังแอป.
 function readAddressFields() {
     return [
         trim($_POST['recipient_name'] ?? ''),
@@ -15,6 +16,7 @@ function readAddressFields() {
     ];
 }
 
+// ตรวจสอบความถูกต้องของข้อมูล validate Address Fields ก่อนดำเนินการต่อ.
 function validateAddressFields(array $f) {
     if ($f[0] === '') errorResponse("กรุณากรอกชื่อ-นามสกุลผู้รับ");
     if ($f[1] === '') errorResponse("กรุณากรอกเบอร์โทรศัพท์");
@@ -44,6 +46,7 @@ function validateAddressFields(array $f) {
     }
 }
 
+// หน้าที่: ผูกพารามิเตอร์และรัน prepared statement พร้อมตรวจผลลัพธ์.
 function execStmt(mysqli_stmt $stmt) {
     if (!$stmt->execute()) {
         $err = $stmt->error;
@@ -52,6 +55,7 @@ function execStmt(mysqli_stmt $stmt) {
     }
 }
 
+// หน้าที่: ยกเลิกเครื่องหมายที่อยู่เริ่มต้นเดิมก่อนกำหนดที่อยู่ใหม่.
 function clearDefault($userId) {
     global $conn;
     $stmt = $conn->prepare("UPDATE addresses SET is_default = 0 WHERE address_user_id = ? AND is_default = 1");
@@ -60,6 +64,7 @@ function clearDefault($userId) {
     $stmt->close();
 }
 
+// หน้าที่: ครอบการเปลี่ยนแปลงฐานข้อมูลด้วย transaction และ rollback เมื่อผิดพลาด.
 function runInTransaction(callable $fn) {
     global $conn;
     $conn->begin_transaction();
@@ -73,6 +78,7 @@ function runInTransaction(callable $fn) {
     }
 }
 
+// หน้าที่: ค้นหาที่อยู่จัดส่งและตรวจว่าเป็นของผู้ใช้ที่ระบุ.
 function findOwnedAddress($addressId, $userId) {
     global $conn;
     $stmt = $conn->prepare("SELECT * FROM addresses WHERE address_id = ? AND address_user_id = ? LIMIT 1");

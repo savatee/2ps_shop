@@ -12,6 +12,7 @@ class AppBarCartButton extends StatelessWidget {
     required this.onPressed,
   });
 
+  /// หน้าที่: สร้าง UI ของหน้าจอหรือวิดเจ็ตใน app bar cart button (คลาส AppBarCartButton).
   @override
   Widget build(BuildContext context) {
     return Material(

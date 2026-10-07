@@ -26,12 +26,14 @@ class _AdminReportsScreenState extends State<AdminReportsScreen> {
   static const Color border = Color(0xFFE6EBF2);
   static const Color canvas = Color(0xFFF4F6FA);
 
+  /// หน้าที่: เตรียมสถานะเริ่มต้นของหน้าจอและเริ่มโหลดข้อมูลที่จำเป็น (คลาส _AdminReportsScreenState).
   @override
   void initState() {
     super.initState();
     _fetchReportData();
   }
 
+  /// หน้าที่: โหลดข้อมูล fetch รายงาน ข้อมูล และอัปเดตสถานะการแสดงผลของหน้าจอ (คลาส _AdminReportsScreenState).
   Future<void> _fetchReportData() async {
     setState(() => _isLoading = true);
 
@@ -50,10 +52,12 @@ class _AdminReportsScreenState extends State<AdminReportsScreen> {
     }
   }
 
+  /// หน้าที่: จัดรูปแบบข้อมูล format จำนวนเงิน ก่อนนำไปแสดงผล (คลาส _AdminReportsScreenState).
   String formatCurrency(num number) {
     return NumberFormat('#,###').format(number);
   }
 
+  /// หน้าที่: แปลงค่าเป็นจำนวนเต็ม และใช้ค่าเริ่มต้นเมื่อแปลงไม่ได้ (คลาส _AdminReportsScreenState).
   int _asInt(dynamic value) {
     if (value is num) return value.toInt();
     return int.tryParse(value.toString()) ?? 0;
@@ -64,6 +68,7 @@ class _AdminReportsScreenState extends State<AdminReportsScreen> {
     return num.tryParse(value.toString()) ?? 0;
   }
 
+  /// หน้าที่: แปลงข้อมูลเป็นสี หากแปลงไม่ได้ให้ใช้สีเริ่มต้น (คลาส _AdminReportsScreenState).
   Color _asColor(dynamic value) {
     final parsed = int.tryParse(value.toString());
     return parsed == null ? slate400 : Color(parsed);
@@ -77,6 +82,7 @@ class _AdminReportsScreenState extends State<AdminReportsScreen> {
     return sum;
   }
 
+  /// หน้าที่: สร้าง UI ของหน้าจอหรือวิดเจ็ตใน admin reports screen (คลาส _AdminReportsScreenState).
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -110,6 +116,7 @@ class _AdminReportsScreenState extends State<AdminReportsScreen> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Header เพื่อใช้ในหน้าจอนี้ (คลาส _AdminReportsScreenState).
   Widget _buildHeader() {
     return Container(
       width: double.infinity,
@@ -167,6 +174,7 @@ class _AdminReportsScreenState extends State<AdminReportsScreen> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Total Card เพื่อใช้ในหน้าจอนี้ (คลาส _AdminReportsScreenState).
   Widget _buildTotalCard() {
     return Container(
       width: double.infinity,
@@ -231,6 +239,7 @@ class _AdminReportsScreenState extends State<AdminReportsScreen> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Breakdown Card เพื่อใช้ในหน้าจอนี้ (คลาส _AdminReportsScreenState).
   Widget _buildBreakdownCard() {
     return Container(
       padding: const EdgeInsets.all(18),
@@ -406,6 +415,7 @@ class _AdminReportsScreenState extends State<AdminReportsScreen> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Skeleton เพื่อใช้ในหน้าจอนี้ (คลาส _AdminReportsScreenState).
   Widget _buildSkeleton() {
     return Column(
       children: [
@@ -437,6 +447,7 @@ class _AdminReportsScreenState extends State<AdminReportsScreen> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Bottom Nav เพื่อใช้ในหน้าจอนี้ (คลาส _AdminReportsScreenState).
   Widget _buildBottomNav() {
     return BottomNavigationBar(
       currentIndex: _currentIndex,

@@ -57,6 +57,7 @@ class SellerTheme {
     color: Colors.white,
   );
 
+  /// หน้าที่: ประมวลผลขั้นตอน theme สำหรับส่วน seller theme (คลาส SellerTheme).
   static ThemeData theme() {
     return AppTheme.seller;
   }
@@ -83,6 +84,7 @@ class SellerTheme {
     );
   }
 
+  /// หน้าที่: ประมวลผลขั้นตอน card Decoration สำหรับส่วน seller theme (คลาส SellerTheme).
   static BoxDecoration cardDecoration({
     Color color = Colors.white,
     double radius = radiusCard,
@@ -105,6 +107,7 @@ class SellerTheme {
     );
   }
 
+  /// หน้าที่: ประมวลผลขั้นตอน input Decoration สำหรับส่วน seller theme (คลาส SellerTheme).
   static InputDecoration inputDecoration(
     String label, {
     String? hint,
@@ -122,6 +125,7 @@ class SellerTheme {
     );
   }
 
+  /// หน้าที่: ประมวลผลขั้นตอน primary Button สำหรับส่วน seller theme (คลาส SellerTheme).
   static Widget primaryButton({
     required String text,
     required VoidCallback? onPressed,
@@ -163,6 +167,7 @@ class SellerTheme {
     );
   }
 
+  /// หน้าที่: ค้นหาหรือกรองข้อมูล filter Chip ตามเงื่อนไขที่ผู้ใช้เลือก (คลาส SellerTheme).
   static Widget filterChip({
     required String text,
     required bool selected,
@@ -182,6 +187,7 @@ class SellerTheme {
     );
   }
 
+  /// หน้าที่: ประมวลผลขั้นตอน สถานะ Badge สำหรับส่วน seller theme (คลาส SellerTheme).
   static Widget statusBadge(String text, {required Color color}) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
@@ -200,6 +206,7 @@ class SellerTheme {
     );
   }
 
+  /// หน้าที่: ประมวลผลขั้นตอน สถานะ สี สำหรับส่วน seller theme (คลาส SellerTheme).
   static Color statusColor(String status) {
     switch (status.toLowerCase()) {
       case 'pending':
@@ -229,6 +236,7 @@ class SellerTheme {
     }
   }
 
+  /// หน้าที่: ประมวลผลขั้นตอน รูปภาพ Placeholder สำหรับส่วน seller theme (คลาส SellerTheme).
   static Widget imagePlaceholder({
     double width = 80,
     double height = 80,
@@ -245,9 +253,11 @@ class SellerTheme {
     );
   }
 
+  /// หน้าที่: ประมวลผลขั้นตอน loading สำหรับส่วน seller theme (คลาส SellerTheme).
   static Widget loading() =>
       const Center(child: CircularProgressIndicator(color: navy));
 
+  /// หน้าที่: ประมวลผลขั้นตอน empty สำหรับส่วน seller theme (คลาส SellerTheme).
   static Widget empty({
     required String message,
     IconData icon = Icons.inventory_2_outlined,

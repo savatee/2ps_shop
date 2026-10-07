@@ -38,6 +38,7 @@ class _AdminProductsScreenState extends State<AdminProductsScreen> {
   static const Color emerald500 = Color(0xFF10B981);
   static const Color rose500 = Color(0xFFF43F5E);
 
+  /// หน้าที่: เตรียมสถานะเริ่มต้นของหน้าจอและเริ่มโหลดข้อมูลที่จำเป็น (คลาส _AdminProductsScreenState).
   @override
   void initState() {
     super.initState();
@@ -47,6 +48,7 @@ class _AdminProductsScreenState extends State<AdminProductsScreen> {
     _fetchProducts();
   }
 
+  /// หน้าที่: คืนทรัพยากรของหน้าจอ เช่น controller และ listener ก่อนปิดหน้า (คลาส _AdminProductsScreenState).
   @override
   void dispose() {
     _searchController.dispose();
@@ -54,6 +56,7 @@ class _AdminProductsScreenState extends State<AdminProductsScreen> {
     super.dispose();
   }
 
+  /// หน้าที่: โหลดข้อมูล fetch สินค้า และอัปเดตสถานะการแสดงผลของหน้าจอ (คลาส _AdminProductsScreenState).
   Future<void> _fetchProducts() async {
     setState(() => _isLoading = true);
     try {
@@ -82,6 +85,7 @@ class _AdminProductsScreenState extends State<AdminProductsScreen> {
     }
   }
 
+  /// หน้าที่: จัดการเหตุการณ์ on การค้นหา ที่เปลี่ยน จากการกดหรือกรอกข้อมูลของผู้ใช้ (คลาส _AdminProductsScreenState).
   void _onSearchChanged(String query) {
     if (_debounce?.isActive ?? false) _debounce!.cancel();
     _debounce = Timer(const Duration(milliseconds: 400), () {
@@ -89,6 +93,7 @@ class _AdminProductsScreenState extends State<AdminProductsScreen> {
     });
   }
 
+  /// หน้าที่: จัดการเหตุการณ์ handle Action จากการกดหรือกรอกข้อมูลของผู้ใช้ (คลาส _AdminProductsScreenState).
   Future<void> _handleAction(int productId, String action) async {
     final status = (action == 'approve') ? 'active' : 'rejected';
     final success = await AdminApiService.updateProductStatus(
@@ -114,6 +119,7 @@ class _AdminProductsScreenState extends State<AdminProductsScreen> {
     }
   }
 
+  /// หน้าที่: จัดรูปแบบข้อมูล format จำนวนเงิน ก่อนนำไปแสดงผล (คลาส _AdminProductsScreenState).
   String _formatCurrency(num number) => NumberFormat('#,###').format(number);
 
   // คืนค่าป้ายสถานะ (ข้อความ, สีพื้นหลัง, สีตัวหนังสือ)
@@ -492,6 +498,7 @@ class _AdminProductsScreenState extends State<AdminProductsScreen> {
     );
   }
 
+  /// หน้าที่: เปิดหรือแสดงหน้าต่าง/ส่วน UI สำหรับ open หมวดหมู่สินค้า Filter Sheet (คลาส _AdminProductsScreenState).
   void _openCategoryFilterSheet() {
     showModalBottomSheet(
       context: context,
@@ -627,6 +634,7 @@ class _AdminProductsScreenState extends State<AdminProductsScreen> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ของหน้าจอหรือวิดเจ็ตใน admin products screen (คลาส _AdminProductsScreenState).
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -662,6 +670,7 @@ class _AdminProductsScreenState extends State<AdminProductsScreen> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน App Header เพื่อใช้ในหน้าจอนี้ (คลาส _AdminProductsScreenState).
   Widget _buildAppHeader() {
     return Container(
       decoration: const BoxDecoration(
@@ -756,6 +765,7 @@ class _AdminProductsScreenState extends State<AdminProductsScreen> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Control Bar เพื่อใช้ในหน้าจอนี้ (คลาส _AdminProductsScreenState).
   Widget _buildControlBar() {
     // แยก 5 สถานะชัดเจน: ทั้งหมด, รอตรวจ, อนุมัติแล้ว, ปฏิเสธ, ปิดการขาย
     final statusList = [
@@ -956,6 +966,7 @@ class _AdminProductsScreenState extends State<AdminProductsScreen> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Product Card เพื่อใช้ในหน้าจอนี้ (คลาส _AdminProductsScreenState).
   Widget _buildProductCard(Map<String, dynamic> item) {
     final status = item['status']?.toString().toLowerCase() ?? 'pending';
     final isPending = status == 'pending';
@@ -1180,6 +1191,7 @@ class _AdminProductsScreenState extends State<AdminProductsScreen> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Empty State เพื่อใช้ในหน้าจอนี้ (คลาส _AdminProductsScreenState).
   Widget _buildEmptyState() {
     return Center(
       child: Column(

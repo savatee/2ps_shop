@@ -30,6 +30,7 @@ function normalizePaymentMethod($value)
     return null;
 }
 
+// หน้าที่: ตรวจว่าวิธีชำระเงินเป็นการโอนเงินหรือไม่.
 function isTransferPayment($value)
 {
     return in_array(
@@ -39,6 +40,7 @@ function isTransferPayment($value)
     );
 }
 
+// หน้าที่: ปัดและจัดรูปแบบยอดเงินให้มีทศนิยมสองตำแหน่งก่อนส่งต่อ.
 function formatAmount($value)
 {
     return number_format(
@@ -49,6 +51,7 @@ function formatAmount($value)
     );
 }
 
+// หน้าที่: แปลงยอดเงินบาทเป็นหน่วยสตางค์เพื่อเปรียบเทียบยอดอย่างแม่นยำ.
 function amountInCents($value)
 {
     $amount = formatAmount($value);
@@ -67,6 +70,7 @@ function amountInCents($value)
         );
 }
 
+// หน้าที่: ตรวจว่าสถานะการชำระเงินถือว่าชำระสำเร็จแล้วหรือไม่.
 function isPaidStatus($value)
 {
     return in_array(

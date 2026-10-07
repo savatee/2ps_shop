@@ -81,6 +81,7 @@ class _BuyerHomePageState extends State<BuyerHomePage> {
     'ยานยนต์': Icons.directions_car_filled_outlined,
   };
 
+  /// หน้าที่: ประมวลผลขั้นตอน icon For หมวดหมู่สินค้า สำหรับส่วน buyer home page (คลาส _BuyerHomePageState).
   IconData _iconForCategory(String name) {
     for (final entry in _categoryIconKeywords.entries) {
       if (name.contains(entry.key)) {
@@ -90,6 +91,7 @@ class _BuyerHomePageState extends State<BuyerHomePage> {
     return Icons.local_mall_outlined;
   }
 
+  /// หน้าที่: เตรียมสถานะเริ่มต้นของหน้าจอและเริ่มโหลดข้อมูลที่จำเป็น (คลาส _BuyerHomePageState).
   @override
   void initState() {
     super.initState();
@@ -99,6 +101,7 @@ class _BuyerHomePageState extends State<BuyerHomePage> {
     _loadSearchHistory();
   }
 
+  /// หน้าที่: คืนทรัพยากรของหน้าจอ เช่น controller และ listener ก่อนปิดหน้า (คลาส _BuyerHomePageState).
   @override
   void dispose() {
     _searchFocusNode.removeListener(_updateSearchHistoryVisibility);
@@ -108,6 +111,7 @@ class _BuyerHomePageState extends State<BuyerHomePage> {
     super.dispose();
   }
 
+  /// หน้าที่: โหลดข้อมูล load การค้นหา History และอัปเดตสถานะการแสดงผลของหน้าจอ (คลาส _BuyerHomePageState).
   Future<void> _loadSearchHistory() async {
     final history = await SharedPreferencesAsync().getStringList(
       _searchHistoryKey,
@@ -117,6 +121,7 @@ class _BuyerHomePageState extends State<BuyerHomePage> {
     _updateSearchHistoryVisibility();
   }
 
+  /// หน้าที่: ปรับปรุงข้อมูลหรือสถานะ update การค้นหา History Visibility ผ่าน API และอัปเดตหน้าจอ (คลาส _BuyerHomePageState).
   void _updateSearchHistoryVisibility() {
     if (!mounted) return;
     final shouldShow =
@@ -135,6 +140,7 @@ class _BuyerHomePageState extends State<BuyerHomePage> {
     }
   }
 
+  /// หน้าที่: เปิดหรือแสดงหน้าต่าง/ส่วน UI สำหรับ show การค้นหา History Dropdown (คลาส _BuyerHomePageState).
   void _showSearchHistoryDropdown() {
     if (_searchHistoryOverlay != null || _searchHistory.isEmpty) return;
 
@@ -179,6 +185,7 @@ class _BuyerHomePageState extends State<BuyerHomePage> {
     Overlay.of(context, rootOverlay: true).insert(_searchHistoryOverlay!);
   }
 
+  /// หน้าที่: ประมวลผลขั้นตอน hide การค้นหา History Dropdown สำหรับส่วน buyer home page (คลาส _BuyerHomePageState).
   void _hideSearchHistoryDropdown() {
     final overlay = _searchHistoryOverlay;
     if (overlay == null) return;
@@ -187,6 +194,7 @@ class _BuyerHomePageState extends State<BuyerHomePage> {
     _searchHistoryOverlay = null;
   }
 
+  /// หน้าที่: บันทึกหรือสร้างข้อมูล save การค้นหา History แล้วจัดการผลที่เซิร์ฟเวอร์ตอบกลับ (คลาส _BuyerHomePageState).
   Future<void> _saveSearchHistory(String keyword) async {
     final value = keyword.trim();
     if (value.isEmpty) return;
@@ -213,6 +221,7 @@ class _BuyerHomePageState extends State<BuyerHomePage> {
     }
   }
 
+  /// หน้าที่: ลบข้อมูล delete การค้นหา History และจัดการผลการลบที่ API ส่งกลับ (คลาส _BuyerHomePageState).
   Future<void> _deleteSearchHistory(String keyword) async {
     final history = _searchHistory.where((item) => item != keyword).toList();
     try {
@@ -257,6 +266,7 @@ class _BuyerHomePageState extends State<BuyerHomePage> {
     );
   }
 
+  /// หน้าที่: ประมวลผลขั้นตอน apply First Page สำหรับส่วน buyer home page (คลาส _BuyerHomePageState).
   void _applyFirstPage(List<dynamic> rawProducts) {
     final products = _dedupeById(rawProducts).where(_isInStock).toList();
 
@@ -273,6 +283,7 @@ class _BuyerHomePageState extends State<BuyerHomePage> {
     _isLoadingMore = false;
   }
 
+  /// หน้าที่: โหลดข้อมูล load All และอัปเดตสถานะการแสดงผลของหน้าจอ (คลาส _BuyerHomePageState).
   Future<void> _loadAll() async {
     final generation = ++_loadGeneration;
 
@@ -360,6 +371,7 @@ class _BuyerHomePageState extends State<BuyerHomePage> {
     }
   }
 
+  /// หน้าที่: ประมวลผลขั้นตอน dedupe By รหัส สำหรับส่วน buyer home page (คลาส _BuyerHomePageState).
   List<dynamic> _dedupeById(List<dynamic> items) {
     final seen = <int>{};
     final result = <dynamic>[];
@@ -375,10 +387,12 @@ class _BuyerHomePageState extends State<BuyerHomePage> {
     return result;
   }
 
+  /// หน้าที่: ตรวจสอบเงื่อนไข is In Stock และคืนผลเป็น true หรือ false (คลาส _BuyerHomePageState).
   bool _isInStock(dynamic product) {
     return (int.tryParse(product['stock']?.toString() ?? '0') ?? 0) > 0;
   }
 
+  /// หน้าที่: ค้นหาหรือกรองข้อมูล filter By Selected หมวดหมู่สินค้า ตามเงื่อนไขที่ผู้ใช้เลือก (คลาส _BuyerHomePageState).
   List<dynamic> _filterBySelectedCategory(List<dynamic> products) {
     final categoryId = _selectedCategoryId;
     if (categoryId == null) return products;
@@ -389,6 +403,7 @@ class _BuyerHomePageState extends State<BuyerHomePage> {
     }).toList();
   }
 
+  /// หน้าที่: โหลดข้อมูล load ตะกร้าสินค้า Count และอัปเดตสถานะการแสดงผลของหน้าจอ (คลาส _BuyerHomePageState).
   Future<void> _loadCartCount() async {
     final cart = await ApiClient.getCart(widget.userId);
 
@@ -399,6 +414,7 @@ class _BuyerHomePageState extends State<BuyerHomePage> {
     });
   }
 
+  /// หน้าที่: ค้นหาหรือกรองข้อมูล การค้นหา ตามเงื่อนไขที่ผู้ใช้เลือก (คลาส _BuyerHomePageState).
   Future<void> _search(String keyword) async {
     _searchKeyword = keyword.trim();
 
@@ -428,6 +444,7 @@ class _BuyerHomePageState extends State<BuyerHomePage> {
     });
   }
 
+  /// หน้าที่: ตรวจสอบและส่งข้อมูล submit การค้นหา ไปบันทึกผ่าน API (คลาส _BuyerHomePageState).
   Future<void> _submitSearch(String keyword) async {
     final value = keyword.trim();
     if (value.isEmpty) {
@@ -444,10 +461,12 @@ class _BuyerHomePageState extends State<BuyerHomePage> {
     await _saveSearchHistory(value);
   }
 
+  /// หน้าที่: เลือกรับข้อมูล select การค้นหา History จากผู้ใช้หรืออุปกรณ์ (คลาส _BuyerHomePageState).
   Future<void> _selectSearchHistory(String keyword) async {
     await _submitSearch(keyword);
   }
 
+  /// หน้าที่: สลับค่า toggle Voice การค้นหา และอัปเดตหน้าจอตามสถานะใหม่ (คลาส _BuyerHomePageState).
   Future<void> _toggleVoiceSearch() async {
     if (_isListening) {
       await _speech.stop();
@@ -521,6 +540,7 @@ class _BuyerHomePageState extends State<BuyerHomePage> {
     }
   }
 
+  /// หน้าที่: ประมวลผลขั้นตอน รูปภาพ การค้นหา Terms สำหรับส่วน buyer home page (คลาส _BuyerHomePageState).
   List<String> _imageSearchTerms(List<ImageLabel> labels) {
     const thaiTerms = <String, List<String>>{
       'hat': ['หมวก'],
@@ -562,6 +582,7 @@ class _BuyerHomePageState extends State<BuyerHomePage> {
     return terms.toList();
   }
 
+  /// หน้าที่: ค้นหาหรือกรองข้อมูล การค้นหา By รูปภาพ ตามเงื่อนไขที่ผู้ใช้เลือก (คลาส _BuyerHomePageState).
   Future<void> _searchByImage(XFile image) async {
     if (mounted) {
       setState(() {
@@ -644,6 +665,7 @@ class _BuyerHomePageState extends State<BuyerHomePage> {
     }
   }
 
+  /// หน้าที่: ประมวลผลขั้นตอน capture การค้นหา รูปภาพ สำหรับส่วน buyer home page (คลาส _BuyerHomePageState).
   Future<void> _captureSearchImage() async {
     XFile? image;
     try {
@@ -672,6 +694,7 @@ class _BuyerHomePageState extends State<BuyerHomePage> {
     await _searchByImage(image);
   }
 
+  /// หน้าที่: เปิดหรือแสดงหน้าต่าง/ส่วน UI สำหรับ open สินค้า (คลาส _BuyerHomePageState).
   Future<void> _openProduct(int productId) async {
     await Navigator.push(
       context,
@@ -684,6 +707,7 @@ class _BuyerHomePageState extends State<BuyerHomePage> {
     _loadCartCount();
   }
 
+  /// หน้าที่: เปิดหรือแสดงหน้าต่าง/ส่วน UI สำหรับ open ตะกร้าสินค้า (คลาส _BuyerHomePageState).
   Future<void> _openCart() async {
     await Navigator.push(
       context,
@@ -710,6 +734,7 @@ class _BuyerHomePageState extends State<BuyerHomePage> {
     await _reloadProducts();
   }
 
+  /// หน้าที่: เปิดหรือแสดงหน้าต่าง/ส่วน UI สำหรับ show All Home (คลาส _BuyerHomePageState).
   Future<void> _showAllHome() async {
     _searchFocusNode.unfocus();
     _searchController.clear();
@@ -726,6 +751,7 @@ class _BuyerHomePageState extends State<BuyerHomePage> {
     await _loadCartCount();
   }
 
+  /// หน้าที่: สร้าง UI ของหน้าจอหรือวิดเจ็ตใน buyer home page (คลาส _BuyerHomePageState).
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -918,6 +944,7 @@ class _BuyerHomePageState extends State<BuyerHomePage> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Search Field เพื่อใช้ในหน้าจอนี้ (คลาส _BuyerHomePageState).
   Widget _buildSearchField() {
     return CompositedTransformTarget(
       link: _searchHistoryLayerLink,
@@ -1023,6 +1050,7 @@ class _BuyerHomePageState extends State<BuyerHomePage> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Search History เพื่อใช้ในหน้าจอนี้ (คลาส _BuyerHomePageState).
   Widget _buildSearchHistory() {
     final history = _searchHistory.take(5).toList();
     return Material(
@@ -1086,6 +1114,7 @@ class _BuyerHomePageState extends State<BuyerHomePage> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Category Row เพื่อใช้ในหน้าจอนี้ (คลาส _BuyerHomePageState).
   Widget _buildCategoryRow() {
     final quickCategories = _categories.take(6).toList();
 
@@ -1209,6 +1238,7 @@ class _BuyerHomePageState extends State<BuyerHomePage> {
     );
   }
 
+  /// หน้าที่: ประมวลผลขั้นตอน หมวดหมู่สินค้า Chip สำหรับส่วน buyer home page (คลาส _BuyerHomePageState).
   Widget _categoryChip({
     required IconData icon,
     required String label,
@@ -1346,6 +1376,7 @@ class _BuyerHomePageState extends State<BuyerHomePage> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ส่วน Product Grid เพื่อใช้ในหน้าจอนี้ (คลาส _BuyerHomePageState).
   Widget _buildProductGrid(int columns, double availableWidth) {
     if (_isLoading) {
       return const Padding(padding: EdgeInsets.all(24), child: LoadingView());
@@ -1414,6 +1445,7 @@ class _AppBarIconButton extends StatelessWidget {
     this.badgeCount = 0,
   });
 
+  /// หน้าที่: สร้าง UI ของหน้าจอหรือวิดเจ็ตใน buyer home page (คลาส _AppBarIconButton).
   @override
   Widget build(BuildContext context) {
     return Material(

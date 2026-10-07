@@ -33,12 +33,14 @@ class _WantedPostDetailPageState extends State<WantedPostDetailPage> {
   int get _postId =>
       int.tryParse(widget.post['wanted_post_id'].toString()) ?? 0;
 
+  /// หน้าที่: เตรียมสถานะเริ่มต้นของหน้าจอและเริ่มโหลดข้อมูลที่จำเป็น (คลาส _WantedPostDetailPageState).
   @override
   void initState() {
     super.initState();
     _loadOffers();
   }
 
+  /// หน้าที่: โหลดข้อมูล load ข้อเสนอ และอัปเดตสถานะการแสดงผลของหน้าจอ (คลาส _WantedPostDetailPageState).
   Future<void> _loadOffers() async {
     setState(() => _loading = true);
     final result = await ApiClient.getOffers(_postId, viewerId: widget.userId);
@@ -49,6 +51,7 @@ class _WantedPostDetailPageState extends State<WantedPostDetailPage> {
     });
   }
 
+  /// หน้าที่: เปิดหรือแสดงหน้าต่าง/ส่วน UI สำหรับ open แชท (คลาส _WantedPostDetailPageState).
   Future<void> _openChat(dynamic offer) async {
     if (widget.isSeller) {
       final buyerId = int.tryParse(
@@ -96,6 +99,7 @@ class _WantedPostDetailPageState extends State<WantedPostDetailPage> {
     );
   }
 
+  /// หน้าที่: สร้าง UI ของหน้าจอหรือวิดเจ็ตใน wanted post detail page (คลาส _WantedPostDetailPageState).
   @override
   Widget build(BuildContext context) {
     final wantedImage = pickWantedImage(widget.post);
@@ -206,6 +210,7 @@ class _OfferCard extends StatelessWidget {
     required this.onChat,
   });
 
+  /// หน้าที่: สร้าง UI ของหน้าจอหรือวิดเจ็ตใน wanted post detail page (คลาส _OfferCard).
   @override
   Widget build(BuildContext context) {
     final sellerName = offer['seller_name']?.toString() ?? 'ผู้ขาย';
