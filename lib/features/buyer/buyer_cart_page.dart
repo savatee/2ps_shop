@@ -27,7 +27,7 @@ class _BuyerCartPageState extends State<BuyerCartPage> {
   final Set<int> _busyCartIds = {}; // กันกดซ้ำระหว่างรอ API ตอบ
   bool _deleting = false;
 
-  /// หน้าที่: เตรียมสถานะเริ่มต้นของหน้าจอและเริ่มโหลดข้อมูลที่จำเป็น (คลาส _BuyerCartPageState).
+  /// หน้าที่: เตรียมสถานะเริ่มต้นของหน้าจอและเริ่มโหลดข้อมูลที่จำเป็น (คลาส _BuyerCartPageState).//
   @override
   void initState() {
     super.initState();
