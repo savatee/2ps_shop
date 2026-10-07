@@ -46,6 +46,38 @@ class _BuyerCheckoutPageState extends State<BuyerCheckoutPage> {
   final double _shippingFee = 35.0;
   final double _shippingDiscount = 35.0;
 
+  Map<String, List<Map<String, dynamic>>> get _itemsBySeller {
+    final groups = <String, List<Map<String, dynamic>>>{};
+    for (var index = 0; index < _items.length; index++) {
+      final item = _items[index];
+      final sellerId = int.tryParse(
+        (item['product_seller_id'] ?? item['seller_id'])?.toString() ?? '',
+      );
+      final sellerName = item['seller_name']?.toString().trim() ?? '';
+      final groupKey = sellerId != null && sellerId > 0
+          ? 'seller:$sellerId'
+          : sellerName.isNotEmpty
+          ? 'name:$sellerName'
+          : 'unknown:$index';
+      groups.putIfAbsent(groupKey, () => []).add(item);
+    }
+    return groups;
+  }
+
+  String _sellerLabel(List<Map<String, dynamic>> items) {
+    final first = items.first;
+    final name = first['seller_name']?.toString().trim() ?? '';
+    final sellerId = first['product_seller_id'] ?? first['seller_id'];
+    if (name.isNotEmpty) {
+      final duplicateName = _itemsBySeller.values.where((group) {
+        return group.first['seller_name']?.toString().trim() == name;
+      }).length > 1;
+      return duplicateName && sellerId != null ? '$name (#$sellerId)' : name;
+    }
+    if (sellerId != null) return 'ร้านค้า #$sellerId';
+    return 'ร้านค้าพันธมิตร 2PS Official';
+  }
+
   @override
   void initState() {
     super.initState();
@@ -667,6 +699,15 @@ class _BuyerCheckoutPageState extends State<BuyerCheckoutPage> {
   }
 
   Widget _buildProductCard() {
+    final shopGroups = _itemsBySeller.values.toList();
+    if (shopGroups.isEmpty) return const SizedBox.shrink();
+
+    return Column(
+      children: shopGroups.map(_buildShopCard).toList(),
+    );
+  }
+
+  Widget _buildShopCard(List<Map<String, dynamic>> shopItems) {
     return Container(
       margin: const EdgeInsets.only(bottom: 14),
       decoration: BoxDecoration(
@@ -691,10 +732,7 @@ class _BuyerCheckoutPageState extends State<BuyerCheckoutPage> {
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
-                    _items.isNotEmpty
-                        ? (_items.first['seller_name']?.toString() ??
-                              'ร้านค้าพันธมิตร 2PS Official')
-                        : 'ร้านค้าพันธมิตร 2PS Official',
+                    _sellerLabel(shopItems),
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 13,
@@ -726,7 +764,7 @@ class _BuyerCheckoutPageState extends State<BuyerCheckoutPage> {
           ),
           const Divider(height: 1, color: Color(0xFFF0F1F4)),
           // รายการสินค้า
-          ..._items.map((item) {
+          ...shopItems.map((item) {
             final name = item['product_name']?.toString() ?? 'ไม่มีชื่อสินค้า';
             final price =
                 double.tryParse(item['product_price']?.toString() ?? '0') ?? 0;
