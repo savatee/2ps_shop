@@ -16,6 +16,18 @@ class AppInputFormatters {
   /// รหัสไปรษณีย์: ตัวเลขเท่านั้น 5 หลัก
   static List<TextInputFormatter> postalCode() => digitsOnly(maxLength: 5);
 
+  /// ชื่อ/ตำบล/อำเภอ/จังหวัด: ตัวอักษรไทยหรืออังกฤษ และเครื่องหมายชื่อที่พบบ่อย
+  static List<TextInputFormatter> textOnly() => [
+    FilteringTextInputFormatter.allow(RegExp(r"[ก-ฮะ-ฺเ-๎A-Za-z .'-]")),
+  ];
+
+  /// บ้านเลขที่/ถนน: ตัวอักษร ตัวเลข ช่องว่าง และเครื่องหมายที่ใช้เขียนที่อยู่
+  static List<TextInputFormatter> addressLine() => [
+    FilteringTextInputFormatter.allow(
+      RegExp(r"[\u0E00-\u0E7FA-Za-z0-9 .,#/\-]"),
+    ),
+  ];
+
   /// จำนวนเงิน (เช่น ราคา, งบประมาณ): ตัวเลข และจุดทศนิยมได้ไม่เกิน 1 จุด
   /// ทศนิยมสูงสุด [decimalDigits] หลัก
   static List<TextInputFormatter> money({int decimalDigits = 2}) => [

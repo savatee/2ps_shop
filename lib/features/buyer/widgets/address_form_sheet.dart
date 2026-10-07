@@ -175,7 +175,8 @@ class _AddressFormSheetState extends State<_AddressFormSheet> {
                   controller: _name,
                   label: 'ชื่อ-นามสกุลผู้รับ',
                   icon: Icons.person_outline,
-                  validator: Validators.required,
+                  inputFormatters: AppInputFormatters.textOnly(),
+                  validator: Validators.recipientName,
                 ),
                 const SizedBox(height: 12),
                 AppTextField(
@@ -184,7 +185,7 @@ class _AddressFormSheetState extends State<_AddressFormSheet> {
                   icon: Icons.phone_outlined,
                   keyboardType: TextInputType.phone,
                   inputFormatters: AppInputFormatters.phone(),
-                  validator: Validators.required,
+                  validator: Validators.thaiPhone,
                 ),
                 const SizedBox(height: 12),
                 AppTextField(
@@ -192,7 +193,8 @@ class _AddressFormSheetState extends State<_AddressFormSheet> {
                   label: 'ที่อยู่ (บ้านเลขที่, ถนน)',
                   icon: Icons.home_outlined,
                   maxLines: 2,
-                  validator: Validators.required,
+                  inputFormatters: AppInputFormatters.addressLine(),
+                  validator: Validators.addressLine,
                 ),
                 const SizedBox(height: 12),
                 Row(
@@ -201,7 +203,11 @@ class _AddressFormSheetState extends State<_AddressFormSheet> {
                       child: AppTextField(
                         controller: _subdistrict,
                         label: 'ตำบล/แขวง',
-                        validator: Validators.required,
+                        inputFormatters: AppInputFormatters.textOnly(),
+                        validator: (value) => Validators.addressText(
+                          value,
+                          label: 'ตำบล/แขวง',
+                        ),
                       ),
                     ),
                     const SizedBox(width: 10),
@@ -209,7 +215,11 @@ class _AddressFormSheetState extends State<_AddressFormSheet> {
                       child: AppTextField(
                         controller: _district,
                         label: 'อำเภอ/เขต',
-                        validator: Validators.required,
+                        inputFormatters: AppInputFormatters.textOnly(),
+                        validator: (value) => Validators.addressText(
+                          value,
+                          label: 'อำเภอ/เขต',
+                        ),
                       ),
                     ),
                   ],
@@ -221,7 +231,11 @@ class _AddressFormSheetState extends State<_AddressFormSheet> {
                       child: AppTextField(
                         controller: _province,
                         label: 'จังหวัด',
-                        validator: Validators.required,
+                        inputFormatters: AppInputFormatters.textOnly(),
+                        validator: (value) => Validators.addressText(
+                          value,
+                          label: 'จังหวัด',
+                        ),
                       ),
                     ),
                     const SizedBox(width: 10),
@@ -231,7 +245,7 @@ class _AddressFormSheetState extends State<_AddressFormSheet> {
                         label: 'รหัสไปรษณีย์',
                         keyboardType: TextInputType.number,
                         inputFormatters: AppInputFormatters.postalCode(),
-                        validator: Validators.required,
+                        validator: Validators.postalCode,
                       ),
                     ),
                   ],

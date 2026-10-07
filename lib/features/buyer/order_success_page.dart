@@ -420,18 +420,23 @@ class _OrderSuccessPageState extends State<OrderSuccessPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      isCod
-                          ? 'เตรียมชำระเงินเมื่อรับสินค้า (COD)'
-                          : 'ชำระเงินผ่าน QR พร้อมเพย์',
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 13,
-                        color: Color(0xFF1E293B),
+                    Expanded(
+                      child: Text(
+                        isCod
+                            ? 'เตรียมชำระเงินเมื่อรับสินค้า (COD)'
+                            : 'ชำระเงินผ่าน QR พร้อมเพย์',
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13,
+                          color: Color(0xFF1E293B),
+                        ),
                       ),
                     ),
+                    const SizedBox(width: 8),
                     Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 6,

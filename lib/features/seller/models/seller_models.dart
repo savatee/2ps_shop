@@ -278,6 +278,7 @@ class SellerOrder {
   final String? paymentSlipPath;
   final String? paymentSlipUrl;
   final String? paymentSubmittedAt;
+  final bool hasOtherSellers;
 
   SellerOrder({
     required this.orderId,
@@ -298,6 +299,7 @@ class SellerOrder {
     this.paymentSlipPath,
     this.paymentSlipUrl,
     this.paymentSubmittedAt,
+    this.hasOtherSellers = false,
   });
 
   /// ลูกค้าแนบสลิปมาแล้วหรือไม่
@@ -392,6 +394,9 @@ class SellerOrder {
       paymentSlipPath: _nullableString(j['payment_slip_path']),
       paymentSlipUrl: _nullableString(j['payment_slip_url']),
       paymentSubmittedAt: _nullableString(j['payment_submitted_at']),
+      hasOtherSellers:
+          j['has_other_sellers'] == true ||
+          j['has_other_sellers']?.toString() == '1',
     );
   }
 }

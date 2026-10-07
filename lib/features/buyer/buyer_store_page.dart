@@ -150,14 +150,6 @@ class _BuyerStorePageState extends State<BuyerStorePage> {
         .toList();
   }
 
-  void _showFollowUnavailable() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('ระบบติดตามร้านค้ายังไม่เชื่อมกับฐานข้อมูล'),
-      ),
-    );
-  }
-
   void _openChat() {
     if (widget.userId == widget.sellerId) {
       ScaffoldMessenger.of(
@@ -378,45 +370,21 @@ class _BuyerStorePageState extends State<BuyerStorePage> {
             style: const TextStyle(fontSize: 11, color: Color(0xFF596170)),
           ),
           const SizedBox(height: 12),
-          Row(
-            children: [
-              Expanded(
-                child: SizedBox(
-                  height: 38,
-                  child: ElevatedButton.icon(
-                    onPressed: _showFollowUnavailable,
-                    icon: const Icon(Icons.add, size: 16),
-                    label: const Text('ติดตาม'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primary,
-                      foregroundColor: Colors.white,
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(7),
-                      ),
-                    ),
-                  ),
+          SizedBox(
+            width: double.infinity,
+            height: 38,
+            child: OutlinedButton.icon(
+              onPressed: _openChat,
+              icon: const Icon(Icons.chat_bubble_outline, size: 15),
+              label: const Text('แชทเลย'),
+              style: OutlinedButton.styleFrom(
+                foregroundColor: const Color(0xFF26344D),
+                side: const BorderSide(color: Color(0xFF26344D)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(7),
                 ),
               ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: SizedBox(
-                  height: 38,
-                  child: OutlinedButton.icon(
-                    onPressed: _openChat,
-                    icon: const Icon(Icons.chat_bubble_outline, size: 15),
-                    label: const Text('แชทเลย'),
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: const Color(0xFF26344D),
-                      side: const BorderSide(color: Color(0xFF26344D)),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(7),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
         ],
       ),

@@ -120,6 +120,53 @@ class Validators {
     String? value, {
     String message = 'กรุณากรอกข้อมูล',
   }) => value == null || value.trim().isEmpty ? message : null;
+
+  static String? recipientName(String? value) {
+    final text = value?.trim() ?? '';
+    if (text.isEmpty) return 'กรุณากรอกชื่อ-นามสกุลผู้รับ';
+    if (!RegExp(r"^[ก-ฮะ-ฺเ-๎A-Za-z .'-]+$").hasMatch(text)) {
+      return 'ชื่อผู้รับกรอกได้เฉพาะตัวอักษร';
+    }
+    return null;
+  }
+
+  static String? addressText(String? value, {required String label}) {
+    final text = value?.trim() ?? '';
+    if (text.isEmpty) return 'กรุณากรอก$label';
+    if (!RegExp(r"^[ก-ฮะ-ฺเ-๎A-Za-z .'-]+$").hasMatch(text)) {
+      return '$labelกรอกได้เฉพาะตัวอักษร';
+    }
+    return null;
+  }
+
+  static String? addressLine(String? value) {
+    final text = value?.trim() ?? '';
+    if (text.isEmpty) return 'กรุณากรอกที่อยู่ (บ้านเลขที่, ถนน)';
+    if (!RegExp(r"^[\u0E00-\u0E7FA-Za-z0-9 .,#/\-]+$").hasMatch(text)) {
+      return 'ที่อยู่กรอกได้เฉพาะตัวอักษร ตัวเลข และเครื่องหมาย / , . - #';
+    }
+    if (!RegExp(r'[0-9]').hasMatch(text)) {
+      return 'กรุณาระบุบ้านเลขที่เป็นตัวเลขด้วย';
+    }
+    return null;
+  }
+
+  static String? thaiPhone(String? value) {
+    final phone = value?.trim() ?? '';
+    if (!RegExp(r'^0[0-9]{9}$').hasMatch(phone)) {
+      return 'เบอร์โทรศัพท์ต้องเป็นตัวเลข 10 หลักและขึ้นต้นด้วย 0';
+    }
+    return null;
+  }
+
+  static String? postalCode(String? value) {
+    final code = value?.trim() ?? '';
+    if (!RegExp(r'^[0-9]{5}$').hasMatch(code)) {
+      return 'รหัสไปรษณีย์ต้องเป็นตัวเลข 5 หลัก';
+    }
+    return null;
+  }
+
   static String? password(String? value) => value == null || value.length < 6
       ? 'รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร'
       : null;

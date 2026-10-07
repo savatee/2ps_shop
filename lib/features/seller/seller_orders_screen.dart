@@ -174,6 +174,51 @@ class _SellerOrdersScreenState extends State<SellerOrdersScreen> {
     }
   }
 
+  Future<void> cancelOrder(SellerOrder order) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: const Text('ยกเลิกคำสั่งซื้อ'),
+        content: Text(
+          'ยืนยันยกเลิกคำสั่งซื้อ #${order.orderId} ใช่ไหม? สินค้าจะถูกคืนเข้าสต็อก',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext, false),
+            child: const Text('กลับ'),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red,
+              foregroundColor: Colors.white,
+            ),
+            onPressed: () => Navigator.pop(dialogContext, true),
+            child: const Text('ยืนยันยกเลิก'),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true || !mounted) return;
+
+    final orderId = order.orderId;
+    setState(() => updatingOrderIds.add(orderId));
+    try {
+      await SellerApi.cancelOrder(sellerId: widget.sellerId, orderId: orderId);
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SellerTheme.snackBar('ยกเลิกคำสั่งซื้อ #$orderId และคืนสต็อกแล้ว'),
+      );
+      await load();
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SellerTheme.snackBar('ยกเลิกคำสั่งซื้อไม่สำเร็จ: $e'),
+      );
+    } finally {
+      if (mounted) setState(() => updatingOrderIds.remove(orderId));
+    }
+  }
+
   // ============================================================
   // IMAGE
   // ============================================================
@@ -324,45 +369,66 @@ class _SellerOrdersScreenState extends State<SellerOrdersScreen> {
     final isUpdating = updatingOrderIds.contains(order.orderId);
 
     final nextStatus = getNextStatus(order.status);
+    final canCancel = order.status == 'pending' && !order.hasOtherSellers;
 
-    if (nextStatus == null) {
+    if (nextStatus == null && !canCancel) {
       return const SizedBox.shrink();
     }
 
-    final buttonText = nextStatusButtonText(order.status);
+    final buttonText = nextStatus == null ? '' : nextStatusButtonText(order.status);
 
     return Row(
       children: [
-        Expanded(
-          flex: 1,
-          child: SizedBox(
-            height: 44,
-            child: ElevatedButton(
-              onPressed: isUpdating
-                  ? null
-                  : () {
-                      changeStatus(order, nextStatus);
-                    },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: SellerTheme.navyDark,
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(SellerTheme.radiusLarge),
+        if (nextStatus != null)
+          Expanded(
+            flex: canCancel ? 3 : 1,
+            child: SizedBox(
+              height: 44,
+              child: ElevatedButton(
+                onPressed: isUpdating
+                    ? null
+                    : () => changeStatus(order, nextStatus),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: SellerTheme.navyDark,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(SellerTheme.radiusLarge),
+                  ),
                 ),
+                child: isUpdating
+                    ? const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Colors.white,
+                        ),
+                      )
+                    : Text(buttonText, style: SellerTheme.buttonText),
               ),
-              child: isUpdating
-                  ? const SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        color: Colors.white,
-                      ),
-                    )
-                  : Text(buttonText, style: SellerTheme.buttonText),
             ),
           ),
-        ),
+        if (canCancel && nextStatus != null) const SizedBox(width: 10),
+        if (canCancel)
+          Expanded(
+            flex: 2,
+            child: SizedBox(
+              height: 44,
+              child: OutlinedButton.icon(
+                onPressed: isUpdating ? null : () => cancelOrder(order),
+                icon: const Icon(Icons.cancel_outlined, size: 18),
+                label: const Text('ยกเลิกออเดอร์'),
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: Colors.red,
+                  side: const BorderSide(color: Colors.red),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(SellerTheme.radiusLarge),
+                  ),
+                  textStyle: const TextStyle(fontSize: 12),
+                ),
+              ),
+            ),
+          ),
       ],
     );
   }
@@ -374,7 +440,9 @@ class _SellerOrdersScreenState extends State<SellerOrdersScreen> {
   Widget buildOrderCard(SellerOrder order) {
     final color = statusColor(order.status);
 
-    final canAction = getNextStatus(order.status) != null;
+    final canAction =
+        getNextStatus(order.status) != null ||
+        (order.status == 'pending' && !order.hasOtherSellers);
 
     return Container(
       margin: const EdgeInsets.only(bottom: 14),
@@ -511,6 +579,13 @@ class _SellerOrdersScreenState extends State<SellerOrdersScreen> {
           if (canAction) ...[
             const SizedBox(height: 14),
             buildActionButtons(order),
+          ],
+          if (order.status == 'pending' && order.hasOtherSellers) ...[
+            const SizedBox(height: 10),
+            const Text(
+              'ออเดอร์นี้มีสินค้าจากหลายร้าน จึงยกเลิกจากร้านเดียวไม่ได้',
+              style: TextStyle(fontSize: 12, color: SellerTheme.textSecondary),
+            ),
           ],
         ],
       ),

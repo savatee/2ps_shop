@@ -23,6 +23,25 @@ function validateAddressFields(array $f) {
     if ($f[4] === '') errorResponse("กรุณากรอกอำเภอ/เขต");
     if ($f[5] === '') errorResponse("กรุณากรอกจังหวัด");
     if ($f[6] === '') errorResponse("กรุณากรอกรหัสไปรษณีย์");
+
+    $textPattern = "/^[ก-ฮะ-ฺเ-๎A-Za-z .'-]+$/u";
+    foreach ([0 => 'ชื่อผู้รับ', 3 => 'ตำบล/แขวง', 4 => 'อำเภอ/เขต', 5 => 'จังหวัด'] as $index => $label) {
+        if (!preg_match($textPattern, $f[$index])) {
+            errorResponse($label . 'กรอกได้เฉพาะตัวอักษร');
+        }
+    }
+
+    if (!preg_match('/^0[0-9]{9}$/', $f[1])) {
+        errorResponse('เบอร์โทรศัพท์ต้องเป็นตัวเลข 10 หลักและขึ้นต้นด้วย 0');
+    }
+
+    if (!preg_match("/^[\\x{0E00}-\\x{0E7F}A-Za-z0-9 .,#\\/-]+$/u", $f[2]) || !preg_match('/[0-9]/', $f[2])) {
+        errorResponse('ที่อยู่ต้องมีบ้านเลขที่ และกรอกได้เฉพาะตัวอักษร ตัวเลข และเครื่องหมาย / , . - #');
+    }
+
+    if (!preg_match('/^[0-9]{5}$/', $f[6])) {
+        errorResponse('รหัสไปรษณีย์ต้องเป็นตัวเลข 5 หลัก');
+    }
 }
 
 function execStmt(mysqli_stmt $stmt) {

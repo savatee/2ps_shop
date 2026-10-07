@@ -114,25 +114,12 @@ class _WantedPostDetailPageState extends State<WantedPostDetailPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            widget.post['title']?.toString() ?? '',
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                        Chip(
-                          label: Text(
-                            widget.post['wanted_status']?.toString() ?? 'open',
-                          ),
-                          visualDensity: VisualDensity.compact,
-                        ),
-                      ],
+                    Text(
+                      widget.post['title']?.toString() ?? '',
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     const SizedBox(height: 8),
                     Text(

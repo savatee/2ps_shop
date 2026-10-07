@@ -488,12 +488,6 @@ class _BuyerOrderDetailPageState extends State<BuyerOrderDetailPage> {
     return double.tryParse(value.toString()) ?? 0;
   }
 
-  double getShippingFee() {
-    final value = order['shipping_fee'] ?? order['delivery_fee'] ?? 0;
-
-    return double.tryParse(value.toString()) ?? 0;
-  }
-
   // =========================================================
   // ที่อยู่
   // =========================================================
@@ -684,8 +678,6 @@ class _BuyerOrderDetailPageState extends State<BuyerOrderDetailPage> {
 
     final subtotal = getSubtotal();
 
-    final shipping = getShippingFee();
-
     return RefreshIndicator(
       color: AppColors.primary,
 
@@ -716,7 +708,7 @@ class _BuyerOrderDetailPageState extends State<BuyerOrderDetailPage> {
             // =============================================
             // PAYMENT
             // =============================================
-            buildPaymentCard(subtotal, shipping, total),
+            buildPaymentCard(subtotal, total),
 
             // =============================================
             // ORDER INFORMATION
@@ -1111,7 +1103,7 @@ class _BuyerOrderDetailPageState extends State<BuyerOrderDetailPage> {
     if (mounted) loadOrderDetail();
   }
 
-  Widget buildPaymentCard(double subtotal, double shipping, double total) {
+  Widget buildPaymentCard(double subtotal, double total) {
     return whiteCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -1122,14 +1114,6 @@ class _BuyerOrderDetailPageState extends State<BuyerOrderDetailPage> {
           const SizedBox(height: 14),
 
           priceRow('รวมค่าสินค้า', subtotal),
-
-          const SizedBox(height: 7),
-
-          priceRow('ค่าจัดส่ง', shipping),
-
-          const SizedBox(height: 7),
-
-          priceRow('ส่วนลด', 0),
 
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 10),

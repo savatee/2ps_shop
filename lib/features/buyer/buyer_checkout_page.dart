@@ -43,8 +43,6 @@ class _BuyerCheckoutPageState extends State<BuyerCheckoutPage> {
   String _paymentMethod = 'qr';
 
   double _subtotal = 0;
-  final double _shippingFee = 35.0;
-  final double _shippingDiscount = 35.0;
 
   Map<String, List<Map<String, dynamic>>> get _itemsBySeller {
     final groups = <String, List<Map<String, dynamic>>>{};
@@ -416,7 +414,6 @@ class _BuyerCheckoutPageState extends State<BuyerCheckoutPage> {
                 children: [
                   _buildAddressCard(),
                   _buildProductCard(),
-                  _buildShippingCard(),
                   _buildPaymentMethods(),
                   _buildSummary(),
                 ],
@@ -541,8 +538,10 @@ class _BuyerCheckoutPageState extends State<BuyerCheckoutPage> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                        'สั่งซื้อ\nสินค้า',
-                                        textAlign: TextAlign.center,
+                                        'สั่งซื้อสินค้า',
+                                        maxLines: 1,
+                                        softWrap: false,
+                                        overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 13,
@@ -862,77 +861,6 @@ class _BuyerCheckoutPageState extends State<BuyerCheckoutPage> {
     );
   }
 
-  Widget _buildShippingCard() {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 14),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.03),
-            blurRadius: 6,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Colors.blue.withValues(alpha: 0.1),
-              shape: BoxShape.circle,
-            ),
-            child: Icon(
-              Icons.local_shipping_outlined,
-              color: Colors.blue.shade700,
-              size: 20,
-            ),
-          ),
-          const SizedBox(width: 12),
-          const Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'การจัดส่งด่วนพิเศษ (Express Delivery)',
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF202735),
-                  ),
-                ),
-                SizedBox(height: 2),
-                Text(
-                  'คาดการณ์จัดส่งภายใน 1-2 วันทำการ',
-                  style: TextStyle(fontSize: 11, color: Colors.grey),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(color: Colors.green),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: const Text(
-              'ฟรีค่าจัดส่ง',
-              style: TextStyle(
-                color: Colors.green,
-                fontSize: 11,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildPaymentMethods() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -1056,48 +984,6 @@ class _BuyerCheckoutPageState extends State<BuyerCheckoutPage> {
               Text(
                 '฿${_subtotal.toStringAsFixed(2)}',
                 style: const TextStyle(color: Color(0xFF202735), fontSize: 13),
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                'ค่าจัดส่ง',
-                style: TextStyle(color: Color(0xFF596170), fontSize: 13),
-              ),
-              Text(
-                '฿${_shippingFee.toStringAsFixed(2)}',
-                style: const TextStyle(
-                  color: Colors.grey,
-                  fontSize: 13,
-                  decoration: TextDecoration.lineThrough,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: const [
-                  Icon(
-                    Icons.local_offer_outlined,
-                    color: Colors.green,
-                    size: 14,
-                  ),
-                  SizedBox(width: 4),
-                  Text(
-                    'ส่วนลดค่าส่ง',
-                    style: TextStyle(color: Colors.green, fontSize: 13),
-                  ),
-                ],
-              ),
-              Text(
-                '-฿${_shippingDiscount.abs().toStringAsFixed(2)}',
-                style: const TextStyle(color: Colors.green, fontSize: 13),
               ),
             ],
           ),

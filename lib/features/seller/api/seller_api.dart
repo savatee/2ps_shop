@@ -363,6 +363,19 @@ class SellerApi {
     return r;
   }
 
+  static Future<Map<String, dynamic>> cancelOrder({
+    required int sellerId,
+    required int orderId,
+  }) async {
+    final r = await _post({
+      'action': 'seller_cancel_order',
+      'seller_id': '$sellerId',
+      'order_id': '$orderId',
+    });
+    _ensureSuccess(r, 'ยกเลิกคำสั่งซื้อไม่สำเร็จ');
+    return r;
+  }
+
   // ============================================================
   // SALES SUMMARY
   // ============================================================

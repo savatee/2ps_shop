@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'features/login/splash_screen.dart';
+
 import 'core/theme/app_theme.dart';
+import 'features/login/splash_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

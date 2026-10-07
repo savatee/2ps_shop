@@ -38,7 +38,12 @@ switch ($action) {
 
                 pay.payment_method,
                 pay.payment_status,
-                pay.payment_submitted_at
+                pay.payment_submitted_at,
+                EXISTS (
+                    SELECT 1 FROM order_items other_item
+                    WHERE other_item.item_order_id = o.order_id
+                      AND other_item.item_seller_id <> ?
+                ) AS has_other_sellers
 
              FROM order_items oi
 
@@ -70,7 +75,7 @@ switch ($action) {
              ORDER BY o.order_id DESC"
         );
 
-        $stmt->bind_param("i", $sellerId);
+        $stmt->bind_param("ii", $sellerId, $sellerId);
         $stmt->execute();
 
         $result = $stmt->get_result();
@@ -183,6 +188,119 @@ switch ($action) {
         $stmt->close();
 
         errorResponse("ไม่สามารถอัปเดตคำสั่งซื้อนี้ได้");
+
+        break;
+
+    case 'seller_cancel_order':
+
+        $sellerId = sellerIdValue();
+        $orderId = idv('order_id');
+
+        if ($orderId <= 0) {
+            errorResponse('ข้อมูลคำสั่งซื้อไม่ถูกต้อง');
+        }
+
+        $conn->begin_transaction();
+
+        try {
+            $lock = $conn->prepare(
+                "SELECT order_status FROM orders WHERE order_id = ? FOR UPDATE"
+            );
+            $lock->bind_param('i', $orderId);
+            $lock->execute();
+            $order = $lock->get_result()->fetch_assoc();
+            $lock->close();
+
+            if (!$order) {
+                throw new Exception('ไม่พบคำสั่งซื้อ');
+            }
+            if ($order['order_status'] !== 'pending') {
+                throw new Exception('ยกเลิกได้เฉพาะคำสั่งซื้อที่รอดำเนินการ');
+            }
+
+            // An order may contain products from several sellers. Never let one
+            // seller cancel another seller's items through the order-level status.
+            $items = $conn->prepare(
+                "SELECT item_product_id, item_variant_id, item_seller_id, item_quantity
+                 FROM order_items WHERE item_order_id = ? FOR UPDATE"
+            );
+            $items->bind_param('i', $orderId);
+            $items->execute();
+            $itemRows = $items->get_result();
+            $rows = [];
+            while ($item = $itemRows->fetch_assoc()) {
+                if (intval($item['item_seller_id']) !== $sellerId) {
+                    throw new Exception('คำสั่งซื้อนี้มีสินค้าจากร้านอื่น จึงยกเลิกจากฝั่งร้านเดียวไม่ได้');
+                }
+                $rows[] = $item;
+            }
+            $items->close();
+
+            if (!$rows) {
+                throw new Exception('ไม่พบสินค้าในคำสั่งซื้อของร้านนี้');
+            }
+
+            foreach ($rows as $item) {
+                $productId = intval($item['item_product_id']);
+                $variantId = intval($item['item_variant_id'] ?? 0);
+                $quantity = intval($item['item_quantity']);
+
+                if ($variantId > 0) {
+                    $restoreVariant = $conn->prepare(
+                        "UPDATE product_variants SET variant_stock = variant_stock + ?
+                         WHERE variant_id = ? AND variant_product_id = ?"
+                    );
+                    $restoreVariant->bind_param('iii', $quantity, $variantId, $productId);
+                    $restoreVariant->execute();
+                    if ($restoreVariant->affected_rows !== 1) {
+                        throw new Exception('คืนสต็อกตัวเลือกสินค้าไม่สำเร็จ');
+                    }
+                    $restoreVariant->close();
+                }
+
+                $restore = $conn->prepare(
+                    "UPDATE products SET stock = stock + ?
+                     WHERE product_id = ? AND product_seller_id = ?"
+                );
+                $restore->bind_param('iii', $quantity, $productId, $sellerId);
+                $restore->execute();
+                if ($restore->affected_rows !== 1) {
+                    throw new Exception('คืนสต็อกสินค้าไม่สำเร็จ');
+                }
+                $restore->close();
+
+                $note = 'คืนสต็อกจากผู้ขายยกเลิกคำสั่งซื้อ #' . $orderId;
+                $movement = $conn->prepare(
+                    "INSERT INTO stock_movements
+                     (movement_product_id, movement_seller_id, movement_type,
+                      movement_quantity, note) VALUES (?, ?, 'IN', ?, ?)"
+                );
+                $movement->bind_param('iiis', $productId, $sellerId, $quantity, $note);
+                $movement->execute();
+                $movement->close();
+            }
+
+            $update = $conn->prepare(
+                "UPDATE orders SET order_status = 'cancelled' WHERE order_id = ?"
+            );
+            $update->bind_param('i', $orderId);
+            $update->execute();
+            $update->close();
+
+            $payment = $conn->prepare(
+                "UPDATE payments SET payment_status = 'cancelled'
+                 WHERE payment_order_id = ? AND payment_status IN ('pending', 'submitted')"
+            );
+            $payment->bind_param('i', $orderId);
+            $payment->execute();
+            $payment->close();
+
+            $conn->commit();
+            successResponse('ยกเลิกคำสั่งซื้อและคืนสต็อกเรียบร้อยแล้ว');
+        } catch (Throwable $e) {
+            $conn->rollback();
+            errorResponse('ไม่สามารถยกเลิกคำสั่งซื้อได้', $e->getMessage());
+        }
 
         break;
 }

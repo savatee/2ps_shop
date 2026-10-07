@@ -71,6 +71,7 @@ $routes = [
     // actions/order.php
     'seller_orders'       => 'order',
     'update_order_status' => 'order',
+    'seller_cancel_order' => 'order',
 
     // actions/sales.php
     'sales_summary' => 'sales',

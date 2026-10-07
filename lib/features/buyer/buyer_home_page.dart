@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_mlkit_image_labeling/google_mlkit_image_labeling.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
@@ -463,12 +464,21 @@ class _BuyerHomePageState extends State<BuyerHomePage> {
               setState(() => _isListening = false);
             }
           },
+          onError: (_) {
+            if (!mounted) return;
+            setState(() => _isListening = false);
+            showAppSnackBar(
+              context,
+              'รู้จำเสียงไม่สำเร็จ กรุณาตรวจสิทธิ์ไมโครโฟนและบริการค้นหาด้วยเสียง',
+              isError: true,
+            );
+          },
         );
         if (!available) {
           if (mounted) {
             showAppSnackBar(
               context,
-              'อุปกรณ์นี้ไม่รองรับการค้นหาด้วยเสียง',
+              'เปิดใช้เสียงไม่ได้ กรุณาอนุญาตไมโครโฟนและตรวจว่ามีบริการรู้จำเสียงในเครื่อง',
               isError: true,
             );
           }
@@ -511,45 +521,155 @@ class _BuyerHomePageState extends State<BuyerHomePage> {
     }
   }
 
-  Future<void> _captureSearchImage() async {
+  List<String> _imageSearchTerms(List<ImageLabel> labels) {
+    const thaiTerms = <String, List<String>>{
+      'hat': ['หมวก'],
+      'headgear': ['หมวก'],
+      'clothing': ['เสื้อ', 'ชุด'],
+      'apparel': ['เสื้อ', 'ชุด', 'กางเกง'],
+      'shirt': ['เสื้อ'],
+      'dress': ['เดรส'],
+      'pants': ['กางเกง'],
+      'footwear': ['รองเท้า'],
+      'shoe': ['รองเท้า'],
+      'sneaker': ['รองเท้า'],
+      'bag': ['กระเป๋า'],
+      'handbag': ['กระเป๋า'],
+      'jewelry': ['เครื่องประดับ'],
+      'necklace': ['เครื่องประดับ'],
+      'ring': ['เครื่องประดับ'],
+      'watch': ['นาฬิกา'],
+      'cosmetics': ['เครื่องสำอาง', 'ความงาม'],
+      'beauty': ['เครื่องสำอาง', 'ความงาม'],
+      'lipstick': ['ลิป', 'เครื่องสำอาง'],
+      'electronic device': ['อุปกรณ์อิเล็กทรอนิกส์'],
+      'electronics': ['อุปกรณ์อิเล็กทรอนิกส์'],
+      'speaker': ['ลำโพง', 'อุปกรณ์อิเล็กทรอนิกส์'],
+      'headphones': ['หูฟัง', 'อุปกรณ์อิเล็กทรอนิกส์'],
+      'mobile phone': ['มือถือ', 'อุปกรณ์อิเล็กทรอนิกส์'],
+      'cell phone': ['มือถือ', 'โทรศัพท์'],
+      'computer': ['คอมพิวเตอร์', 'อุปกรณ์อิเล็กทรอนิกส์'],
+      'furniture': ['เฟอร์นิเจอร์'],
+      'toy': ['ของเล่น'],
+      'book': ['หนังสือ'],
+    };
+    final terms = <String>{};
+    for (final label in labels.take(5)) {
+      final normalized = label.label.trim().toLowerCase();
+      if (normalized.isEmpty) continue;
+      terms.addAll(thaiTerms[normalized] ?? [label.label.trim()]);
+    }
+    return terms.toList();
+  }
+
+  Future<void> _searchByImage(XFile image) async {
+    if (mounted) {
+      setState(() {
+        _isLoading = true;
+        _isSearching = true;
+        _searchKeyword = 'กำลังค้นหาจากภาพ';
+        _searchController.clear();
+      });
+    }
+
+    final labeler = ImageLabeler(
+      options: ImageLabelerOptions(confidenceThreshold: 0.45),
+    );
     try {
-      final image = await _imagePicker.pickImage(
+      final labels = await labeler.processImage(
+        InputImage.fromFilePath(image.path),
+      );
+      final terms = _imageSearchTerms(labels);
+      if (terms.isEmpty) {
+        if (!mounted) return;
+        setState(() {
+          _isLoading = false;
+          _isSearching = false;
+          _searchKeyword = '';
+        });
+        showAppSnackBar(
+          context,
+          'ยังระบุสินค้าในภาพไม่ได้ ลองถ่ายให้สินค้าอยู่กลางภาพและชัดขึ้น',
+          isError: true,
+        );
+        return;
+      }
+
+      final results = await Future.wait(
+        terms.map((term) => ApiClient.searchProducts(term)),
+      );
+      final productsById = <String, dynamic>{};
+      for (final result in results) {
+        for (final product in result.where(_isInStock)) {
+          final id = product is Map
+              ? (product['product_id'] ?? product['id'])?.toString()
+              : null;
+          if (id != null) productsById.putIfAbsent(id, () => product);
+        }
+      }
+
+      if (!mounted) return;
+      setState(() {
+        _products = productsById.values.toList();
+        _hasMore = false;
+        _isLoadingMore = false;
+        _isLoading = false;
+        _isSearching = false;
+        _searchKeyword = terms.join(' · ');
+      });
+      if (productsById.isEmpty) {
+        showAppSnackBar(
+          context,
+          'ไม่พบสินค้าที่คล้ายกับภาพ ลองถ่ายใหม่หรือค้นหาด้วยชื่อสินค้า',
+        );
+      }
+    } catch (_) {
+      if (!mounted) return;
+      setState(() {
+        _isLoading = false;
+        _isSearching = false;
+        _searchKeyword = '';
+      });
+      showAppSnackBar(
+        context,
+        'ค้นหาสินค้าจากภาพไม่สำเร็จ กรุณาตรวจอินเทอร์เน็ตแล้วลองใหม่',
+        isError: true,
+      );
+    } finally {
+      try {
+        await labeler.close();
+      } catch (_) {
+        // ไม่ให้การปิดตัววิเคราะห์ภาพกลบผลการค้นหาหรือข้อความผิดพลาด
+      }
+    }
+  }
+
+  Future<void> _captureSearchImage() async {
+    XFile? image;
+    try {
+      image = await _imagePicker.pickImage(
         source: ImageSource.camera,
         imageQuality: 80,
         maxWidth: 1600,
       );
-      if (image == null) return;
-
-      final bytes = await image.readAsBytes();
-      if (!mounted) return;
-      await showDialog<void>(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('ภาพที่ถ่าย'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ConstrainedBox(
-                constraints: const BoxConstraints(maxHeight: 360),
-                child: Image.memory(bytes, fit: BoxFit.contain),
-              ),
-              const SizedBox(height: 12),
-              const Text('ขณะนี้ยังไม่รองรับการค้นหาสินค้าจากรูปภาพ'),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('ปิด'),
-            ),
-          ],
-        ),
-      );
     } catch (_) {
-      if (mounted) {
-        showAppSnackBar(context, 'ไม่สามารถเปิดกล้องได้', isError: true);
+      if (!mounted) return;
+      showAppSnackBar(context, 'เปิดกล้องไม่ได้ กำลังเปิดคลังรูปแทน');
+      try {
+        image = await _imagePicker.pickImage(
+          source: ImageSource.gallery,
+          imageQuality: 80,
+          maxWidth: 1600,
+        );
+      } catch (_) {
+        if (mounted) {
+          showAppSnackBar(context, 'เปิดกล้องและคลังรูปไม่ได้', isError: true);
+        }
+        return;
       }
     }
+    if (image == null || !mounted) return;
+    await _searchByImage(image);
   }
 
   Future<void> _openProduct(int productId) async {
